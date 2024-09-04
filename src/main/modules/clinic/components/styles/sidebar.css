@@ -1,0 +1,47 @@
+.side-menu {
+  @apply cursor-pointer 
+    hover:bg-primary
+    hover:text-white 
+    rounded-sm 
+    text-wrap 
+    w-full
+    p-1 
+    text-sm
+    transition-all;
+}
+
+.dropdown {
+  @apply flex justify-between items-center transition-all;
+}
+
+.drop-menu {
+  @apply cursor-pointer 
+    hover:bg-primary/30
+    rounded-sm
+    text-wrap
+    w-full
+    ms-3 
+    text-sm;
+}
+
+.dropdown-container {
+  @apply bg-purple-400/40 rounded-b-sm;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* For IE, Edge and Firefox */
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.active {
+  @apply bg-primary text-white;
+}
+
+.drop-active {
+  @apply bg-primary/30 text-white;
+}
