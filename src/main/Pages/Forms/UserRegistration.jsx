@@ -69,10 +69,6 @@ const UserRegistration = () => {
                       <div className="flex-1 pb-3 lg:p-0">
                         <Birthday />
                       </div>
-                      <div className="lg:w-32 w-full">
-                        <Label>Age</Label>
-                        <Input type="number" placeholder="" readOnly />
-                      </div>
                     </div>
                   </div>
 
@@ -92,28 +88,6 @@ const UserRegistration = () => {
 
                   <div>
                     <Address />
-                  </div>
-
-                  <div className="grid grid-flow-row gap-3 lg:grid-flow-col w-full pb-3 lg:p-0">
-                    <div>
-                      <Label>License Number</Label>
-                      <Input type="text" placeholder="" />
-                    </div>
-                    <div>
-                      <Label>Specialty</Label>
-                      <Input type="text" placeholder="" />
-                    </div>
-                  </div>
-
-                  <div className="grid grid-flow-row gap-3 lg:grid-flow-col w-full pb-3 lg:p-0">
-                    <div>
-                      <Label>PTR Number</Label>
-                      <Input type="text" placeholder="" />
-                    </div>
-                    <div>
-                      <Label>S2 License Number</Label>
-                      <Input type="text" placeholder="" />
-                    </div>
                   </div>
                 </div>
               </CardContent>

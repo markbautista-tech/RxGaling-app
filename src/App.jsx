@@ -8,6 +8,10 @@ import LandingPage from "./main/components/landing";
 import PageTemplate from "./main/modules/PageTemplate";
 import MainRouter from "./MainRouter/router";
 
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
+
 function App() {
   return (
     <>
@@ -20,7 +24,9 @@ function App() {
 
       {/* <AppRouter /> */}
       {/* <PageTemplate /> */}
-      <MainRouter />
+      <QueryClientProvider client={queryClient}>
+        <MainRouter />
+      </QueryClientProvider>
     </>
   );
 }

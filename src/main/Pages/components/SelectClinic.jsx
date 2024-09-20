@@ -20,6 +20,7 @@ const clinic = [
     name: "Acculife Medical Laboratory",
     patient: "0 patients",
     appointments: "0 appointments",
+    user: "0 users",
   },
 ];
 

@@ -11,6 +11,8 @@ import {
 import Appointments from "../Pages/Appointments";
 import Dashboard from "../Pages/Dashboard";
 import PatientsManangement from "../Pages/Patients";
+import UserManagement from "../Pages/UserManagement";
+import PatientRegistration from "../Pages/Forms/PatientRegistration";
 
 const ContentRouter = () => {
   return (
@@ -18,6 +20,7 @@ const ContentRouter = () => {
       <Route path="/" exact element={<Dashboard />} />
       <Route path="/appointments/*" element={<Appointments />} />
       <Route path="/patients/*" element={<PatientsManangement />} />
+      <Route path="/user-management/*" element={<UserManagement />} />
     </Routes>
   );
 };

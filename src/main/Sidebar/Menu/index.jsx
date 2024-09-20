@@ -40,7 +40,7 @@ const menuOption = [
       {
         icon: <TbUserCog className="w-5 h-5 lg:w-6 lg:h-6" />,
         title: "Users",
-        link: "/clinic-app/user",
+        link: "/clinic-app/user-management",
       },
       {
         icon: <BiClinic className="w-5 h-5 lg:w-6 lg:h-6" />,
