@@ -1,0 +1,1 @@
+INSERT INTO "public"."ClinicRoles" ("id", "role") VALUES ('1', 'Clinic Administrator'), ('2', 'Clinic Assistant'), ('3', 'Clinic Nurse'), ('4', 'Clinic Secretary'), ('5', 'Doctor');

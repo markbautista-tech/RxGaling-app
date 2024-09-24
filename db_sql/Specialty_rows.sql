@@ -1,0 +1,1 @@
+INSERT INTO "public"."Specialty" ("id", "user_id", "specialty") VALUES ('1', '23', 'Blanditiis sequi vol'), ('2', '24', 'Blanditiis sequi vol'), ('3', '25', 'Earum molestias qui '), ('4', '26', 'Earum molestias qui '), ('5', '27', 'Earum molestias qui '), ('6', '28', 'Earum molestias qui '), ('7', '29', 'Earum molestias qui '), ('8', '30', 'Voluptatum eius pari');
