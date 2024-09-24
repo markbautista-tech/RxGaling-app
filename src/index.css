@@ -65,11 +65,14 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground no-scrollbar;
   }
   .flex-center-all {
     @apply flex items-center justify-center;
   }
+}
+
+@layer utilities {
   /* Hide scrollbar for Chrome, Safari and Opera */
   .no-scrollbar::-webkit-scrollbar {
     display: none;

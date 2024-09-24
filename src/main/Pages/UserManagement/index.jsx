@@ -7,6 +7,7 @@ import { TbMenu2, TbX } from "react-icons/tb";
 import { Separator } from "@/components/ui/separator";
 import AddUser from "./components/AddUser";
 import UserCard from "./components/userCard";
+import { RoleFilter } from "../components/Filter";
 
 const UserManagement = () => {
   const [showMenu, setShowMenu] = useState(false);
@@ -17,7 +18,7 @@ const UserManagement = () => {
 
   return (
     <>
-      <div>
+      <div className="">
         <div className="py-2 lg:py-4 flex justify-between items-center">
           <ContentTitle title={"User Management"} />
           <div className="relative flex ">
@@ -51,9 +52,11 @@ const UserManagement = () => {
           </div>
         </div>
         <Separator orientation="horizontal" className="w-full" />
-        <div>
-          <div></div>
-          <div>
+        <div className="lg:p-5 ">
+          <div className="flex justify-end w-full py-3">
+            <RoleFilter />
+          </div>
+          <div className=" lg:p-5 max-h-full">
             <UserCard />
           </div>
         </div>

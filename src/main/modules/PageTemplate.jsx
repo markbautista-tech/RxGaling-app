@@ -9,7 +9,9 @@ const PageTemplate = () => {
       <div className="lg:flex w-screen h-screen no-scrollbar">
         <Sidebar />
         <div className="w-full">
-          <PageHeader />
+          <div className="fixed left-0 lg:left-[250px] w-full">
+            <PageHeader />
+          </div>
           <div className="lg:pt-12 lg:px-10 lg:ml-[250px] h-full pt-10 px-5 mb-10 no-scrollbar">
             <ContentRouter />
           </div>

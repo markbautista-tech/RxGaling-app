@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
@@ -24,24 +24,7 @@ import {
 } from "@/components/ui/select";
 
 import AddUserEmailRole from "../../../../utils/data/add/addUser";
-
-const roleData = [
-  {
-    role: "Doctor",
-  },
-  {
-    role: "Clinic Nurse",
-  },
-  {
-    role: "Clinic Secretary",
-  },
-  {
-    role: "Clinic Administrator",
-  },
-  {
-    role: "Clinic Assistant",
-  },
-];
+import fetchRole from "../../../../utils/data/fetch/fetchRole";
 
 const addUserSchema = z.object({
   email: z.string().email("Invalid email address").trim(),
@@ -49,6 +32,10 @@ const addUserSchema = z.object({
 });
 
 const AddUser = () => {
+  const [roleData, setRoleData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState(null);
+
   const {
     register,
     handleSubmit,
@@ -57,6 +44,20 @@ const AddUser = () => {
   } = useForm({
     resolver: zodResolver(addUserSchema),
   });
+
+  useEffect(() => {
+    const getRoles = async () => {
+      try {
+        const roles = await fetchRole();
+        setRoleData(roles);
+      } catch (error) {
+        setFetchError("Failed to fetch roles.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    getRoles();
+  }, []);
 
   const onSubmit = (data) => {
     console.log(data);

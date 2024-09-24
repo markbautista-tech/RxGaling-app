@@ -12,14 +12,20 @@ const userDetails = async () => {
   //   return;
   // }
 
-  const { data, error } = await centralSupabase.from("UserDetails").select("*");
+  try {
+    const { data, error } = await centralSupabase
+      .from("UserDetails")
+      .select(`*, Specialty(specialty)`);
 
-  if (error) {
-    // console.log(error.message);
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    return data;
+  } catch (err) {
+    console.error("Error fetching UserDetails:", err.message);
     return "UserDetails: Server Error";
   }
-
-  return data;
 };
 
 export default userDetails;

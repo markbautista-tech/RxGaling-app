@@ -6,12 +6,18 @@ import UserRegistration from "../main/Pages/Forms/UserRegistration";
 import DoctorRegistration from "../main/Pages/Forms/DoctorRegistration";
 import NurseRegistration from "../main/Pages/Forms/NurseRegistration";
 import RegistrationForm from "../main/Pages/Forms/RegistrationForm";
+import SuperAdmin from "../SuperAdmin";
+import ClinicOwnerForm from "../SuperAdmin/components/ClinicOwnerForm";
+import ClinicForm from "../SuperAdmin/components/ClinicForm";
 
 const MainRouter = () => {
   return (
     <>
       <Routes>
         {/* <Route path="/" /> */}
+        <Route path="/admin/*" element={<SuperAdmin />} />
+        <Route path="/clinic-registration" element={<ClinicForm />} />
+
         <Route path="/clinic-app/*" element={<PageTemplate />} />
         <Route path="/user-registration/*" element={<UserRegistration />} />
         <Route path="/doctor-registration/*" element={<RegistrationForm />} />
