@@ -62,7 +62,7 @@ const AddUser = () => {
   const onSubmit = (data) => {
     console.log(data);
 
-    // AddUserEmailRole(data);
+    AddUserEmailRole(data);
   };
 
   return (

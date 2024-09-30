@@ -57,7 +57,7 @@ const menuOption = [
   {
     icon: <TbUserCircle className="w-5 h-5 lg:w-6 lg:h-6" />,
     title: "Profile",
-    link: "/clinic-app/profile",
+    link: "/clinic-app/profile-management",
   },
 ];
 
