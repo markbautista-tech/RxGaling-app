@@ -70,7 +70,7 @@ const ClinicAddress = ({ register, control, errors }) => {
                   control={control}
                   render={({ field }) => (
                     <Select
-                      id="region"
+                      id="clinic_region"
                       value={address.region && field.value}
                       onValueChange={(value) => {
                         regionChange(value);

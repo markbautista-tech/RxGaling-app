@@ -59,55 +59,6 @@ export default function useRegForm() {
       ptr_num: data.ptr_num,
       s2_license_num: data.s2_license_num,
     });
-    // const dataToSubmit = {
-    //   age: data.age,
-    //   birthday: birthdate,
-    //   contact_num: data.contact_num,
-    //   email: data.email,
-    //   ext_name: data.extname,
-    //   first_name: data.fname,
-    //   gender: data.gender,
-    //   last_name: data.lname,
-    //   middle_name: data.mname,
-    //   region: data.region,
-    //   province: data.province,
-    //   city_muni: data.municipality,
-    //   barangay: data.barangay,
-    //   add_address: data.additional_address,
-    //   specialty: data.specialty,
-    //   license: data.license_num,
-    //   ptr_num: data.ptr_num,
-    //   s2_license_num: data.s2_license_num,
-    // };
-
-    // additional_address: "Deserunt consectetur";
-    // age: "24";
-    // barangay: "1401108011";
-    // contact_num: "30546546598";
-    // day: "4";
-    // email: "dizil@mailinator.com";
-    // extname: "Willow Gamble";
-    // fname: "Petra Robertson";
-    // gender: "Female";
-    // license_num: "Inventore maiores al";
-    // lname: "Hollee Klein";
-    // mname: "Bryar Kemp";
-    // month: "11";
-    // municipality: "1401108000";
-    // province: "1401100000";
-    // ptr_num: "Quae provident eius";
-    // region: "1400000000";
-    // s2_license_num: "Voluptate voluptas u";
-    // specialty: "Tempore numquam off";
-    // year: "2000";
-
-    // const addUser = addUserDetails(dataToSubmit);
-
-    // if (addUser.error) {
-    //   console.log("error add user");
-    // }
-
-    // console.log(birthdate);
   };
 
   const finalSubmit = () => {

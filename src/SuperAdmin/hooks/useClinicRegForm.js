@@ -3,15 +3,13 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { clinicRegSchema } from "../schema/clinicRegSchema";
 import { useQuery } from "@tanstack/react-query";
+import { useFileSchema } from "../schema/fileShema";
 
 const useClinicRegForm = () => {
   const [dataSubmit, setDataSubmit] = useState({});
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-
-  const [step, setStep] = useState(1);
-  const handleNext = () => setStep((prev) => prev + 1);
-  const handlePrev = () => setStep((prev) => prev - 1);
+  const { fileData } = useFileSchema();
 
   const {
     register,
@@ -33,28 +31,21 @@ const useClinicRegForm = () => {
   // });
 
   const onSubmit = (data) => {
-    // handleNext();
+    const combinedData = {
+      ...data,
+      ...fileData, // Combine form data with the uploaded files
+    };
 
-    // // setIsDialogOpen(true);
-    // setDataSubmit({
-    //   ext_name: data.extname,
-    //   first_name: data.fname,
-    //   gender: data.gender,
-    //   last_name: data.lname,
-    //   middle_name: data.mname,
-    //   region: data.region,
-    //   province: data.province,
-    //   city_muni: data.municipality,
-    //   barangay: data.barangay,
-    //   add_address: data.additional_address,
-    // });
-
-    console.log("data clinic owner");
+    try {
+      clinicRegSchema.parse(combinedData); // Validate using zod schema
+      setIsDialogOpen(true); // Open the dialog after validation
+      setDataSubmit(combinedData); // Store the validated data for further use
+    } catch (error) {
+      console.error("Validation failed:", error.errors);
+    }
   };
 
-  const finalSubmit = () => {
-    console.log("submitted!");
-  };
+  const finalSubmit = () => {};
 
   return {
     register,
@@ -67,10 +58,6 @@ const useClinicRegForm = () => {
     setTermsAccepted,
     isDialogOpen,
     setIsDialogOpen,
-    step,
-    setStep,
-    handleNext,
-    handlePrev,
   };
 };
 

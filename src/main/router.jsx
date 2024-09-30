@@ -19,7 +19,7 @@ export default function AppRouter() {
     <Suspense>
       <Routes>
         <Route path="/" exact element={<LandingPage />} />
-        <Route path="/clinic-app/*" element={<AppTemplate />} />
+        {/* <Route path="/clinic-app/*" element={<AppTemplate />} /> */}
         <Route path="/login/*" element={<LoginForm2 />} />
         <Routes
           path="/patient-registration/*"

@@ -9,12 +9,14 @@ import RegistrationForm from "../main/Pages/Forms/RegistrationForm";
 import SuperAdmin from "../SuperAdmin";
 import ClinicOwnerForm from "../SuperAdmin/components/ClinicOwnerForm";
 import ClinicForm from "../SuperAdmin/components/ClinicForm";
+import LoginForm2 from "../main/components/loginForm2";
 
 const MainRouter = () => {
   return (
     <>
       <Routes>
         {/* <Route path="/" /> */}
+        <Route path="/user-login" element={<LoginForm2 />} />
         <Route path="/admin/*" element={<SuperAdmin />} />
         <Route path="/clinic-registration" element={<ClinicForm />} />
 
