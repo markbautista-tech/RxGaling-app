@@ -64,10 +64,6 @@ const ProfileManagement = () =>
   } = useForm({
     resolver: zodResolver(Profilemgmtschema),
   });
-  // const suibmitForm = handleSubmit((data) =>
-  // {
-  //   console.log(data);
-  // })
   const onSubmit = (data) =>
   {
     try {
@@ -76,9 +72,6 @@ const ProfileManagement = () =>
       console.log(error)
     }
   }
-  useEffect(()=>{
-    console.log({errors})
-  },[errors])
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
