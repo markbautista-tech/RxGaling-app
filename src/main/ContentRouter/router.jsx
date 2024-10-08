@@ -15,6 +15,7 @@ import PatientsManangement from "../Pages/Patients";
 import UserManagement from "../Pages/UserManagement";
 import PatientRegistration from "../Pages/Forms/PatientRegistration";
 import ProfileManagement from "../Pages/ProfileManagement";
+import ClinicStaff from "../Pages/Owner/Staff";
 
 const ContentRouter = () =>
 {
@@ -23,6 +24,7 @@ const ContentRouter = () =>
       <Route path="/" exact element={<Dashboard />} />
       <Route path="/appointments/*" element={<Appointments />} />
       <Route path="/patients/*" element={<PatientsManangement />} />
+      <Route path="/clinic-staff/*" element={<ClinicStaff />} />
       <Route path="/user-management/*" element={<UserManagement />} />
       <Route path="/profile-management/*" element={<ProfileManagement />} />
     </Routes>
