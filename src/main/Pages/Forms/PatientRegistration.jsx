@@ -19,6 +19,7 @@ import
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogClose
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -209,12 +210,14 @@ const UserRegistration = () =>
                   />
                   <Label htmlFor="terms">Accept terms and conditions</Label>
                 </div>
+                <DialogClose asChild>
                 <Button
                   variant="secondary"
                   className="border border-primary w-full lg:w-24"
                 >
                   Cancel
                 </Button>
+                </DialogClose>
                 <Button className="w-full lg:w-24" disabled={!termsAccepted} type="submit">
                   Register
                 </Button>
