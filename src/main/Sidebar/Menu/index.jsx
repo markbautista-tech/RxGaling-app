@@ -53,11 +53,16 @@ const menuOption = [
         title: "Clinic Staff",
         link: "/clinic-app/clinic-staff",
       },
+      {
+        icon: <BiClinic className="w-5 h-5 lg:w-6 lg:h-6" />,
+        title: "Clinic Doctors",
+        link: "/clinic-app/clinic-doctors",
+      },
 
       {
         icon: <GiMedicines className="w-5 h-5 lg:w-6 lg:h-6" />,
         title: "Pharmacy",
-        link: "/clinic-app/pharmacy",
+        link: "/clinic-app/clinic-pharmacy",
       },
     ],
   },
