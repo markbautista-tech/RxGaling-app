@@ -26,6 +26,15 @@ const OtherLicense = ({ register, errors }) => {
             </p>
           )}
         </div>
+        <div>
+          <Label>PRC License Number</Label>
+          <Input {...register("prc_no")} type="text" placeholder="" />
+          {errors.prc_no && (
+            <p className="text-red-400 italic text-xs py-1 lg:text-sm">
+              {errors.prc_no.message}
+            </p>
+          )}
+        </div>
       </div>
     </>
   );

@@ -28,7 +28,7 @@ const ContentRouter = () =>
       <Route path="/appointments/*" element={<Appointments />} />
       <Route path="/patients/*" element={<PatientsManangement />} />
       <Route path="/clinic-staff/*" element={<ClinicStaff />} />
-      <Route path="/clinic-doctors/*" element={<ClinicDoctors />} />
+      {/* <Route path="/clinic-doctors/*" element={<ClinicDoctors />} /> */}
       <Route path="/clinic-pharmacy/*" element={<Pharmacy />} />
       <Route path="/user-management/*" element={<UserManagement />} />
       <Route path="/profile-management/*" element={<ProfileManagement />} />

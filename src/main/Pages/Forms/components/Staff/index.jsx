@@ -1,26 +1,35 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import
-  {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-  } from "@/components/ui/card";
+{
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import
+{
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import
   {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-  } from "@/components/ui/alert-dialog";
+    Select,
+    SelectTrigger,
+    SelectValue,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+  } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -33,11 +42,12 @@ import Address from "../Address";
 import Licenses from "../Licenses";
 import Specialty from "../Specialty";
 import OtherLicense from "../OtherLicense";
-import useRegForm from "../../hooks/useRegForm";
+import staffRegForm from "../../hooks/staffRegForm";
 import { ConfirmUserReg } from "../../../components/ConfirmDialog";
 import { HiMiniBellAlert } from "react-icons/hi2";
+import fetchRole from "../../../../../utils/data/fetch/fetchRole";
 
-const RegFormComponent = () =>
+const StaffRegFormComponent = () =>
 {
   const {
     handleSubmit,
@@ -50,8 +60,29 @@ const RegFormComponent = () =>
     setTermsAccepted,
     isDialogOpen,
     setIsDialogOpen,
-  } = useRegForm();
+  } = staffRegForm();
 
+  const [ roleData, setRoleData ] = useState([]);
+
+
+  useEffect(() =>
+  {
+    const getRoles = async () =>
+    {
+      try
+      {
+        const roles = await fetchRole();
+        setRoleData(roles);
+      } catch (error)
+      {
+        // setFetchError("Failed to fetch roles.");
+      } finally
+      {
+        // setLoading(false);
+      }
+    };
+    getRoles();
+  }, []);
   return (
     <>
       <Card>
@@ -66,43 +97,55 @@ const RegFormComponent = () =>
             <div className="space-y-3 lg:space-y-5">
               <NameComponent register={register} errors={errors} />
               <Birthday register={register} errors={errors} control={control} />
-              <div className="grid grid-flow-row gap-3 lg:grid-flow-col w-full pb-3 lg:p-0">
+              {/* <div className="grid grid-flow-row gap-3 lg:grid-flow-col w-full pb-3 lg:p-0">
                 <SelectGender register={register} errors={errors} control={control} />
                 <NumberEmail register={register} errors={errors} />
-              </div>
+              </div> */}
               <Address register={register} errors={errors} control={control} />
-              <div className="grid grid-flow-row gap-3 lg:grid-flow-col w-full pb-3 lg:p-0">
-                <Licenses register={register} errors={errors} />
-                <Specialty register={register} errors={errors} />
-              </div>
-              <div>
-                <OtherLicense register={register} errors={errors} />
-              </div>
+
               <div className="grid grid-flow-row gap-3 lg:grid-flow-col w-full pb-3 lg:p-0">
                 <div>
-                  <Label>PRC License Number</Label>
-                  <Input {...register("prc_no")} type="text" placeholder="" />
-                  {errors.prc_no && (
+                  {/* <Label>User Role</Label>
+                  <Input {...register("role")} type="text" placeholder="" />
+                  {errors.role && (
                     <p className="text-red-400 italic text-xs py-1 lg:text-sm">
-                      {errors.prc_no.message}
+                      {errors.role.message}
+                    </p>
+                  )} */}
+
+                  <div className="space-y-2">
+                    <Label htmlFor="role">Roles</Label>
+                    <Select id="role">
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select Role" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          {roleData.map((roles, ids) => (
+                            <div key={ids}>
+                              <SelectItem value={roles.role}>{roles.role}</SelectItem>
+                            </div>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+                <div>
+                  <Label>Picture</Label>
+                  <Input {...register("picture")} type="file" placeholder="" />
+                  {errors.picture && (
+                    <p className="text-red-400 italic text-xs py-1 lg:text-sm">
+                      {errors.picture.message}
                     </p>
                   )}
                 </div>
                 <div>
-                  <Label>Professional Extension</Label>
-                  <Input {...register("prof_extension")} type="text" placeholder="" />
-                  {errors.prof_extension && (
+                  <Label>Government ID Picture</Label>
+                  <Input {...register("gov_id_picture")} type="file" placeholder="" />
+                  {errors.gov_id_picture && (
                     <p className="text-red-400 italic text-xs py-1 lg:text-sm">
-                      {errors.prof_extension.message}
-                    </p>
-                  )}
-                </div>
-                <div>
-                  <Label>Valid ID</Label>
-                  <Input {...register("valid_id")} type="file" placeholder=""  />
-                  {errors.valid_id && (
-                    <p className="text-red-400 italic text-xs py-1 lg:text-sm">
-                      {errors.valid_id.message}
+                      {errors.gov_id_picture.message}
                     </p>
                   )}
                 </div>
@@ -162,4 +205,4 @@ const RegFormComponent = () =>
   );
 };
 
-export default RegFormComponent;
+export default StaffRegFormComponent;
