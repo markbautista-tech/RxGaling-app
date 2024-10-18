@@ -25,7 +25,7 @@ const SchedulingDoctor = () =>
           <div className="">
             <ContentTitle title="Scheduling Doctor" />
           </div>
-          <div className="flex justify-center items-center border-2">
+          <div className="flex justify-center items-center">
             <div className="">
               <SearchBar />
             </div>

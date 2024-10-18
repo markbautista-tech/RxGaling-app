@@ -30,6 +30,13 @@ const ClinicManager = () =>
                   </span>
                 </Link>
               </li>
+              <li className="font-extrabold text-xl ">
+                <Link to="/clinic-manager/profile">
+                  <span>
+                    Profile
+                  </span>
+                </Link>
+              </li>
             </ul>
           </nav>
         </div>
