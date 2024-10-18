@@ -48,16 +48,16 @@ const menuOption = [
         title: "Clinic",
         link: "/clinic-app/clinic",
       },
-      {
-        icon: <BiClinic className="w-5 h-5 lg:w-6 lg:h-6" />,
-        title: "Clinic Staff",
-        link: "/clinic-app/clinic-staff",
-      },
-      {
-        icon: <BiClinic className="w-5 h-5 lg:w-6 lg:h-6" />,
-        title: "Clinic Doctors",
-        link: "/clinic-app/clinic-doctors",
-      },
+      // {
+      //   icon: <BiClinic className="w-5 h-5 lg:w-6 lg:h-6" />,
+      //   title: "Clinic Staff",
+      //   link: "/clinic-app/clinic-staff",
+      // },
+      // {
+      //   icon: <BiClinic className="w-5 h-5 lg:w-6 lg:h-6" />,
+      //   title: "Clinic Doctors",
+      //   link: "/clinic-app/clinic-doctors",
+      // },
 
       {
         icon: <GiMedicines className="w-5 h-5 lg:w-6 lg:h-6" />,

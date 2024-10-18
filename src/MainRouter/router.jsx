@@ -11,6 +11,7 @@ import ClinicOwnerForm from "../SuperAdmin/components/ClinicOwnerForm";
 import ClinicForm from "../SuperAdmin/components/ClinicForm";
 import LoginForm2 from "../main/components/loginForm2";
 import StaffRegistration from "../main/Pages/Forms/StaffRegistration";
+import ClinicManager from "../main/Pages/Manager";
 
 const MainRouter = () => {
   return (
@@ -26,6 +27,7 @@ const MainRouter = () => {
         <Route path="/doctor-registration/*" element={<RegistrationForm />} />
         <Route path="/nurse-registration/*" element={<NurseRegistration />} />
         <Route path="/staff-registration/*" element={<StaffRegistration />} />
+        <Route path="/clinic-manager/*" element={<ClinicManager />} />
       </Routes>
     </>
   );

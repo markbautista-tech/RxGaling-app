@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { centralSupabase } from "../supabaseClient";
 import checkAuth from "./checkAuth";
 
-const userDetails = async () => {
+const userDetails = async (role="*") => {
   // const navigate = useNavigate();
 
   // const auth = checkAuth();
@@ -15,7 +15,8 @@ const userDetails = async () => {
   try {
     const { data, error } = await centralSupabase
       .from("UserDetails")
-      .select(`*, Specialty(specialty)`);
+      // .select(`*, Specialty(specialty), role(${role})`);
+      .select(`*, Specialty(specialty) `);
 
     if (error) {
       throw new Error(error.message);
