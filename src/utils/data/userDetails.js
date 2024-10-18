@@ -16,7 +16,7 @@ const userDetails = async (role="*") => {
     const { data, error } = await centralSupabase
       .from("UserDetails")
       // .select(`*, Specialty(specialty), role(${role})`);
-      .select(`*, Specialty(specialty) `);
+      .select(`*, Specialty(*) `);
 
     if (error) {
       throw new Error(error.message);

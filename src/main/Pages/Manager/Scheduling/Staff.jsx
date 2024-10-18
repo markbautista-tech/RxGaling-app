@@ -1,7 +1,12 @@
-const SchedulingStaff = ()=>{
-  return(
+import UsersCard from "../../UserManagement/components/UsersCard2"
+
+const SchedulingStaff = () =>
+{
+  return (
     <>
-    SchedulingStaff
+      <div className="">
+        <UsersCard />
+      </div>
     </>
   )
 }
