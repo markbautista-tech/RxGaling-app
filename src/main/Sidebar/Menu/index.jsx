@@ -2,14 +2,15 @@ import React, { useState } from "react";
 import MenuOption from "/src/main/Sidebar/Menu/MenuOption";
 
 import { LuLayoutDashboard } from "react-icons/lu";
-import {
-  TbCalendarClock,
-  TbSettings,
-  TbUserCircle,
-  TbUserCog,
-  TbChevronRight,
-  TbChevronLeft,
-} from "react-icons/tb";
+import
+  {
+    TbCalendarClock,
+    TbSettings,
+    TbUserCircle,
+    TbUserCog,
+    TbChevronRight,
+    TbChevronLeft,
+  } from "react-icons/tb";
 import { RiUserHeartLine } from "react-icons/ri";
 import { BiClinic } from "react-icons/bi";
 import { GiMedicines } from "react-icons/gi";
@@ -47,34 +48,49 @@ const menuOption = [
         title: "Clinic",
         link: "/clinic-app/clinic",
       },
+      // {
+      //   icon: <BiClinic className="w-5 h-5 lg:w-6 lg:h-6" />,
+      //   title: "Clinic Staff",
+      //   link: "/clinic-app/clinic-staff",
+      // },
+      // {
+      //   icon: <BiClinic className="w-5 h-5 lg:w-6 lg:h-6" />,
+      //   title: "Clinic Doctors",
+      //   link: "/clinic-app/clinic-doctors",
+      // },
+
       {
         icon: <GiMedicines className="w-5 h-5 lg:w-6 lg:h-6" />,
         title: "Pharmacy",
-        link: "/clinic-app/pharmacy",
+        link: "/clinic-app/clinic-pharmacy",
       },
     ],
   },
   {
     icon: <TbUserCircle className="w-5 h-5 lg:w-6 lg:h-6" />,
     title: "Profile",
-    link: "/clinic-app/profile",
+    link: "/clinic-app/profile-management",
   },
 ];
 
-const Menu = () => {
-  const [activeMenu, setActiveMenu] = useState(null);
-  const [activeLink, setActiveLink] = useState(null);
+const Menu = () =>
+{
+  const [ activeMenu, setActiveMenu ] = useState(null);
+  const [ activeLink, setActiveLink ] = useState(null);
 
-  const toggleSubmenu = (menuTitle) => {
+  const toggleSubmenu = (menuTitle) =>
+  {
     setActiveMenu(activeMenu === menuTitle ? null : menuTitle);
   };
 
-  const handleSubmenuClick = (link) => {
+  const handleSubmenuClick = (link) =>
+  {
     setActiveLink(link);
     setActiveMenu(null);
   };
 
-  const handleMenuClick = (link) => {
+  const handleMenuClick = (link) =>
+  {
     setActiveLink(link);
     setActiveMenu(null);
   };
@@ -85,9 +101,8 @@ const Menu = () => {
         <div key={ids}>
           <div
             onClick={() => menu.submenu && toggleSubmenu(menu.title)}
-            className={`relative flex items-center justify-between cursor-pointer w-full hover:bg-primary hover:text-white rounded-md transition-all ${
-              activeLink === menu.link ? "bg-primary text-white" : ""
-            }`}
+            className={`relative flex items-center justify-between cursor-pointer w-full hover:bg-primary hover:text-white rounded-md transition-all ${activeLink === menu.link ? "bg-primary text-white" : ""
+              }`}
           >
             <MenuOption
               link={menu.link}
@@ -108,7 +123,7 @@ const Menu = () => {
           </div>
 
           {menu.submenu && activeMenu === menu.title && (
-            <div className="absolute bottom-10 lg:left-[250px] lg:bottom-[200px] w-fit bg-primary/50 rounded-md backdrop-blur-md">
+            <div className="absolute bottom-0 lg:left-[250px] lg:bottom-[200] w-fit bg-primary/50 rounded-md backdrop-blur-md">
               {menu.submenu.map((submenu, subId) => (
                 <MenuOption
                   key={subId}

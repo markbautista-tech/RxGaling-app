@@ -10,10 +10,14 @@ import { TbMenu2, TbX } from "react-icons/tb";
 
 import PatientRegistration from "../Forms/PatientRegistration";
 
-const PatientsManangement = () => {
-  const [showMenu, setShowMenu] = useState(false);
 
-  const toggleMenu = () => {
+const PatientsManangement = () =>
+{
+  const [ showMenu, setShowMenu ] = useState(false);
+
+
+  const toggleMenu = () =>
+  {
     setShowMenu(!showMenu);
   };
 

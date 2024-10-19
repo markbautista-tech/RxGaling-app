@@ -153,14 +153,14 @@ const DoctorRegistration = () => {
                     </div>
                     <div className="lg:flex gap-3 lg:items-center">
                       <div className="flex-1 pb-3 lg:p-0">
-                        <Birthday />
+                        {/* <Birthday /> */}
                       </div>
                     </div>
                   </div>
 
                   <div className="grid grid-flow-row gap-3 lg:grid-flow-col w-full pb-3 lg:p-0">
                     <div className="w-full">
-                      <SelectGender control={control} errors={errors.gender} />
+                      {/* <SelectGender control={control} errors={errors.gender} /> */}
                     </div>
 
                     <div>
@@ -192,7 +192,7 @@ const DoctorRegistration = () => {
                   </div>
 
                   <div>
-                    <Address />
+                    {/* <Address /> */}
                   </div>
 
                   <div className="grid grid-flow-row gap-3 lg:grid-flow-col w-full pb-3 lg:p-0">
