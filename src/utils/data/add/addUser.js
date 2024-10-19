@@ -5,9 +5,9 @@ const AddUserEmailRole = async (userData) => {
     const { data, error } = await centralSupabase.auth.admin.createUser({
       email: userData.email,
       password: "123456789",
-      raw_user_meta_data: {
-        role: userData.role,
-      },
+      // raw_user_meta_data: {
+      //   role: userData.role,
+      // },
     });
 
     if (error) {

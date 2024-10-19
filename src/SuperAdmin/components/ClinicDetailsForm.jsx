@@ -4,12 +4,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import useClinicRegForm from "../hooks/useClinicRegForm";
 import ClinicAddress from "./ClinicAddress";
-import { useFileSchema } from "../schema/fileShema";
+import ClinicFiles from "./ClinicFiles";
 
 const ClinicDetailsForm = ({ register, errors, control }) => {
-  const { handleBIRUpload, handlePermitUpload, handleClinicPicUpload } =
-    useFileSchema();
-
   return (
     <>
       <div>
@@ -36,53 +33,7 @@ const ClinicDetailsForm = ({ register, errors, control }) => {
                     control={control}
                   />
                 </div>
-                <div className="space-y-3 lg:space-y-5">
-                  <p className="italic text-sm lg:text-md">
-                    Please upload pictures for the following:
-                  </p>
-                  <div>
-                    <Label>Mayor's Permit</Label>
-                    <Input
-                      ref={register}
-                      name="permit"
-                      type="file"
-                      onChange={handlePermitUpload}
-                    />
-                    {errors.permit && (
-                      <p className="text-red-400 italic text-xs py-1 lg:text-sm">
-                        {errors.permit.message}
-                      </p>
-                    )}
-                  </div>
-                  <div>
-                    <Label>BIR</Label>
-                    <Input
-                      ref={register}
-                      name="bir"
-                      type="file"
-                      onChange={handleBIRUpload}
-                    />
-                    {errors.bir && (
-                      <p className="text-red-400 italic text-xs py-1 lg:text-sm">
-                        {errors.bir.message}
-                      </p>
-                    )}
-                  </div>
-                  <div>
-                    <Label>Clinic Picture</Label>
-                    <Input
-                      ref={register}
-                      name="clinic_pic"
-                      type="file"
-                      onChange={handleClinicPicUpload}
-                    />
-                    {errors.clinic_pic && (
-                      <p className="text-red-400 italic text-xs py-1 lg:text-sm">
-                        {errors.clinic_pic.message}
-                      </p>
-                    )}
-                  </div>
-                </div>
+                <ClinicFiles register={register} errors={errors} />
               </div>
             </div>
           </div>

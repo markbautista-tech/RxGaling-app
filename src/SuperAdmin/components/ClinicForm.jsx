@@ -35,10 +35,6 @@ const ClinicForm = () => {
     setIsDialogOpen,
   } = useClinicRegForm();
 
-  useEffect(() => {
-    console.log(errors);
-  }, [errors]);
-
   return (
     <>
       <div>

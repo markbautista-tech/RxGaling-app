@@ -1,7 +1,5 @@
 import { z } from "zod";
 
-const validMimeTypes = ["image/jpeg", "image/png"];
-
 export const clinicRegSchema = z.object({
   fname: z.string().min(1, "First Name is required."),
   mname: z.string().optional(),
@@ -19,36 +17,6 @@ export const clinicRegSchema = z.object({
   barangay: z.string().min(1, { message: "Barangay is required" }),
   additional_address: z.string().optional(),
   clinic_name: z.string().min(1, "Clinic Name is required."),
-
-  bir: z
-    .instanceof(File) // Ensure that the value is an instance of File
-    .refine((file) => validMimeTypes.includes(file.type), {
-      message: "BIR document must be a valid image (jpeg, png).",
-    })
-    .refine((file) => file.size <= 5 * 1024 * 1024, {
-      // 5 MB size limit
-      message: "BIR document size must be less than 5MB.",
-    }),
-
-  permit: z
-    .instanceof(File) // Ensure that the value is an instance of File
-    .refine((file) => validMimeTypes.includes(file.type), {
-      message: "Mayor's permit must be a valid image (jpeg, png).",
-    })
-    .refine((file) => file.size <= 5 * 1024 * 1024, {
-      // 5 MB size limit
-      message: "Mayor's permit size must be less than 5MB.",
-    }),
-
-  clinic_pic: z
-    .instanceof(File) // Ensure that the value is an instance of File
-    .refine((file) => validMimeTypes.includes(file.type), {
-      message: "Clinic picture must be a valid image (jpeg, png).",
-    })
-    .refine((file) => file.size <= 5 * 1024 * 1024, {
-      // 5 MB size limit
-      message: "Clinic picture size must be less than 5MB.",
-    }),
   clinic_region: z.string().min(1, { message: "Region is required" }),
   clinic_province: z.string().min(1, { message: "Province is required" }),
   clinic_municipality: z
@@ -56,4 +24,14 @@ export const clinicRegSchema = z.object({
     .min(1, { message: "City/Municipality is required" }),
   clinic_barangay: z.string().min(1, { message: "Barangay is required" }),
   clinic_additional_address: z.string().optional(),
+
+  permit: z
+    .any()
+    .refine((file) => file && file.length > 0, { message: "File is required" }),
+  bir: z
+    .any()
+    .refine((file) => file && file.length > 0, { message: "File is required" }),
+  clinic_pic: z
+    .any()
+    .refine((file) => file && file.length > 0, { message: "File is required" }),
 });

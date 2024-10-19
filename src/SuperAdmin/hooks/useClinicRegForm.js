@@ -4,6 +4,9 @@ import { useForm } from "react-hook-form";
 import { clinicRegSchema } from "../schema/clinicRegSchema";
 import { useQuery } from "@tanstack/react-query";
 import { useFileSchema } from "../schema/fileShema";
+import { addClinicDetails } from "../../utils/data/add/addClinicDetails";
+import addClinicRequest from "../../utils/data/add/addClinicRequest";
+import addFiles from "../../utils/data/add/addFiles";
 
 const useClinicRegForm = () => {
   const [dataSubmit, setDataSubmit] = useState({});
@@ -21,31 +24,26 @@ const useClinicRegForm = () => {
   });
 
   // const {
-  //   data: userDetail,
+  //   data: clinicDetail,
   //   isLoading,
   //   isFetched,
   //   isError,
   // } = useQuery({
-  //   queryKey: ["userdetails"],
-  //   queryFn: userDetails,
+  //   queryKey: ["clinicdetails"],
+  //   queryFn: "",
   // });
 
   const onSubmit = (data) => {
-    const combinedData = {
-      ...data,
-      ...fileData, // Combine form data with the uploaded files
-    };
-
-    try {
-      clinicRegSchema.parse(combinedData); // Validate using zod schema
-      setIsDialogOpen(true); // Open the dialog after validation
-      setDataSubmit(combinedData); // Store the validated data for further use
-    } catch (error) {
-      console.error("Validation failed:", error.errors);
-    }
+    setIsDialogOpen(true);
+    setDataSubmit(data);
   };
 
-  const finalSubmit = () => {};
+  const finalSubmit = () => {
+    // console.log(dataSubmit);
+    addClinicDetails(dataSubmit);
+    // addFiles(dataSubmit.bir, dataSubmit.permit, dataSubmit.clinic_pic);
+    // console.log(dataSubmit.permit[0].name);
+  };
 
   return {
     register,

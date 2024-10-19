@@ -10,6 +10,7 @@ import SuperAdmin from "../SuperAdmin";
 import ClinicOwnerForm from "../SuperAdmin/components/ClinicOwnerForm";
 import ClinicForm from "../SuperAdmin/components/ClinicForm";
 import LoginForm2 from "../main/components/loginForm2";
+import DisplayRequestForm from "../SuperAdmin/components/DisplayRequestForm";
 
 const MainRouter = () => {
   return (
@@ -18,6 +19,10 @@ const MainRouter = () => {
         {/* <Route path="/" /> */}
         <Route path="/user-login" element={<LoginForm2 />} />
         <Route path="/admin/*" element={<SuperAdmin />} />
+        <Route
+          path="/clinic-request-details/:id"
+          element={<DisplayRequestForm />}
+        />
         <Route path="/clinic-registration" element={<ClinicForm />} />
 
         <Route path="/clinic-app/*" element={<PageTemplate />} />

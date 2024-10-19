@@ -2,6 +2,7 @@ import React from "react";
 import Logo from "./Logo";
 import Menu from "./Menu";
 import Logout from "./Logout";
+import { logout } from "../auth/login";
 
 const Sidebar = () => {
   return (
@@ -14,7 +15,9 @@ const Sidebar = () => {
           <div className="flex-1 w-full">
             <Menu />
           </div>
-          <Logout />
+          <div onClick={logout()}>
+            <Logout />
+          </div>
         </div>
       </div>
     </>

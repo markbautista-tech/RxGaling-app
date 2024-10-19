@@ -1,3 +1,3 @@
 body {
-  @apply w-screen h-screen no-scrollbar;
+  @apply w-screen h-screen overflow-y-scroll no-scrollbar;
 }
