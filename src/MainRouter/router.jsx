@@ -18,7 +18,7 @@ const MainRouter = () => {
   return (
     <>
       <Routes>
-        {/* <Route path="/" /> */}
+        <Route path="/" element={<LoginForm2 />} />
         <Route path="/user-login" element={<LoginForm2 />} />
         <Route path="/admin/*" element={<SuperAdmin />} />
         <Route
