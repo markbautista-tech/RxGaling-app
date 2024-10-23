@@ -9,6 +9,7 @@ import {
   getClinicBIR,
   getClinicPic,
 } from "../../utils/data/fetch/getClinicFiles";
+import countClinicReq from "@/utils/data/fetch/countClinicReq";
 
 const useClinicDetails = () => {
   const [clinicReq, setClinicReq] = useState([]);
@@ -16,6 +17,7 @@ const useClinicDetails = () => {
   const [clinicOwner, setClinicOwner] = useState([]);
   const [clinicOwnerAddress, setClinicOwnerAddress] = useState([]);
   const [clinicAddress, setClinicAddress] = useState([]);
+  const [countReq, setCountReq] = useState([]);
 
   const [idClinic, setIdClinic] = useState(null);
 
@@ -27,12 +29,14 @@ const useClinicDetails = () => {
         const ownerDetails = await getClinicOwner();
         const ownerAddress = await getClinicOwnerAddress();
         const clinicAddress = await getClinicAddress();
+        const count_request = await countClinicReq();
 
         setClinicReq(requestData);
         setClinicData(clinicDetails);
         setClinicOwner(ownerDetails);
         setClinicOwnerAddress(ownerAddress);
         setClinicAddress(clinicAddress);
+        setCountReq(count_request);
       } catch (error) {
         console.log(error);
       }
@@ -40,6 +44,23 @@ const useClinicDetails = () => {
 
     getData();
   }, []);
+
+  const countRequest = () => {
+    if (!countReq || countReq.length === 0) {
+      return 0;
+    } else {
+      return countReq.length;
+    }
+  };
+
+  const requestDate = (ownerId) => {
+    if (!countReq || countReq.length === 0) {
+      return "No request";
+    }
+
+    const reqdate = countReq.find((date) => date.owner_id === Number(ownerId));
+    return reqdate ? reqdate.created_at : "No date";
+  };
 
   const getOwnerFirstName = (ownerId) => {
     if (!clinicOwner || clinicOwner.length === 0) {
@@ -280,6 +301,7 @@ const useClinicDetails = () => {
   return {
     clinicReq,
     clinicData,
+    requestDate,
     getOwnerFirstName,
     getOwnerMiddleName,
     getOwnerLastName,
@@ -303,6 +325,7 @@ const useClinicDetails = () => {
     getPermit,
     getBIR,
     getPic,
+    countRequest,
   };
 };
 

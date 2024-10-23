@@ -38,9 +38,9 @@ export default function LoginForm2() {
   // form submission handler
   const onSubmit = async (data) => {
     const response = await signInWithEmail(data);
-    if (response === "admin") {
+    if (response === "success") {
       // console.log(data);
-      navigate("/admin");
+      navigate("/clinic-app");
     } else {
       alert(response);
     }

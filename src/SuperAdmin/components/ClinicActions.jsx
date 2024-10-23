@@ -13,9 +13,7 @@ const ClinicActions = () => {
     <>
       <Popover>
         <PopoverTrigger>
-          <Button variant="ghost" className="p-2 bg-none">
-            <PiDotsThreeCircle className="w-6 h-6 lg:w-6 lg:h-6 hover:text-primary" />
-          </Button>
+          <PiDotsThreeCircle className="w-6 h-6 lg:w-6 lg:h-6 hover:text-primary" />
         </PopoverTrigger>
         <PopoverContent className="max-w-fit">
           <div className="flex flex-col gap-3">

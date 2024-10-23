@@ -9,15 +9,9 @@ async function signInWithEmail(givendata) {
 
     if (error) {
       return "Invalid credentials!";
-    } else {
-      // const user_id = userID.user.id;
-
-      const user_role = await loginCheckUser(givendata.email);
-
-      if (user_role[0].role === "Super Admin") {
-        return "admin";
-      }
     }
+
+    return "success";
   } catch (error) {
     console.log(error.message);
     return "Something went wrong!";

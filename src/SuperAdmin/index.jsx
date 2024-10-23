@@ -9,12 +9,12 @@ import SearchBar from "../main/Pages/components/Search";
 import Profile from "./components/Profile";
 import getClinicRequest from "../utils/data/fetch/getClinicRequest";
 import getClinicDetails from "../utils/data/fetch/getClinicDetails";
+import useClinicDetails from "./hooks/useClinicDetails";
 
 const SuperAdmin = () => {
   const [showRequest, setShowRequest] = useState(false);
 
-  // Function to toggle ClinicRequestCard on small screens
-  const toggleRequest = () => setShowRequest(!showRequest);
+  const toggleRequest = () => setShowRequest(true);
 
   return (
     <>
@@ -40,13 +40,17 @@ const SuperAdmin = () => {
             </div>
           </div>
           <div className="px-4">
-            <div className="lg:hidden flex justify-end">
-              <Button
+            <div className="flex justify-end lg:mr-5">
+              {/* <Button
                 onClick={toggleRequest}
-                className="bg-primary text-white text-xs p-3"
+                className="bg-primary text-white text-xs lg:text-[16px] p-5 shadow-md"
               >
                 Clinic Request
-              </Button>
+                <span className="ml-3 p-1 bg-white text-black rounded-sm">
+                  {countRequest()}
+                </span>
+              </Button> */}
+              <ClinicRequestCard />
             </div>
           </div>
           <div className="flex justify-center gap-10 p-5">
@@ -55,11 +59,11 @@ const SuperAdmin = () => {
             </div>
 
             {/* Show ClinicRequestCard on large screens, and toggle it on small screens */}
-            <div
-              className={`lg:block lg:min-w-[30%] ${showRequest ? "absolute transition-all z-50 top-36" : "hidden"}`}
-            >
-              <ClinicRequestCard />
-            </div>
+            {/* {showRequest && (
+              <div>
+                <ClinicRequestCard />
+              </div>
+            )} */}
           </div>
         </div>
       </div>
