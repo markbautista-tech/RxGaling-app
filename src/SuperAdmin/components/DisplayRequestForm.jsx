@@ -8,7 +8,6 @@ import { IoMdArrowRoundBack } from "react-icons/io";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import useClinicDetails from "../hooks/useClinicDetails";
 import { Button } from "@/components/ui/button";
-import { DeclineEmail } from "../../utils/data/api/emails/route";
 import Welcome from "../../emails/Welcome";
 
 import { render } from "@react-email/components";
@@ -92,45 +91,6 @@ const DisplayRequestForm = () => {
   const handlePic = () => {
     window.open(picURL, "_blank");
   };
-
-  // const handleButtonClick = async () => {
-  //   try {
-  //     const response = await fetch("http://localhost:5000/send-email", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         react: "<Welcome />",
-  //       }),
-  //     });
-
-  //     const data = await response.json();
-  //     console.log("Email sent successfully:", data);
-  //   } catch (err) {
-  //     console.error("Error sending email:", err);
-  //   }
-  // };
-
-  // const plunk = new Plunk(import.meta.env.VITE_POSTMARK_RXGALING_API_KEY);
-  // const resend = new Resend(import.meta.env.VITE_RESEND_RXGALING_API_KEY);
-
-  // const sendEmail = async () => {
-  //   try {
-  //     const emailHtml = await render(<Welcome url="https://example.com" />);
-
-  //     const response = await resend.emails.send({
-  //       from: "Acme <onboarding@resend.dev>",
-  //       to: "braymark675@gmail.com",
-  //       subject: "Welcome to our service!",
-  //       html: emailHtml,
-  //     });
-
-  //     console.log("Email sent successfully:", response);
-  //   } catch (error) {
-  //     console.error("Error sending email:", error);
-  //   }
-  // };
 
   return (
     <>
@@ -306,6 +266,7 @@ const DisplayRequestForm = () => {
               onClick={() => {
                 isDecline();
               }}
+              className="lg:text-lg"
             >
               Decline Request
             </Button>
@@ -313,6 +274,7 @@ const DisplayRequestForm = () => {
               onClick={() => {
                 isAccept();
               }}
+              className="lg:text-lg"
             >
               Accept Request
             </Button>

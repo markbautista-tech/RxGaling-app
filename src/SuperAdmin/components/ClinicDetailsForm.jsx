@@ -13,7 +13,7 @@ const ClinicDetailsForm = ({ register, errors, control }) => {
         <div>
           <div className="p-5 lg:px-20">
             <div className="pb-3">
-              <p className="font-bold text-md lg:text-xl">Clinic Details</p>
+              <p className="font-bold text-md lg:text-xl">CLINIC DETAILS</p>
             </div>
             <div className="space-y-3 lg:space-y-5">
               <div>

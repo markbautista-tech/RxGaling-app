@@ -7,11 +7,19 @@ import { useFileSchema } from "../schema/fileShema";
 import { addClinicDetails } from "../../utils/data/add/addClinicDetails";
 import addClinicRequest from "../../utils/data/add/addClinicRequest";
 import addFiles from "../../utils/data/add/addFiles";
+import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 
 const useClinicRegForm = () => {
+  const navigate = useNavigate();
   const [dataSubmit, setDataSubmit] = useState({});
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isSuccessDialog, setIsSuccessDialog] = useState(false);
+  const [isFailedDialog, setIsFailedDialog] = useState(false);
+  const [isError, setIsError] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const { toast } = useToast();
   const { fileData } = useFileSchema();
 
   const {
@@ -38,11 +46,27 @@ const useClinicRegForm = () => {
     setDataSubmit(data);
   };
 
-  const finalSubmit = () => {
-    // console.log(dataSubmit);
-    addClinicDetails(dataSubmit);
-    // addFiles(dataSubmit.bir, dataSubmit.permit, dataSubmit.clinic_pic);
-    // console.log(dataSubmit.permit[0].name);
+  const finalSubmit = async () => {
+    setLoading(true);
+    try {
+      setIsError(false);
+      const id = await addClinicDetails(dataSubmit);
+      if (id) {
+        navigate(`/register-success/${id[0].registration_number}`);
+      }
+      console.log(id);
+    } catch (error) {
+      setIsError(true);
+      console.log(error);
+    } finally {
+      setLoading(false);
+      if (isError) {
+        setIsFailedDialog(true);
+        return;
+      }
+
+      setIsSuccessDialog(true);
+    }
   };
 
   return {
@@ -56,6 +80,12 @@ const useClinicRegForm = () => {
     setTermsAccepted,
     isDialogOpen,
     setIsDialogOpen,
+    isSuccessDialog,
+    setIsSuccessDialog,
+    isFailedDialog,
+    setIsFailedDialog,
+    loading,
+    setLoading,
   };
 };
 

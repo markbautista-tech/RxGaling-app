@@ -7,41 +7,37 @@ import { registrationSchema } from "../schema/registrationSchema";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import
-  {
-    Select,
-    SelectTrigger,
-    SelectValue,
-    SelectContent,
-    SelectItem,
-    SelectLabel,
-    SelectGroup,
-  } from "@/components/ui/select";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+  SelectLabel,
+  SelectGroup,
+} from "@/components/ui/select";
 import useRegForm from "../hooks/useRegForm";
 
-const Address = ({ register, control, errors }) =>
-{
-  const [ regions, setRegions ] = useState([]);
-  const [ province, setProvince ] = useState([]);
-  const [ muni, setMuni ] = useState([]);
-  const [ barangay, setBarangay ] = useState([]);
+const Address = ({ register, control, errors }) => {
+  const [regions, setRegions] = useState([]);
+  const [province, setProvince] = useState([]);
+  const [muni, setMuni] = useState([]);
+  const [barangay, setBarangay] = useState([]);
 
-  const [ address, _ ] = useState({
+  const [address, _] = useState({
     region: "",
     province: "",
     municipality: "",
   });
 
-  useEffect(() =>
-  {
+  useEffect(() => {
     fetch("https://psgc.cloud/api/regions")
       .then((response) => response.json())
       .then((data) => setRegions(data))
       .catch((err) => console.log(err));
   }, []);
 
-  const regionChange = (value) =>
-  {
+  const regionChange = (value) => {
     address.region = value;
     fetch(`https://psgc.cloud/api/regions/${value}/provinces`)
       .then((response) => response.json())
@@ -50,16 +46,14 @@ const Address = ({ register, control, errors }) =>
     setBarangay([]);
   };
 
-  const provinceChange = (value) =>
-  {
+  const provinceChange = (value) => {
     address.province = value;
     fetch(`https://psgc.cloud/api/provinces/${value}/cities-municipalities`)
       .then((response) => response.json())
       .then((data) => setMuni(data));
   };
 
-  const muniChange = (value) =>
-  {
+  const muniChange = (value) => {
     address.municipality = value;
     fetch(`https://psgc.cloud/api/cities-municipalities/${value}/barangays`)
       .then((response) => response.json())
@@ -76,15 +70,13 @@ const Address = ({ register, control, errors }) =>
               <div className="grid gap-1">
                 <Label htmlFor="region">Region</Label>
                 <Controller
-                  {...register("region")}
                   name="region"
                   control={control}
                   render={({ field }) => (
                     <Select
                       id="region"
                       value={address.region && field.value}
-                      onValueChange={(value) =>
-                      {
+                      onValueChange={(value) => {
                         regionChange(value);
                         field.onChange(value);
                       }}
@@ -116,15 +108,13 @@ const Address = ({ register, control, errors }) =>
               <div className="grid gap-1">
                 <Label htmlFor="region">Province</Label>
                 <Controller
-                  {...register("province")}
                   name="province"
                   control={control}
                   render={({ field }) => (
                     <Select
                       id="province"
                       value={field.value}
-                      onValueChange={(value) =>
-                      {
+                      onValueChange={(value) => {
                         provinceChange(value);
                         field.onChange(value);
                       }}
@@ -158,15 +148,13 @@ const Address = ({ register, control, errors }) =>
               <div className="grid gap-1">
                 <Label htmlFor="region">City/Municipality</Label>
                 <Controller
-                  {...register("municipality")}
                   name="municipality"
                   control={control}
                   render={({ field }) => (
                     <Select
                       id="municipality"
                       value={field.value}
-                      onValueChange={(value) =>
-                      {
+                      onValueChange={(value) => {
                         muniChange(value);
                         field.onChange(value);
                       }}
@@ -197,15 +185,13 @@ const Address = ({ register, control, errors }) =>
               <div className="grid gap-1">
                 <Label htmlFor="region">Barangay</Label>
                 <Controller
-                  {...register("barangay")}
                   name="barangay"
                   control={control}
                   render={({ field }) => (
                     <Select
                       id="barangay"
                       value={field.value}
-                      onValueChange={(value) =>
-                      {
+                      onValueChange={(value) => {
                         field.onChange(value);
                       }}
                     >

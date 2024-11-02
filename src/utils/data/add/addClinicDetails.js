@@ -5,6 +5,8 @@ import { addClinic } from "./addClinic";
 import addClinicRequest from "./addClinicRequest";
 import { v4 as uuidv4 } from "uuid";
 import addFiles from "./addFiles";
+import getRegNumber from "../fetch/getRegNumber";
+import useClinicDetails from "@/SuperAdmin/hooks/useClinicDetails";
 
 const getRegionName = async (regionId) => {
   try {
@@ -129,6 +131,8 @@ export const addClinicDetails = async (givenData) => {
       givenData.permit[0],
       givenData.clinic_pic[0]
     );
+
+    return await getRegNumber(data[0].id);
   } catch (error) {
     console.log("Error inserting all Clinic Details", error);
   }

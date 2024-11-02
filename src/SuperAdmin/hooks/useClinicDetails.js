@@ -18,7 +18,7 @@ const useClinicDetails = () => {
   const [clinicOwnerAddress, setClinicOwnerAddress] = useState([]);
   const [clinicAddress, setClinicAddress] = useState([]);
   const [countReq, setCountReq] = useState([]);
-
+  const [registrationNumber, setRegistrationNumber] = useState();
   const [idClinic, setIdClinic] = useState(null);
 
   useEffect(() => {
@@ -51,6 +51,19 @@ const useClinicDetails = () => {
     } else {
       return countReq.length;
     }
+  };
+
+  const regNumber = (ownerId) => {
+    if (!clinicReq || clinicReq.length === 0) {
+      return "No request";
+    }
+
+    const regNum = clinicReq.find(
+      (reg_num) => reg_num.owner_id === Number(ownerId)
+    );
+    const num = regNum ? regNum.registration_number : "No Registration Number";
+    // return regNum ? regNum.registration_number : "No Registration Number";
+    setRegistrationNumber(num);
   };
 
   const requestDate = (ownerId) => {
@@ -322,10 +335,12 @@ const useClinicDetails = () => {
     getClinicBarangay,
     getClinicAddAddress,
     getOwnerUID,
+    regNumber,
     getPermit,
     getBIR,
     getPic,
     countRequest,
+    registrationNumber,
   };
 };
 

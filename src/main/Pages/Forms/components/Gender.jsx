@@ -3,8 +3,7 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registrationSchema } from "../schema/registrationSchema";
 import { Label } from "@/components/ui/label";
-import
-{
+import {
   Select,
   SelectTrigger,
   SelectValue,
@@ -15,15 +14,13 @@ import
 import { Input } from "@/components/ui/input";
 import useRegForm from "../hooks/useRegForm";
 
-const SelectGender = ({ register, control, errors }) =>
-{
+const SelectGender = ({ register, control, errors }) => {
   return (
     <div className="">
       <div className="grid lg:grid-flow-col gap-3">
         <div className="w-full">
           <Label htmlFor="gender">Gender</Label>
           <Controller
-            {...register("gender")}
             name="gender"
             control={control}
             render={({ field }) => (

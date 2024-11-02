@@ -105,6 +105,12 @@ const ClinicRequestCard = () => {
                         }
                       )}
                     </p>
+                    <p className="text-sm lg:text-md">
+                      <span className="font-semibold">
+                        Registration Number:{" "}
+                      </span>
+                      {clinic_req.registration_number}
+                    </p>
                   </div>
                   <div className="flex justify-end">
                     <Link to={`/clinic-request-details/${clinic_req.owner_id}`}>

@@ -20,7 +20,7 @@ const ClinicOwnerForm = ({ register, errors, control }) => {
           <div className="p-5 lg:px-20">
             <div className="pb-3">
               <p className="font-bold text-md lg:text-xl">
-                Clinic Owner Details
+                CLINIC OWNER DETAILS
               </p>
             </div>
             <div className="space-y-3 lg:space-y-5">

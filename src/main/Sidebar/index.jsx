@@ -15,7 +15,7 @@ const Sidebar = () => {
           <div className="flex-1 w-full">
             <Menu />
           </div>
-          <div onClick={logout()}>
+          <div className="cursor-pointer" onClick={logout}>
             <Logout />
           </div>
         </div>

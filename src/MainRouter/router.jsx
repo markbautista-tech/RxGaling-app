@@ -13,6 +13,9 @@ import LoginForm2 from "../main/components/loginForm2";
 import DisplayRequestForm from "../SuperAdmin/components/DisplayRequestForm";
 import StaffRegistration from "../main/Pages/Forms/StaffRegistration";
 import ClinicManager from "../main/Pages/Manager";
+import AddVitals from "@/main/Doctor/Prescription/AddVitals";
+import AddPrescription from "@/main/Doctor/Prescription/AddPrescription";
+import AppreciationMessage from "@/SuperAdmin/components/AppreciationMessage";
 
 const MainRouter = () => {
   return (
@@ -26,6 +29,7 @@ const MainRouter = () => {
           element={<DisplayRequestForm />}
         />
         <Route path="/clinic-registration" element={<ClinicForm />} />
+        <Route path="/register-success/:id" element={<AppreciationMessage />} />
 
         <Route path="/clinic-app/*" element={<PageTemplate />} />
         <Route path="/user-registration/*" element={<UserRegistration />} />
@@ -33,6 +37,8 @@ const MainRouter = () => {
         <Route path="/nurse-registration/*" element={<NurseRegistration />} />
         <Route path="/staff-registration/*" element={<StaffRegistration />} />
         <Route path="/clinic-manager/*" element={<ClinicManager />} />
+        <Route path="/add-vitals" element={<AddVitals />} />
+        <Route path="/add-prescription" element={<AddPrescription />} />
       </Routes>
     </>
   );
