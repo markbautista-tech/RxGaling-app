@@ -52,9 +52,6 @@ const ClinicForm = () => {
   return (
     <>
       <div>
-        <div className="fixed left-0 top-0 w-full">
-          <PageHeader />
-        </div>
         <div className="pt-10 lg:pt-16 no-scrollbar">
           <div className="p-3 lg:p-5">
             <ContentTitle title={"Clinic Registration"} />

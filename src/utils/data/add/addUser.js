@@ -1,25 +1,25 @@
 import { centralSupabase } from "../../supabaseClient";
 
-const AddUserEmailRole = async (userData) => {
+const AddUserEmailRole = async (email, password, role) => {
   try {
-    const { data, error } = await centralSupabase.auth.admin.createUser({
-      email: userData.email,
-      password: "123456789",
-      // raw_user_meta_data: {
-      //   role: userData.role,
-      // },
+    const { data, error } = await centralSupabase.auth.signUp({
+      email: email,
+      password: password,
+      options: {
+        data: {
+          role: role,
+        },
+      },
+      redirectTo: "http://localhost:3000/user-login",
     });
 
     if (error) {
-      console.error("Add User error:", error.message);
-      return { error };
+      return "Error Signing up clinic user: ", error;
     }
 
-    console.log("User created successfully:", data);
-    // return { data };
-  } catch (err) {
-    console.error("Error creating user:", err);
-    return { error: err };
+    return data;
+  } catch (error) {
+    throw error;
   }
 };
 

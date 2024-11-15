@@ -1,26 +1,24 @@
 import React, { useState } from "react";
 
-import
-  {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-  } from "@/components/ui/card";
-import
-  {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-  } from "@/components/ui/alert-dialog";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -36,9 +34,9 @@ import OtherLicense from "../OtherLicense";
 import useRegForm from "../../hooks/useRegForm";
 import { ConfirmUserReg } from "../../../components/ConfirmDialog";
 import { HiMiniBellAlert } from "react-icons/hi2";
+import NewBirthday from "../NewBirthday";
 
-const RegFormComponent = () =>
-{
+const RegFormComponent = () => {
   const {
     handleSubmit,
     onSubmit,
@@ -50,13 +48,15 @@ const RegFormComponent = () =>
     setTermsAccepted,
     isDialogOpen,
     setIsDialogOpen,
+    loading,
+    watch,
   } = useRegForm();
 
   return (
     <>
-      <Card>
+      <Card className="lg:px-10 bg-gray-200">
         <CardHeader>
-          {/* <CardTitle>Card Title</CardTitle> */}
+          <CardTitle>Doctor Registration</CardTitle>
           <CardDescription className="italic">
             Please fill up all important inputs.
           </CardDescription>
@@ -65,9 +65,20 @@ const RegFormComponent = () =>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="space-y-3 lg:space-y-5">
               <NameComponent register={register} errors={errors} />
-              <Birthday register={register} errors={errors} control={control} />
+              {/* <Birthday register={register} errors={errors} control={control} /> */}
+              <NewBirthday
+                register={register}
+                errors={errors}
+                control={control}
+                watch={watch}
+              />
+
               <div className="grid grid-flow-row gap-3 lg:grid-flow-col w-full pb-3 lg:p-0">
-                <SelectGender register={register} errors={errors} control={control} />
+                <SelectGender
+                  register={register}
+                  errors={errors}
+                  control={control}
+                />
                 <NumberEmail register={register} errors={errors} />
               </div>
               <Address register={register} errors={errors} control={control} />
@@ -90,22 +101,26 @@ const RegFormComponent = () =>
                 </div>
                 <div>
                   <Label>Professional Extension</Label>
-                  <Input {...register("prof_extension")} type="text" placeholder="" />
+                  <Input
+                    {...register("prof_extension")}
+                    type="text"
+                    placeholder=""
+                  />
                   {errors.prof_extension && (
                     <p className="text-red-400 italic text-xs py-1 lg:text-sm">
                       {errors.prof_extension.message}
                     </p>
                   )}
                 </div>
-                <div>
+                {/* <div>
                   <Label>Valid ID</Label>
-                  <Input {...register("valid_id")} type="file" placeholder=""  />
+                  <Input {...register("valid_id")} type="file" placeholder="" />
                   {errors.valid_id && (
                     <p className="text-red-400 italic text-xs py-1 lg:text-sm">
                       {errors.valid_id.message}
                     </p>
                   )}
-                </div>
+                </div> */}
               </div>
             </div>
             <div className="grid grid-flow-row w-full gap-4 lg:grid-flow-col lg:justify-end py-5">
@@ -114,14 +129,26 @@ const RegFormComponent = () =>
                   id="terms"
                   onCheckedChange={(checked) => setTermsAccepted(checked)}
                 />
-                <Label htmlFor="terms">Accept terms and conditions</Label>
+                <Label className="lg:text-md">
+                  Accept{" "}
+                  <span className="text-primary hover:underline hover:text-gray-800 cursor-pointer font-bold">
+                    Terms and Conditions
+                  </span>
+                </Label>
               </div>
               <Button
                 type="submit"
-                className="w-full lg:w-32"
-                disabled={!termsAccepted}
+                disabled={!termsAccepted || loading}
+                className="w-full lg:w-48 lg:text-lg font-semibold"
               >
-                Register
+                {loading ? (
+                  <>
+                    <span className="mr-2 h-4 w-4 inline-block border-2 border-t-2 border-gray-200 border-t-purple-950 rounded-full animate-spin"></span>
+                    Submitting...
+                  </>
+                ) : (
+                  "Submit"
+                )}
               </Button>
               {/* <ConfirmUserReg /> */}
 

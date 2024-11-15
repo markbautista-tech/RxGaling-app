@@ -6,17 +6,21 @@ import { useQuery } from "@tanstack/react-query";
 import userDetails from "../../../../utils/data/userDetails";
 import { centralSupabase } from "../../../../utils/supabaseClient";
 import { addStaff } from "../../../../utils/data/add/addStaff";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 export default function staffRegForm() {
-  const [age, setAge] = useState(null);
+  const navigate = useNavigate();
 
   const [dataSubmit, setDataSubmit] = useState({});
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const {
     register,
     handleSubmit,
+    watch,
     control,
     formState: { errors },
   } = useForm({
@@ -54,24 +58,25 @@ export default function staffRegForm() {
       city_muni: data.municipality,
       barangay: data.barangay,
       add_address: data.additional_address,
-      specialty: data.specialty,
-      license: data.license_num,
-      ptr_num: data.ptr_num,
-      s2_license_num: data.s2_license_num,
     });
   };
 
   const finalSubmit = () => {
-    const addUser = addStaff(dataSubmit);
-
-    if (addUser.error) {
-      console.log("error add user");
+    setLoading(true);
+    try {
+      const addUser = addStaff(dataSubmit);
+      if (addUser) {
+        toast.success("Registered successfully");
+        navigate("/user/sign-up");
+      }
+    } catch (error) {
+      toast.error("Registration Error!");
+    } finally {
+      setLoading(false);
     }
   };
 
   return {
-    age,
-    setAge,
     register,
     control,
     errors,
@@ -82,5 +87,7 @@ export default function staffRegForm() {
     setTermsAccepted,
     isDialogOpen,
     setIsDialogOpen,
+    watch,
+    loading,
   };
 }

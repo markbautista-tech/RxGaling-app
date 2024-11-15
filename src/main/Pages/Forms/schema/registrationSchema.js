@@ -31,10 +31,10 @@ export const registrationSchema = z.object({
   specialty: z.string().min(1, "Specialization is required."),
   prc_no: z.string().optional(),
   prof_extension: z.string().optional(),
-  valid_id: z
-    .any()
-    .refine((file) => file?.length !== 0, "File is required")
-    .refine((file) => file.size < 300000000, "Max size is 30MB."),
+  // valid_id: z
+  //   .any()
+  //   .refine((file) => file?.length !== 0, "File is required")
+  //   .refine((file) => file.size < 300000000, "Max size is 30MB."),
   // .refine((file) => checkFileType(file), "Only .pdf, .docx formats are supported."),
   //z.string().optional(),
   ptr_num: z.string().optional(),

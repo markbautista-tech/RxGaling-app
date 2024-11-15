@@ -1,7 +1,6 @@
 import React from "react";
 
-import
-{
+import {
   BrowserRouter as Router,
   Route,
   Routes,
@@ -19,12 +18,12 @@ import ClinicStaff from "../Pages/Owner/Staff";
 import ClinicDoctors from "../Pages/Owner/Doctors";
 import Pharmacy from "../Pages/Pharmacy";
 
-
-const ContentRouter = () =>
-{
+const ContentRouter = () => {
   return (
     <Routes>
       <Route path="/" exact element={<Dashboard />} />
+      <Route path="/dashboard/*" exact element={<Dashboard />} />
+
       <Route path="/appointments/*" element={<Appointments />} />
       <Route path="/patients/*" element={<PatientsManangement />} />
       <Route path="/clinic-staff/*" element={<ClinicStaff />} />

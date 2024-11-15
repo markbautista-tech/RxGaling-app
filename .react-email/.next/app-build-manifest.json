@@ -17,11 +17,6 @@
       "static/chunks/main-app.js",
       "static/css/app/preview/[slug]/page.css",
       "static/chunks/app/preview/[slug]/page.js"
-    ],
-    "/not-found": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/not-found.js"
     ]
   }
 }

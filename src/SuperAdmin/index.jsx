@@ -10,63 +10,42 @@ import Profile from "./components/Profile";
 import getClinicRequest from "../utils/data/fetch/getClinicRequest";
 import getClinicDetails from "../utils/data/fetch/getClinicDetails";
 import useClinicDetails from "./hooks/useClinicDetails";
+import { fetchAuth } from "@/utils/data/login";
+import { useNavigate } from "react-router-dom";
+import { useUser } from "@/context/UserContext";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/app-sidebar";
+import AdminRouterContent from "./adminRouterContent";
 
 const SuperAdmin = () => {
+  const navigate = useNavigate();
+  const { user, loading, setUser } = useUser();
   const [showRequest, setShowRequest] = useState(false);
 
   const toggleRequest = () => setShowRequest(true);
 
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate("/user-login");
+    }
+  }, [navigate, user, loading]);
+
+  if (loading) return <p>Loading...</p>;
+
   return (
     <>
-      <div>
-        <div>
-          <PageHeader />
-        </div>
-        <div>
-          <div>
-            <div className="px-6 pt-4 lg:px-10 flex justify-between items-center">
-              <div>
-                <ContentTitle title={"Clinics"} />
-              </div>
-              <div className="flex">
-                <div className="flex justify-end">
-                  <div className="flex items-center">
-                    <SearchBar />
-                    <Profile />
-                  </div>
-                </div>
-                {/* Show Clinic Request button only on small screens */}
-              </div>
-            </div>
-          </div>
-          <div className="px-4">
-            <div className="flex justify-end lg:mr-5">
-              {/* <Button
-                onClick={toggleRequest}
-                className="bg-primary text-white text-xs lg:text-[16px] p-5 shadow-md"
-              >
-                Clinic Request
-                <span className="ml-3 p-1 bg-white text-black rounded-sm">
-                  {countRequest()}
-                </span>
-              </Button> */}
-              <ClinicRequestCard />
-            </div>
-          </div>
-          <div className="flex justify-center gap-10 p-5">
-            <div className="flex-1">
-              <ClinicsTable />
-            </div>
+      <SidebarProvider>
+        <AppSidebar />
 
-            {/* Show ClinicRequestCard on large screens, and toggle it on small screens */}
-            {/* {showRequest && (
-              <div>
-                <ClinicRequestCard />
-              </div>
-            )} */}
+        <div className="w-full">
+          <div>
+            <PageHeader />
+          </div>
+          <div>
+            <AdminRouterContent />
           </div>
         </div>
-      </div>
+      </SidebarProvider>
     </>
   );
 };

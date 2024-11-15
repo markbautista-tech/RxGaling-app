@@ -6,18 +6,23 @@ import { useQuery } from "@tanstack/react-query";
 import userDetails from "../../../../utils/data/userDetails";
 import { centralSupabase } from "../../../../utils/supabaseClient";
 import addUserDetails from "../../../../utils/data/add/addUserDetails";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 export default function useRegForm() {
+  const navigate = useNavigate();
   const [age, setAge] = useState(null);
 
   const [dataSubmit, setDataSubmit] = useState({});
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const {
     register,
     handleSubmit,
     control,
+    watch,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(registrationSchema),
@@ -58,14 +63,24 @@ export default function useRegForm() {
       license: data.license_num,
       ptr_num: data.ptr_num,
       s2_license_num: data.s2_license_num,
+      prof_extension: data.prof_extension,
+      prc_no: data.prc_no,
     });
   };
 
   const finalSubmit = () => {
-    const addUser = addUserDetails(dataSubmit);
+    setLoading(true);
+    try {
+      const addUser = addUserDetails(dataSubmit);
 
-    if (addUser.error) {
-      console.log("error add user");
+      if (addUser) {
+        toast.success("Registered successfully");
+        navigate("/user/sign-up");
+      }
+    } catch (error) {
+      toast.error("Registration Error!");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -82,5 +97,7 @@ export default function useRegForm() {
     setTermsAccepted,
     isDialogOpen,
     setIsDialogOpen,
+    loading,
+    watch,
   };
 }

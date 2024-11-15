@@ -7,11 +7,15 @@ import { useFileSchema } from "../schema/fileShema";
 import { addClinicDetails } from "../../utils/data/add/addClinicDetails";
 import addClinicRequest from "../../utils/data/add/addClinicRequest";
 import addFiles from "../../utils/data/add/addFiles";
-import { useToast } from "@/hooks/use-toast";
+
 import { useNavigate } from "react-router-dom";
+import useFetchEmailApi from "./useFetchEmailApi";
+import { toast } from "sonner";
+import getRegNumber from "@/utils/data/fetch/getRegNumber";
 
 const useClinicRegForm = () => {
   const navigate = useNavigate();
+  const { sendAppreciation } = useFetchEmailApi();
   const [dataSubmit, setDataSubmit] = useState({});
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -19,7 +23,6 @@ const useClinicRegForm = () => {
   const [isFailedDialog, setIsFailedDialog] = useState(false);
   const [isError, setIsError] = useState(true);
   const [loading, setLoading] = useState(false);
-  const { toast } = useToast();
   const { fileData } = useFileSchema();
 
   const {
@@ -48,13 +51,19 @@ const useClinicRegForm = () => {
 
   const finalSubmit = async () => {
     setLoading(true);
+    setIsError(false);
+
     try {
       setIsError(false);
       const id = await addClinicDetails(dataSubmit);
+      const regNum = await getRegNumber(id);
       if (id) {
-        navigate(`/register-success/${id[0].registration_number}`);
+        navigate(`/register-success/${regNum}`);
+        toast.success("Registered successfully");
+        sendAppreciation(dataSubmit.email, regNum);
+        return;
       }
-      console.log(id);
+      console.log(regNum);
     } catch (error) {
       setIsError(true);
       console.log(error);

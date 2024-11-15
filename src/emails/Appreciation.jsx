@@ -1,15 +1,12 @@
-import { Button, Html, Tailwind } from "@react-email/components";
+import { Button, Html, Tailwind, Img } from "@react-email/components";
 import * as React from "react";
 
-export default function Appreciation({ registration_number }) {
+export default function Appreciation(registration_number) {
   return (
     <Html>
       <Tailwind>
         <div className="h-screen flex-center-all px-5 bg-gray-200">
           <div className="p-10 space-y-5 border rounded-lg shadow-md bg-white">
-            <div className="flex-center-all">
-              <img src="src/assets/logo.svg" alt="" className="w-20 h-20" />
-            </div>
             <h1 className="text-center font-bold text-2xl text-green-700">
               CONGRATULATIONS!
             </h1>

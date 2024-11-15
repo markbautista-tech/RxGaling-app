@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import
-{
+import {
   Card,
   CardContent,
   CardDescription,
@@ -9,8 +8,7 @@ import
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import
-{
+import {
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
@@ -21,15 +19,14 @@ import
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import
-  {
-    Select,
-    SelectTrigger,
-    SelectValue,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-  } from "@/components/ui/select";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+} from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -46,9 +43,9 @@ import staffRegForm from "../../hooks/staffRegForm";
 import { ConfirmUserReg } from "../../../components/ConfirmDialog";
 import { HiMiniBellAlert } from "react-icons/hi2";
 import fetchRole from "../../../../../utils/data/fetch/fetchRole";
+import NewBirthday from "../NewBirthday";
 
-const StaffRegFormComponent = () =>
-{
+const StaffRegFormComponent = () => {
   const {
     handleSubmit,
     onSubmit,
@@ -60,24 +57,20 @@ const StaffRegFormComponent = () =>
     setTermsAccepted,
     isDialogOpen,
     setIsDialogOpen,
+    watch,
+    loading,
   } = staffRegForm();
 
-  const [ roleData, setRoleData ] = useState([]);
+  const [roleData, setRoleData] = useState([]);
 
-
-  useEffect(() =>
-  {
-    const getRoles = async () =>
-    {
-      try
-      {
+  useEffect(() => {
+    const getRoles = async () => {
+      try {
         const roles = await fetchRole();
         setRoleData(roles);
-      } catch (error)
-      {
+      } catch (error) {
         // setFetchError("Failed to fetch roles.");
-      } finally
-      {
+      } finally {
         // setLoading(false);
       }
     };
@@ -85,9 +78,9 @@ const StaffRegFormComponent = () =>
   }, []);
   return (
     <>
-      <Card>
+      <Card className="lg:px-10 bg-gray-200">
         <CardHeader>
-          {/* <CardTitle>Card Title</CardTitle> */}
+          <CardTitle>Staff Registration</CardTitle>
           <CardDescription className="italic">
             Please fill up all important inputs.
           </CardDescription>
@@ -96,43 +89,22 @@ const StaffRegFormComponent = () =>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="space-y-3 lg:space-y-5">
               <NameComponent register={register} errors={errors} />
-              <Birthday register={register} errors={errors} control={control} />
-              {/* <div className="grid grid-flow-row gap-3 lg:grid-flow-col w-full pb-3 lg:p-0">
-                <SelectGender register={register} errors={errors} control={control} />
+              {/* <Birthday register={register} errors={errors} control={control} /> */}
+              <NewBirthday
+                register={register}
+                errors={errors}
+                control={control}
+                watch={watch}
+              />
+              <div className="grid grid-flow-row gap-3 lg:grid-flow-col w-full pb-3 lg:p-0">
+                <SelectGender errors={errors} control={control} />
                 <NumberEmail register={register} errors={errors} />
-              </div> */}
+              </div>
               <Address register={register} errors={errors} control={control} />
 
               <div className="grid grid-flow-row gap-3 lg:grid-flow-col w-full pb-3 lg:p-0">
                 <div>
-                  {/* <Label>User Role</Label>
-                  <Input {...register("role")} type="text" placeholder="" />
-                  {errors.role && (
-                    <p className="text-red-400 italic text-xs py-1 lg:text-sm">
-                      {errors.role.message}
-                    </p>
-                  )} */}
-
-                  <div className="space-y-2">
-                    <Label htmlFor="role">Roles</Label>
-                    <Select id="role">
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select Role" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          {roleData.map((roles, ids) => (
-                            <div key={ids}>
-                              <SelectItem value={roles.role}>{roles.role}</SelectItem>
-                            </div>
-                          ))}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-                <div>
-                  <Label>Picture</Label>
+                  <Label>Valid ID Picture</Label>
                   <Input {...register("picture")} type="file" placeholder="" />
                   {errors.picture && (
                     <p className="text-red-400 italic text-xs py-1 lg:text-sm">
@@ -142,7 +114,11 @@ const StaffRegFormComponent = () =>
                 </div>
                 <div>
                   <Label>Government ID Picture</Label>
-                  <Input {...register("gov_id_picture")} type="file" placeholder="" />
+                  <Input
+                    {...register("gov_id_picture")}
+                    type="file"
+                    placeholder=""
+                  />
                   {errors.gov_id_picture && (
                     <p className="text-red-400 italic text-xs py-1 lg:text-sm">
                       {errors.gov_id_picture.message}
@@ -157,14 +133,26 @@ const StaffRegFormComponent = () =>
                   id="terms"
                   onCheckedChange={(checked) => setTermsAccepted(checked)}
                 />
-                <Label htmlFor="terms">Accept terms and conditions</Label>
+                <Label className="lg:text-md">
+                  Accept{" "}
+                  <span className="text-primary hover:underline hover:text-gray-800 cursor-pointer font-bold">
+                    Terms and Conditions
+                  </span>
+                </Label>
               </div>
               <Button
                 type="submit"
-                className="w-full lg:w-32"
-                disabled={!termsAccepted}
+                disabled={!termsAccepted || loading}
+                className="w-full lg:w-48 lg:text-[18px] font-semibold"
               >
-                Register
+                {loading ? (
+                  <>
+                    <span className="mr-2 h-4 w-4 inline-block border-2 border-t-2 border-gray-200 border-t-purple-950 rounded-full animate-spin"></span>
+                    Submitting...
+                  </>
+                ) : (
+                  "Submit"
+                )}
               </Button>
               {/* <ConfirmUserReg /> */}
 

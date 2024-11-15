@@ -5,23 +5,20 @@ import * as z from "zod";
 import { registrationSchema } from "../schema/registrationSchema";
 
 import { Label } from "@/components/ui/label";
-import
-  {
-    Select,
-    SelectTrigger,
-    SelectValue,
-    SelectContent,
-    SelectItem,
-  } from "@/components/ui/select";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import useRegForm from "../hooks/useRegForm";
 
-const Birthday = ({ register, control, errors }) =>
-{
+const Birthday = ({ register, control, errors }) => {
   const { age, setAge } = useRegForm();
 
-  const calculateAge = (year) =>
-  {
+  const calculateAge = (year) => {
     const currentYear = new Date().getFullYear();
     return currentYear - year;
   };
@@ -40,7 +37,7 @@ const Birthday = ({ register, control, errors }) =>
               name="month"
               control={control}
               render={({ field }) => (
-                <Select {...register("email_add")} onValueChange={field.onChange} value={field.value}>
+                <Select onValueChange={field.onChange} value={field.value}>
                   <SelectTrigger id="month">
                     <SelectValue placeholder="Select month" />
                   </SelectTrigger>
@@ -98,8 +95,7 @@ const Birthday = ({ register, control, errors }) =>
               max={new Date().getFullYear()}
               placeholder="YYYY"
               className="w-full"
-              onChange={(e) =>
-              {
+              onChange={(e) => {
                 const year = e.target.value;
                 setAge(calculateAge(year));
               }}

@@ -19,6 +19,7 @@ const useClinicDetails = () => {
   const [clinicAddress, setClinicAddress] = useState([]);
   const [countReq, setCountReq] = useState([]);
   const [registrationNumber, setRegistrationNumber] = useState();
+
   const [idClinic, setIdClinic] = useState(null);
 
   useEffect(() => {
@@ -61,9 +62,8 @@ const useClinicDetails = () => {
     const regNum = clinicReq.find(
       (reg_num) => reg_num.owner_id === Number(ownerId)
     );
-    const num = regNum ? regNum.registration_number : "No Registration Number";
-    // return regNum ? regNum.registration_number : "No Registration Number";
-    setRegistrationNumber(num);
+    // const num = regNum ? regNum.registration_number : "No Registration Number";
+    return regNum ? regNum.registration_number : "No Registration Number";
   };
 
   const requestDate = (ownerId) => {

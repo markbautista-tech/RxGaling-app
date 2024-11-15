@@ -132,7 +132,7 @@ export const addClinicDetails = async (givenData) => {
       givenData.clinic_pic[0]
     );
 
-    return await getRegNumber(data[0].id);
+    return data[0].id;
   } catch (error) {
     console.log("Error inserting all Clinic Details", error);
   }

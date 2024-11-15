@@ -19,6 +19,20 @@ exports.modules = {
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 var map = {
+	"./AcceptClinicRequest": [
+		"(rsc)/./emails/AcceptClinicRequest.jsx",
+		"vendor-chunks/next",
+		"vendor-chunks/@react-email",
+		"vendor-chunks/react",
+		"_rsc_emails_AcceptClinicRequest_jsx"
+	],
+	"./AcceptClinicRequest.jsx": [
+		"(rsc)/./emails/AcceptClinicRequest.jsx",
+		"vendor-chunks/next",
+		"vendor-chunks/@react-email",
+		"vendor-chunks/react",
+		"_rsc_emails_AcceptClinicRequest_jsx"
+	],
 	"./Appreciation": [
 		"(rsc)/./emails/Appreciation.jsx",
 		"vendor-chunks/next",
@@ -46,6 +60,20 @@ var map = {
 		"vendor-chunks/@react-email",
 		"vendor-chunks/react",
 		"_rsc_emails_DeclineClinicRequest_jsx"
+	],
+	"./InviteUserClinic": [
+		"(rsc)/./emails/InviteUserClinic.jsx",
+		"vendor-chunks/next",
+		"vendor-chunks/@react-email",
+		"vendor-chunks/react",
+		"_rsc_emails_InviteUserClinic_jsx"
+	],
+	"./InviteUserClinic.jsx": [
+		"(rsc)/./emails/InviteUserClinic.jsx",
+		"vendor-chunks/next",
+		"vendor-chunks/@react-email",
+		"vendor-chunks/react",
+		"_rsc_emails_InviteUserClinic_jsx"
 	],
 	"./Welcome": [
 		"(rsc)/./emails/Welcome.jsx",
@@ -577,7 +605,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 var __webpack_require__ = require("../../../webpack-runtime.js");
 __webpack_require__.C(exports);
 var __webpack_exec__ = (moduleId) => (__webpack_require__(__webpack_require__.s = moduleId))
-var __webpack_exports__ = __webpack_require__.X(0, ["vendor-chunks/next","vendor-chunks/classnames","vendor-chunks/@swc","vendor-chunks/framer-motion","vendor-chunks/@radix-ui","vendor-chunks/prism-react-renderer","vendor-chunks/@floating-ui","vendor-chunks/tslib","vendor-chunks/react-remove-scroll","vendor-chunks/aria-hidden","vendor-chunks/react-remove-scroll-bar","vendor-chunks/use-callback-ref","vendor-chunks/use-sidecar","vendor-chunks/react-style-singleton","vendor-chunks/hey-listen","vendor-chunks/@babel","vendor-chunks/get-nonce"], () => (__webpack_exec__("(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader.js?name=app%2Fpreview%2F%5Bslug%5D%2Fpage&page=%2Fpreview%2F%5Bslug%5D%2Fpage&appPaths=%2Fpreview%2F%5Bslug%5D%2Fpage&pagePath=private-next-app-dir%2Fpreview%2F%5Bslug%5D%2Fpage.tsx&appDir=C%3A%5CUsers%5Cbauti%5CDesktop%5CRXGALING_REACT_JS%5Crxgaling_app%5C.react-email%5Csrc%5Capp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=C%3A%5CUsers%5Cbauti%5CDesktop%5CRXGALING_REACT_JS%5Crxgaling_app%5C.react-email&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D!")));
+var __webpack_exports__ = __webpack_require__.X(0, ["vendor-chunks/next","vendor-chunks/framer-motion","vendor-chunks/@radix-ui","vendor-chunks/react-remove-scroll","vendor-chunks/@swc","vendor-chunks/@floating-ui","vendor-chunks/react-style-singleton","vendor-chunks/react-remove-scroll-bar","vendor-chunks/use-callback-ref","vendor-chunks/prism-react-renderer","vendor-chunks/classnames","vendor-chunks/use-sidecar","vendor-chunks/tslib","vendor-chunks/@babel","vendor-chunks/hey-listen","vendor-chunks/get-nonce","vendor-chunks/aria-hidden"], () => (__webpack_exec__("(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader.js?name=app%2Fpreview%2F%5Bslug%5D%2Fpage&page=%2Fpreview%2F%5Bslug%5D%2Fpage&appPaths=%2Fpreview%2F%5Bslug%5D%2Fpage&pagePath=private-next-app-dir%2Fpreview%2F%5Bslug%5D%2Fpage.tsx&appDir=C%3A%5CUsers%5Cbauti%5CDesktop%5CRXGALING_REACT_JS%5Crxgaling_app%5C.react-email%5Csrc%5Capp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=C%3A%5CUsers%5Cbauti%5CDesktop%5CRXGALING_REACT_JS%5Crxgaling_app%5C.react-email&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D!")));
 module.exports = __webpack_exports__;
 
 })();

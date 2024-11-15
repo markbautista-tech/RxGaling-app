@@ -25,16 +25,20 @@ import {
 
 import AddUserEmailRole from "../../../../utils/data/add/addUser";
 import fetchRole from "../../../../utils/data/fetch/fetchRole";
+import useEmailApi from "../hooks/useEmailApi";
+import { toast } from "sonner";
 
 const addUserSchema = z.object({
   email: z.string().email("Invalid email address").trim(),
-  role: z.string().min(1, { message: "Clinic Rolse is required." }),
+  role: z.string().min(1, { message: "Clinic Role is required." }),
 });
 
 const AddUser = () => {
   const [roleData, setRoleData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [fetchError, setFetchError] = useState(null);
+  const { sendInvite } = useEmailApi();
+  const [url, setUrl] = useState(null);
 
   const {
     register,
@@ -61,8 +65,32 @@ const AddUser = () => {
 
   const onSubmit = (data) => {
     console.log(data);
+    setUrl("");
 
-    AddUserEmailRole(data);
+    switch (data.role) {
+      case "Doctor":
+        setUrl("http://localhost:3000/doctor-registration");
+        break;
+      case "Clinic Administrator":
+      case "Clinic Nurse":
+      case "Clinic Assistant":
+      case "Clinic Secretary":
+        setUrl("http://localhost:3000/staff-registration");
+        break;
+
+      default:
+        break;
+    }
+
+    const response = sendInvite(data.email, data.role, url);
+
+    if (response) {
+      toast.success("Invitation sent successfully");
+    } else {
+      toast.error("Invitation error!");
+    }
+
+    // AddUserEmailRole(data);
   };
 
   return (

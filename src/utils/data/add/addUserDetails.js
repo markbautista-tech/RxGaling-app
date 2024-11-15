@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import { centralSupabase } from "../../supabaseClient";
-import checkAuth from "../checkAuth";
 
 const getRegionName = async (regionId) => {
   try {
@@ -65,18 +64,12 @@ const addUserDetails = async (userData) => {
     license,
     ptr_num,
     s2_license_num,
+    prc_no,
     ...userDetails
   } = userData;
   // const {age,birthday,contact_num,email,ext_name,first_name,gender,last_name,middle_name,...userAddres} = userData
 
-  console.log(userDetails);
-
-  const auth = checkAuth();
-
-  // if (auth.unathorized) {
-  //   navigate("/login");
-  //   return;
-  // }
+  // console.log(userDetails);
 
   const { data, error } = await centralSupabase
     .from("UserDetails")
@@ -142,6 +135,11 @@ const addUserDetails = async (userData) => {
       license: userData.s2_license_num,
       type: "S2 License Number",
     },
+    {
+      user_id: data[0].id,
+      license: userData.prc_no,
+      type: "PRC License Number",
+    },
   ];
 
   if (data) {
@@ -156,8 +154,7 @@ const addUserDetails = async (userData) => {
     }
   }
 
-  // console.log("userAddress", userAddress);
-  // console.log(data[0].id);
+  return data;
 };
 
 export default addUserDetails;

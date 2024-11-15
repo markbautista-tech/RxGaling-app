@@ -23,19 +23,6 @@ import getClinicDetails from "../../utils/data/fetch/getClinicDetails";
 import { Link } from "react-router-dom";
 import useClinicDetails from "../hooks/useClinicDetails";
 
-// const request = [
-//   {
-//     id: 1,
-//     clinic_name: "Acculife Medical and Laboratory Services",
-//     clinic_owner: "Dr. Ray Mark Bautista",
-//   },
-//   {
-//     id: 2,
-//     clinic_name: "Quanterra Medical and Laboratory Services",
-//     clinic_owner: "Dr. Ray Mark Bautista",
-//   },
-// ];
-
 const ClinicRequestCard = () => {
   const { countRequest } = useClinicDetails();
   const { clinicData, clinicReq } = useClinicDetails();
@@ -62,12 +49,9 @@ const ClinicRequestCard = () => {
           <DialogTitle className="font-bold text-sm lg:text-2xl">
             Clinic Requests
           </DialogTitle>
-          {/* <DialogDescription>
-          This action cannot be undone. This will permanently delete your account
-          and remove your data from our servers.
-        </DialogDescription> */}
+          <DialogDescription></DialogDescription>
         </DialogHeader>
-        <Card className="border-2 border-primary shadow-lg max-h-[580px] lg:max-h-[500px] overflow-y-scroll no-scrollbar">
+        <Card className="border-0 max-h-[580px] lg:max-h-[500px] overflow-y-scroll no-scrollbar">
           <CardHeader>
             {/* <CardTitle className="text-md lg:text-lg">
               Clinic Requests
@@ -79,7 +63,7 @@ const ClinicRequestCard = () => {
               {clinicReq.map((clinic_req) => (
                 <div
                   key={clinic_req.id}
-                  className="bg-primary/50 shadow-md p-3 rounded-md"
+                  className="border border-primary shadow-md p-3 rounded-md"
                 >
                   <div className="p-1 space-y-1">
                     <p className="text-sm lg:text-lg">
@@ -114,7 +98,12 @@ const ClinicRequestCard = () => {
                   </div>
                   <div className="flex justify-end">
                     <Link to={`/clinic-request-details/${clinic_req.owner_id}`}>
-                      <Button variant="outline">View Details</Button>
+                      <Button
+                        variant="secondary"
+                        className="border border-primary"
+                      >
+                        View Details
+                      </Button>
                     </Link>
                     {/* <ViewRequestDetails givenID={clinic_req.owner_id} /> */}
                   </div>

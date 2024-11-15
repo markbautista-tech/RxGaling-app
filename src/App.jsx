@@ -9,23 +9,21 @@ import PageTemplate from "./main/modules/PageTemplate";
 import MainRouter from "./MainRouter/router";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Toaster, toast } from "sonner";
+import { UserProvider } from "./context/UserContext";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { AppSidebar } from "./components/app-sidebar";
 
 const queryClient = new QueryClient();
 
 function App() {
   return (
     <>
-      {/* <ClinicApp /> */}
-      {/* <LoginForm /> */}
-      {/* <LoginForm2/> */}
-      {/* <AppTemplate /> */}
-
-      {/* <LandingPage /> */}
-
-      {/* <AppRouter /> */}
-      {/* <PageTemplate /> */}
       <QueryClientProvider client={queryClient}>
-        <MainRouter />
+        <Toaster position="top-right" richColors />
+        <UserProvider>
+          <MainRouter />
+        </UserProvider>
       </QueryClientProvider>
     </>
   );

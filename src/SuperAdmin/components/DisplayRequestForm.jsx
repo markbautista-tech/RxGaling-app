@@ -58,6 +58,7 @@ const DisplayRequestForm = () => {
     getPermit,
     getBIR,
     getPic,
+    regNumber,
   } = useClinicDetails();
 
   const {
@@ -92,6 +93,11 @@ const DisplayRequestForm = () => {
     window.open(picURL, "_blank");
   };
 
+  const name = getOwnerLastName(id);
+  const clinicName = getClinicName(id);
+  const email = getOwnerEmail(id);
+  const reg_num = regNumber(id);
+
   return (
     <>
       <div className="no-scrollbar px-5 lg:px-14 bg-gray-100">
@@ -111,14 +117,22 @@ const DisplayRequestForm = () => {
               <p className="font-bold text-md lg:text-xl">
                 Clinic Owner Details
               </p>
-              <p className="text-sm lg:text-md">
-                <span className="font-semibold">Date Requested: </span>
-                {new Date(requestDate(id)).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
-              </p>
+            </div>
+            <div className="flex lg:justify-end">
+              <div className="flex flex-col gap-2 lg:flex-row lg:gap-7">
+                <p className="text-sm lg:text-md">
+                  <span className="font-semibold">Date Requested: </span>
+                  {new Date(requestDate(id)).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </p>
+                <p className="text-sm lg:text-md">
+                  <span className="font-semibold">Registration Number: </span>
+                  {reg_num}
+                </p>
+              </div>
             </div>
             <div className="lg:flex gap-3 items-start">
               <div className="grid grid-flow-row gap-3 lg:grid-flow-col w-full pb-3 lg:p-0">
@@ -230,7 +244,7 @@ const DisplayRequestForm = () => {
               <div className="flex flex-col gap-3">
                 <Label>Mayor's Permit</Label>
                 <Button
-                  className="bg-primary/50 lg:w-[30%]"
+                  className="bg-primary/50 lg:w-[150px] shadow-md"
                   onClick={handlePermit}
                 >
                   View Mayor's Permit
@@ -239,7 +253,7 @@ const DisplayRequestForm = () => {
               <div className="flex flex-col gap-3">
                 <Label>BIR</Label>
                 <Button
-                  className="bg-primary/50 lg:w-[30%]"
+                  className="bg-primary/50 lg:w-[150px] shadow-md"
                   onClick={handleBIR}
                 >
                   View BIR
@@ -248,7 +262,7 @@ const DisplayRequestForm = () => {
               <div className="flex flex-col gap-3">
                 <Label>Clinic Picture</Label>
                 <Button
-                  className="bg-primary/50 lg:w-[30%]"
+                  className="bg-primary/50 lg:w-[150px] shadow-md"
                   onClick={handlePic}
                 >
                   View Clinic Picture
@@ -260,13 +274,13 @@ const DisplayRequestForm = () => {
             <Separator orientation="horizontal" className="" />
           </div>
 
-          <div className="grid grid-flow-row gap-3 lg:grid-flow-col w-full pb-3 pt-">
+          <div className="grid grid-flow-row gap-5 lg:grid-flow-col w-full pb-3 pt-">
             <Button
               variant="destructive"
               onClick={() => {
                 isDecline();
               }}
-              className="lg:text-lg"
+              className="lg:text-lg shadow-md hover:scale-105 transition-all"
             >
               Decline Request
             </Button>
@@ -274,7 +288,7 @@ const DisplayRequestForm = () => {
               onClick={() => {
                 isAccept();
               }}
-              className="lg:text-lg"
+              className="lg:text-lg shadow-md hover:scale-105 transition-all"
             >
               Accept Request
             </Button>
@@ -307,7 +321,13 @@ const DisplayRequestForm = () => {
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
                   <AlertDialogAction
                     onClick={() => {
-                      declineClinicRequest(id) && navigate("/admin");
+                      declineClinicRequest(
+                        id,
+                        name,
+                        clinicName,
+                        email,
+                        reg_num
+                      ) && navigate("/admin/clinic-page");
                     }}
                   >
                     Confirm
@@ -343,7 +363,13 @@ const DisplayRequestForm = () => {
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
                   <AlertDialogAction
                     onClick={() => {
-                      acceptClinicRequest(id) && navigate("/admin");
+                      acceptClinicRequest(
+                        id,
+                        name,
+                        clinicName,
+                        email,
+                        reg_num
+                      ) && navigate("/admin/clinic-page");
                     }}
                   >
                     Confirm

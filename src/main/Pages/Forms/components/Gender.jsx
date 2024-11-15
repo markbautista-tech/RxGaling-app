@@ -14,7 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import useRegForm from "../hooks/useRegForm";
 
-const SelectGender = ({ register, control, errors }) => {
+const SelectGender = ({ control, errors }) => {
   return (
     <div className="">
       <div className="grid lg:grid-flow-col gap-3">

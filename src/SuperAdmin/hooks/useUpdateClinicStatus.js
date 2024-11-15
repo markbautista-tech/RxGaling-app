@@ -8,126 +8,59 @@ import axios from "axios";
 import Welcome from "@/emails/Welcome";
 import ReactDOMServer from "react-dom/server";
 import useFetchEmailApi from "./useFetchEmailApi";
+import { toast } from "sonner";
 
 const useUpdateClinicStatus = () => {
   const [isDeclineDialogOpen, setIsDeclineDialogOpen] = useState(false);
   const [isAcceptDialogOpen, setIsAcceptDialogOpen] = useState(false);
-  const { sendEmailDecline } = useFetchEmailApi();
-
-  // const sendEmail = async () => {
-  //   const resend_api = import.meta.env.VITE_RESEND_RXGALING_API_KEY;
-  //   console.log(resend_api);
-  //   try {
-  //     const res = await fetch("https://api.resend.com/emails", {
-  //       method: "POST",
-  //       mode: "no-cors",
-  //       headers: {
-  //         Authorization: `Bearer ${resend_api}`,
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         from: "Acme <onboarding@resend.dev>",
-  //         to: "bautistamark087@gmail.com",
-  //         subject: "hello world",
-  //         html: "<strong>it works!</strong>",
-  //       }),
-  //     });
-
-  //     if (res.ok) {
-  //       const data = await res.json();
-  //       console.log("Email sent successfully:", data);
-  //       alert("Email sent successfully!");
-  //     } else {
-  //       console.error("Failed to send email:", res.status, await res.text());
-  //       alert("Failed to send email.");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //     alert("An error occurred.");
-  //   }
-  // };
-
-  // const sendEmail = async () => {
-  //   const emailHtml = ReactDOMServer.renderToString(Welcome());
-  //   try {
-  //     const response = await fetch("/api/send-email", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         to: "bautistamark087@gmail.com",
-  //         subject: "hello world",
-  //         html: emailHtml,
-  //         // react: Welcome(),
-  //       }),
-  //     });
-
-  //     if (!response.ok) {
-  //       const errorText = await response.text(); // Use .text() for more flexibility
-  //       console.error("Failed to send email:", response.status, errorText);
-  //       alert("Failed to send email.");
-  //       return;
-  //     }
-
-  //     // Check if response has content
-  //     const contentType = response.headers.get("content-type");
-  //     if (contentType && contentType.includes("application/json")) {
-  //       const data = await response.json();
-  //       console.log("Email sent successfully:", data);
-  //       alert("Email sent successfully!");
-  //     } else {
-  //       console.warn("Response is not JSON:", await response.text());
-  //       alert("Response received, but not JSON format");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //     alert("An error occurred.");
-  //   }
-  // };
+  const { sendEmailDecline, sendEmailAccept } = useFetchEmailApi();
 
   const isDecline = async () => {
-    // setIsDeclineDialogOpen(true);
-    sendEmailDecline();
-    // sendEmail();
-    // try {
-    //   const response = await fetch("/api/mail", { method: "POST" });
-    //   console.log(response);
-    //   if (response.ok) {
-    //     console.log("Email sent successfully");
-    //   } else {
-    //     console.error("Failed to send email");
-    //   }
-    // } catch (error) {
-    //   console.error("Error during fetch:", error);
-    // }
+    setIsDeclineDialogOpen(true);
   };
 
   const isAccept = () => {
     setIsAcceptDialogOpen(true);
   };
 
-  const declineClinicRequest = async (ownerId) => {
+  const declineClinicRequest = async (
+    ownerId,
+    name,
+    clinicName,
+    email,
+    reg_num
+  ) => {
+    sendEmailDecline(name, clinicName, email, reg_num);
     const response = await declineRequest(ownerId);
 
     if (response === "success") {
       //toast for success update
-      console.log("Success declining clinic request.");
+      // console.log("Success declining clinic request.");
+      toast("Clinic registration request declined.");
     } else {
       //toast error
-      console.log("Error declinining clinic request.");
+      // console.log("Error declinining clinic request.");
+      toast.error("Error declinining clinic request.");
     }
   };
 
-  const acceptClinicRequest = async (ownerId) => {
+  const acceptClinicRequest = async (
+    ownerId,
+    name,
+    clinicName,
+    email,
+    reg_num
+  ) => {
+    sendEmailAccept(name, clinicName, email, reg_num);
     const response = await acceptRequest(ownerId);
 
     if (response === "success") {
       //toast for success update
-      console.log("Success accepting clinic request.");
+      // console.log("Success accepting clinic request.");
+      toast.success("Clinic registration request accepted");
     } else {
       //toast error
-      console.log("Error accepting clinic request.");
+      toast.error("Error accepting clinic request.");
     }
   };
 
