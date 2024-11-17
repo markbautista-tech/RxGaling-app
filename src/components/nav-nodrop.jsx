@@ -17,6 +17,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
+import { Link } from "react-router-dom";
 
 export function NavNoDrop({ items }) {
   return (
@@ -32,14 +33,19 @@ export function NavNoDrop({ items }) {
           >
             <SidebarMenuItem>
               <CollapsibleTrigger asChild>
-                <a href={item.url}>
-                  <SidebarMenuButton tooltip={item.title}>
+                {/* <a href={item.url}> */}
+                <Link to={item.url}>
+                  <SidebarMenuButton
+                    tooltip={item.title}
+                    className={`text-primary py-5`}
+                  >
                     {item.icon && <item.icon className="lg:w-6 lg:h-6" />}
                     <span className="font-semibold lg:text-[18px]">
                       {item.title}
                     </span>
                   </SidebarMenuButton>
-                </a>
+                </Link>
+                {/* </a> */}
               </CollapsibleTrigger>
               <CollapsibleContent></CollapsibleContent>
             </SidebarMenuItem>

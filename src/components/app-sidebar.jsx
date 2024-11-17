@@ -134,14 +134,14 @@ export function AppSidebar({ ...props }) {
       </SidebarHeader>
       <SidebarContent>
         {role === "admin" && <AdminDashboard items={data.adminDash} />}
+        {role === "admin" && <AdminManage items={data.navAdmin} />}
         {!admin && <NavNoDrop items={data.navNoDrop} />}
 
         {!admin && <NavMain items={data.navMain} />}
-        {role === "admin" && <AdminManage items={data.navAdmin} />}
       </SidebarContent>
       <SidebarFooter>
-        {!admin && <NavUser user={data.user} email={email} />}
         {role === "admin" && <NavAdmin user={data.admin} email={email} />}
+        {!admin && <NavUser user={data.user} email={email} />}
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
