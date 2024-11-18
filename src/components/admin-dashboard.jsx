@@ -17,6 +17,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
+import { Link } from "react-router-dom";
 
 export function AdminDashboard({ items }) {
   return (
@@ -32,12 +33,15 @@ export function AdminDashboard({ items }) {
           >
             <SidebarMenuItem>
               <CollapsibleTrigger asChild>
-                <a href={item.url}>
-                  <SidebarMenuButton tooltip={item.title}>
+                <Link to={item.url}>
+                  <SidebarMenuButton
+                    tooltip={item.title}
+                    className={`py-5 transition-all hover:bg-primary hover:text-white`}
+                  >
                     {item.icon && <item.icon className="lg:w-6 lg:h-6" />}
-                    <span className="font-semibold">{item.title}</span>
+                    <span className="lg:text-[17px]">{item.title}</span>
                   </SidebarMenuButton>
-                </a>
+                </Link>
               </CollapsibleTrigger>
               <CollapsibleContent></CollapsibleContent>
             </SidebarMenuItem>

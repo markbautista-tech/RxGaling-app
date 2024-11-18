@@ -18,8 +18,11 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import useActiveLink from "./hooks/useActiveLink";
 
 export function NavMain({ items }) {
+  const { activeLink, handleMenuClick } = useActiveLink();
   return (
     <SidebarGroup>
       <SidebarMenu>
@@ -34,9 +37,7 @@ export function NavMain({ items }) {
               <CollapsibleTrigger asChild>
                 <SidebarMenuButton tooltip={item.title}>
                   {item.icon && <item.icon className="lg:w-6 lg:h-6" />}
-                  <span className="font-semibold lg:text-[18px]">
-                    {item.title}
-                  </span>
+                  <span className="lg:text-[17px]">{item.title}</span>
                   <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
                 </SidebarMenuButton>
               </CollapsibleTrigger>
@@ -45,12 +46,14 @@ export function NavMain({ items }) {
                   {item.items?.map((subItem) => (
                     <SidebarMenuSubItem key={subItem.title}>
                       <Link to={subItem.url}>
-                        <SidebarMenuSubButton asChild>
-                          {/* <a href={subItem.url}> */}
-                          <span className="font-semibold lg:text-[16px]">
+                        <SidebarMenuSubButton
+                          asChild
+                          className={`py-4 hover:bg-primary hover:text-white rounded-sm ${activeLink === subItem.url ? "bg-primary text-white" : ""}`}
+                          onClick={() => handleMenuClick(subItem.url)}
+                        >
+                          <span className="lg:text-[16px]">
                             {subItem.title}
                           </span>
-                          {/* </a> */}
                         </SidebarMenuSubButton>
                       </Link>
                     </SidebarMenuSubItem>

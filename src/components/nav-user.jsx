@@ -25,9 +25,28 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { logout } from "@/utils/data/logout";
+import { useNavigate } from "react-router-dom";
+import { useUser } from "@/context/UserContext";
+import { toast } from "sonner";
 
 export function NavUser({ user, email }) {
+  const navigate = useNavigate();
   const { isMobile } = useSidebar();
+  const { setUser } = useUser();
+
+  const handleLogout = async () => {
+    try {
+      const result = await logout();
+      if (result === "success") {
+        setUser(null);
+        navigate("/user-login");
+        toast("Logged out!");
+      }
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+  };
 
   return (
     <SidebarMenu>
@@ -90,7 +109,7 @@ export function NavUser({ user, email }) {
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
               <LogOut />
               Log out
             </DropdownMenuItem>
