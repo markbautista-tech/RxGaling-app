@@ -161,7 +161,7 @@ const NewBirthday = ({ register, control, errors, watch }) => {
           <Input
             {...register("age")}
             type="number"
-            value={age || ""}
+            value={age ? age : ""}
             placeholder=""
             readOnly
           />

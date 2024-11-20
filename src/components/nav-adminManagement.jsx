@@ -17,6 +17,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
+import { Link } from "react-router-dom";
 
 export function AdminManage({ items }) {
   return (
@@ -30,10 +31,13 @@ export function AdminManage({ items }) {
             className="group/collapsible"
           >
             <SidebarMenuItem>
-              <CollapsibleTrigger asChild>
+              <CollapsibleTrigger
+                asChild
+                className="py-5 hover:bg-primary hover:text-white transition-all "
+              >
                 <SidebarMenuButton tooltip={item.title}>
                   {item.icon && <item.icon className="lg:w-6 lg:h-6" />}
-                  <span className="font-semibold">{item.title}</span>
+                  <span className="lg:text-[17px]">{item.title}</span>
                   <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
                 </SidebarMenuButton>
               </CollapsibleTrigger>
@@ -41,11 +45,14 @@ export function AdminManage({ items }) {
                 <SidebarMenuSub>
                   {item.items?.map((subItem) => (
                     <SidebarMenuSubItem key={subItem.title}>
-                      <SidebarMenuSubButton asChild>
-                        <a href={subItem.url}>
-                          <span className="font-semibold">{subItem.title}</span>
-                        </a>
-                      </SidebarMenuSubButton>
+                      <Link to={subItem.url}>
+                        <SidebarMenuSubButton
+                          asChild
+                          className={`py-4 hover:bg-primary hover:text-white transition-all `}
+                        >
+                          <span className="">{subItem.title}</span>
+                        </SidebarMenuSubButton>
+                      </Link>
                     </SidebarMenuSubItem>
                   ))}
                 </SidebarMenuSub>

@@ -18,8 +18,12 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import useActiveLink from "./hooks/useActiveLink";
 
 export function NavNoDrop({ items }) {
+  const { activeLink, handleMenuClick } = useActiveLink();
+
   return (
     <SidebarGroup>
       <SidebarGroupLabel></SidebarGroupLabel>
@@ -37,12 +41,11 @@ export function NavNoDrop({ items }) {
                 <Link to={item.url}>
                   <SidebarMenuButton
                     tooltip={item.title}
-                    className={`text-primary py-5`}
+                    className={`py-5 hover:bg-primary hover:text-white ${activeLink === item.url ? "bg-primary text-white" : ""}`}
+                    onClick={() => handleMenuClick(item.url)}
                   >
                     {item.icon && <item.icon className="lg:w-6 lg:h-6" />}
-                    <span className="font-semibold lg:text-[18px]">
-                      {item.title}
-                    </span>
+                    <span className="lg:text-[17px]">{item.title}</span>
                   </SidebarMenuButton>
                 </Link>
                 {/* </a> */}

@@ -10,14 +10,10 @@ import { TbMenu2, TbX } from "react-icons/tb";
 
 import PatientRegistration from "../Forms/PatientRegistration";
 
+const PatientsManangement = () => {
+  const [showMenu, setShowMenu] = useState(false);
 
-const PatientsManangement = () =>
-{
-  const [ showMenu, setShowMenu ] = useState(false);
-
-
-  const toggleMenu = () =>
-  {
+  const toggleMenu = () => {
     setShowMenu(!showMenu);
   };
 
@@ -32,7 +28,7 @@ const PatientsManangement = () =>
             <div className="hidden lg:block">
               <div className="flex gap-3">
                 <PatientRegistration />
-                <SelectClinic />
+                {/* <SelectClinic /> */}
               </div>
             </div>
             <div className="relative">
@@ -47,9 +43,9 @@ const PatientsManangement = () =>
                   <div>
                     <PatientRegistration />
                   </div>
-                  <div className="w-full">
+                  {/* <div className="w-full">
                     <SelectClinic />
-                  </div>
+                  </div> */}
                 </div>
               )}
             </div>

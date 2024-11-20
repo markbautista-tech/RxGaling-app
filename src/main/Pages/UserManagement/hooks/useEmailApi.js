@@ -1,8 +1,10 @@
 import InviteUserClinic from "@/emails/InviteUserClinic";
-import React from "react";
+import React, { useState } from "react";
 import ReactDOMServer from "react-dom/server";
 
 const useEmailApi = () => {
+  const [loading, setloading] = useState(false);
+
   const sendInvite = async (email, role, url) => {
     const emailHtml = ReactDOMServer.renderToString(
       InviteUserClinic({ url, role })
@@ -22,7 +24,7 @@ const useEmailApi = () => {
 
       if (!response.ok) {
         const errorText = await response.text();
-        console.error("Failed to send email:", response.status, errorText);
+        console.error("Failed to send email you:", response.status, errorText);
 
         return;
       }
@@ -41,8 +43,45 @@ const useEmailApi = () => {
     }
   };
 
+  const sendInviteNodemailer = async (email, role, url) => {
+    const emailHtml = ReactDOMServer.renderToString(
+      InviteUserClinic({ url, role })
+    );
+    setloading(true);
+
+    try {
+      const response = await fetch("http://localhost:5000/send-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          recipient: email,
+          subject: "Welcome to Clinic",
+          htmlContent: emailHtml,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        console.log(data.message);
+      } else {
+        console.error("Error: ", data.error);
+      }
+
+      return response;
+    } catch (error) {
+      console.error("Error occurred: ", error.message);
+    } finally {
+      setloading(false);
+    }
+  };
+
   return {
     sendInvite,
+    sendInviteNodemailer,
+    loading,
   };
 };
 

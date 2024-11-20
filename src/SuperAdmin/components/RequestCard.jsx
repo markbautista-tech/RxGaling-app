@@ -24,8 +24,7 @@ import { Link } from "react-router-dom";
 import useClinicDetails from "../hooks/useClinicDetails";
 
 const ClinicRequestCard = () => {
-  const { countRequest } = useClinicDetails();
-  const { clinicData, clinicReq } = useClinicDetails();
+  const { clinicData, clinicReq, countRequest } = useClinicDetails();
 
   const getClinicName = (ownerId) => {
     if (!clinicData || clinicData.length === 0) {
