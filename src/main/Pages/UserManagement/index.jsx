@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ContentTitle from "../../PageContent/ContentTitle";
 
 import SearchBar from "../components/Search";
@@ -8,13 +8,39 @@ import { Separator } from "@/components/ui/separator";
 import AddUser from "./components/AddUser";
 import UserCard from "./components/userCard";
 import { RoleFilter } from "../components/Filter";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+} from "@/components/ui/select";
+import fetchRole from "@/utils/data/fetch/fetchRole";
+import { CiFilter } from "react-icons/ci";
 
 const UserManagement = () => {
   const [showMenu, setShowMenu] = useState(false);
+  const [roleData, setRoleData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState(null);
 
   const toggleMenu = () => {
     setShowMenu(!showMenu);
   };
+
+  useEffect(() => {
+    const getRoles = async () => {
+      try {
+        const roles = await fetchRole();
+        setRoleData(roles);
+      } catch (error) {
+        setFetchError("Failed to fetch roles.");
+      }
+    };
+    getRoles();
+  }, []);
 
   return (
     <>
@@ -27,7 +53,7 @@ const UserManagement = () => {
               <div className="hidden lg:block">
                 <div className="flex gap-3">
                   <AddUser />
-                  <SelectClinic />
+                  {/* <SelectClinic /> */}
                 </div>
               </div>
               <div className="relative">
@@ -42,9 +68,9 @@ const UserManagement = () => {
                     <div className="w-full">
                       <AddUser />
                     </div>
-                    <div className="w-full">
+                    {/* <div className="w-full">
                       <SelectClinic />
-                    </div>
+                    </div> */}
                   </div>
                 )}
               </div>
@@ -54,7 +80,24 @@ const UserManagement = () => {
         <Separator orientation="horizontal" className="w-full" />
         <div className="lg:p-5 ">
           <div className="flex justify-end w-full py-3">
-            <RoleFilter />
+            {/* <RoleFilter /> */}
+            <div className="space-y-2 w-44 flex items-center gap-3">
+              <CiFilter className="w-7 h-7" />
+              <Select id="role" className="">
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select Role" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    {roleData.map((roles, ids) => (
+                      <div key={ids}>
+                        <SelectItem value={roles.role}>{roles.role}</SelectItem>
+                      </div>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
           <div className=" lg:p-5 max-h-full">
             <UserCard />

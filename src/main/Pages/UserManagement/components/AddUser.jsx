@@ -35,9 +35,8 @@ const addUserSchema = z.object({
 
 const AddUser = () => {
   const [roleData, setRoleData] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [fetchError, setFetchError] = useState(null);
-  const { sendInvite } = useEmailApi();
+  const { sendInvite, sendInviteNodemailer, loading } = useEmailApi();
   const [url, setUrl] = useState(null);
 
   const {
@@ -45,6 +44,7 @@ const AddUser = () => {
     handleSubmit,
     control,
     formState: { errors },
+    reset,
   } = useForm({
     resolver: zodResolver(addUserSchema),
   });
@@ -56,16 +56,13 @@ const AddUser = () => {
         setRoleData(roles);
       } catch (error) {
         setFetchError("Failed to fetch roles.");
-      } finally {
-        setLoading(false);
       }
     };
     getRoles();
   }, []);
 
-  const onSubmit = (data) => {
-    console.log(data);
-    setUrl("");
+  const onSubmit = async (data) => {
+    setUrl(null);
 
     switch (data.role) {
       case "Doctor":
@@ -82,15 +79,15 @@ const AddUser = () => {
         break;
     }
 
-    const response = sendInvite(data.email, data.role, url);
+    // const response = sendInvite(data.email, data.role, url);
+    const response = await sendInviteNodemailer(data.email, data.role, url);
 
     if (response) {
       toast.success("Invitation sent successfully");
+      reset();
     } else {
       toast.error("Invitation error!");
     }
-
-    // AddUserEmailRole(data);
   };
 
   return (
@@ -158,8 +155,19 @@ const AddUser = () => {
               </div>
               <DialogFooter>
                 <div className="flex gap-3">
-                  <Button type="submit" className="w-full lg:w-24">
-                    Send
+                  <Button
+                    type="submit"
+                    className="w-full lg:w-36 lg:text-[16px]"
+                    disabled={loading}
+                  >
+                    {loading ? (
+                      <>
+                        <span className="mr-2 h-4 w-4 inline-block border-2 border-t-2 border-gray-200 border-t-purple-950 rounded-full animate-spin"></span>
+                        Sending...
+                      </>
+                    ) : (
+                      "Send"
+                    )}
                   </Button>
                 </div>
               </DialogFooter>

@@ -30,7 +30,7 @@ const PageTemplate = () => {
             <div className="fixed w-full">
               <PageHeader />
             </div>
-            <div className="lg:pt-12 lg:px-10 h-full pt-10 px-5 mb-10 no-scrollbar">
+            <div className=" lg:px-10 h-full pt-14 px-5 mb-10 no-scrollbar">
               <ContentRouter />
             </div>
           </div>
