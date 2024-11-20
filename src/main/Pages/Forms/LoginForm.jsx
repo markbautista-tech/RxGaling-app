@@ -73,6 +73,8 @@ export default function LoginForm() {
           navigate("/clinic-app");
         } else if (userRole === "Doctor") {
           navigate("/clinic-app");
+        }else if(userRole === "Clinic Administrator"){
+          navigate("/clinic-manager");
         }
       }
     } catch (err) {
