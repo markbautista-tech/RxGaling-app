@@ -68,9 +68,6 @@ const UserManagement = () => {
                     <div className="w-full">
                       <AddUser />
                     </div>
-                    {/* <div className="w-full">
-                      <SelectClinic />
-                    </div> */}
                   </div>
                 )}
               </div>

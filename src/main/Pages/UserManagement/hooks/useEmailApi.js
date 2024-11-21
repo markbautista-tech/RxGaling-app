@@ -1,3 +1,4 @@
+import InviteDoctor from "@/emails/InviteDoctor";
 import InviteUserClinic from "@/emails/InviteUserClinic";
 import React, { useState } from "react";
 import ReactDOMServer from "react-dom/server";
@@ -50,6 +51,7 @@ const useEmailApi = () => {
     setloading(true);
 
     try {
+      //FOR LOCAL DEV
       const response = await fetch("http://localhost:5000/send-email", {
         method: "POST",
         headers: {
@@ -61,6 +63,66 @@ const useEmailApi = () => {
           htmlContent: emailHtml,
         }),
       });
+
+      //FOR PRODUCTION
+      // const response = await fetch("https://user.rxgaling.online:5000/send-email", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({
+      //     recipient: email,
+      //     subject: "Welcome to Clinic",
+      //     htmlContent: emailHtml,
+      //   }),
+      // });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        console.log(data.message);
+      } else {
+        console.error("Error: ", data.error);
+      }
+
+      return response;
+    } catch (error) {
+      console.error("Error occurred: ", error.message);
+    } finally {
+      setloading(false);
+    }
+  };
+
+  const sendDoctorInvite = async (email, url) => {
+    const emailHtml = ReactDOMServer.renderToString(InviteDoctor({ url }));
+    setloading(true);
+
+    try {
+      //FOR LOCAL DEV
+      const response = await fetch("http://localhost:5000/send-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          recipient: email,
+          subject: "Welcome to Clinic",
+          htmlContent: emailHtml,
+        }),
+      });
+
+      //FOR PRODUCTION
+      // const response = await fetch("https://user.rxgaling.online:5000/send-email", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({
+      //     recipient: email,
+      //     subject: "Welcome to Clinic",
+      //     htmlContent: emailHtml,
+      //   }),
+      // });
 
       const data = await response.json();
 
@@ -82,6 +144,7 @@ const useEmailApi = () => {
     sendInvite,
     sendInviteNodemailer,
     loading,
+    sendDoctorInvite,
   };
 };
 

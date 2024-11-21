@@ -76,12 +76,12 @@ const data = {
       icon: TbSettings,
       items: [
         {
-          title: "Users",
-          url: "/clinic-app/user-management",
+          title: "Manage Doctors",
+          url: "/clinic-app/doctor-management",
         },
         {
-          title: "Clinic",
-          url: "#",
+          title: "Manage Staff",
+          url: "/clinic-app/user-management",
         },
         {
           title: "Pharmacy",
@@ -97,11 +97,11 @@ const data = {
       icon: TbSettings,
       items: [
         {
-          title: "Clinic",
+          title: "Manage Clinic",
           url: "/admin/clinic-page",
         },
         {
-          title: "Pharmacy",
+          title: "Manage Pharmacy",
           url: "#",
         },
       ],

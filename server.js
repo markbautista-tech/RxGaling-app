@@ -11,7 +11,8 @@ const PORT = 5000;
 
 app.use(
   cors({
-    origin: "http://localhost:3000", // Allow requests from this origin
+    origin: "http://localhost:3000", // FOR LOCAL DEV
+    // origin: "http://user.rxgaling.online", //FOR PRODUCTION
     methods: ["GET", "POST"], // Specify allowed HTTP methods
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization"],

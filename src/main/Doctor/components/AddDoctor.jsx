@@ -23,20 +23,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import AddUserEmailRole from "../../../../utils/data/add/addUser";
-import fetchRole from "../../../../utils/data/fetch/fetchRole";
-import useEmailApi from "../hooks/useEmailApi";
 import { toast } from "sonner";
+import useEmailApi from "@/main/Pages/UserManagement/hooks/useEmailApi";
 
 const addUserSchema = z.object({
   email: z.string().email("Invalid email address").trim(),
-  role: z.string().min(1, { message: "Clinic Role is required." }),
 });
 
-const AddUser = () => {
-  const [roleData, setRoleData] = useState([]);
+const AddDoctor = () => {
   const [fetchError, setFetchError] = useState(null);
-  const { sendInvite, sendInviteNodemailer, loading } = useEmailApi();
+  const { sendDoctorInvite, loading } = useEmailApi();
   const [url, setUrl] = useState(null);
 
   const {
@@ -49,39 +45,15 @@ const AddUser = () => {
     resolver: zodResolver(addUserSchema),
   });
 
-  useEffect(() => {
-    const getRoles = async () => {
-      try {
-        const roles = await fetchRole();
-        setRoleData(roles);
-      } catch (error) {
-        setFetchError("Failed to fetch roles.");
-      }
-    };
-    getRoles();
-  }, []);
-
   const onSubmit = async (data) => {
-    if (data.role) {
-      if (data.role === "Doctor") {
-        setUrl(null);
-        setUrl("http://localhost:3000/doctor-registration");
-      }
+    setUrl(null);
+    setUrl("http://localhost:3000/doctor-registration");
 
-      if (
-        data.role === "Clinic Nurse" ||
-        data.role === "Clinic Administrator" ||
-        data.role === "Clinic Secretary" ||
-        data.role === "Clinic Assistant"
-      ) {
-        setUrl(null);
-        setUrl("http://localhost:3000/staff-registration");
-      }
-    }
+    //FOR DEPLOYMENT
+    //setUrl("https://user.rxgaling.online/doctor-registration");
 
-    // const response = sendInvite(data.email, data.role, url);
     console.log(url);
-    const response = await sendInviteNodemailer(data.email, data.role, url);
+    const response = await sendDoctorInvite(data.email, url);
 
     if (response) {
       toast.success("Invitation sent successfully");
@@ -97,7 +69,7 @@ const AddUser = () => {
         <Dialog>
           <DialogTrigger asChild>
             <Button variant="" className="rounded-md border w-full">
-              Add User
+              Add Doctor
             </Button>
           </DialogTrigger>
           <DialogContent className="w-[300px] rounded-md lg:w-[50%]">
@@ -122,7 +94,7 @@ const AddUser = () => {
                     </p>
                   )}
                 </div>
-                <div className="flex flex-col items-start gap-2">
+                {/* <div className="flex flex-col items-start gap-2">
                   <Label>Clinic Role</Label>
                   <Controller
                     name="role"
@@ -152,7 +124,7 @@ const AddUser = () => {
                       {errors.role.message}
                     </p>
                   )}
-                </div>
+                </div> */}
               </div>
               <DialogFooter>
                 <div className="flex gap-3">
@@ -180,4 +152,4 @@ const AddUser = () => {
   );
 };
 
-export default AddUser;
+export default AddDoctor;

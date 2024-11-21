@@ -37,7 +37,7 @@ export function NavMain({ items }) {
               <CollapsibleTrigger asChild>
                 <SidebarMenuButton tooltip={item.title}>
                   {item.icon && <item.icon className="lg:w-6 lg:h-6" />}
-                  <span className="lg:text-[17px]">{item.title}</span>
+                  <span className="lg:text-[16px]">{item.title}</span>
                   <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
                 </SidebarMenuButton>
               </CollapsibleTrigger>
@@ -48,10 +48,10 @@ export function NavMain({ items }) {
                       <Link to={subItem.url}>
                         <SidebarMenuSubButton
                           asChild
-                          className={`py-4 hover:bg-primary hover:text-white rounded-sm ${activeLink === subItem.url ? "bg-primary text-white" : ""}`}
+                          className={`py-3 hover:bg-primary hover:text-white rounded-sm ${activeLink === subItem.url ? "bg-primary text-white" : ""}`}
                           onClick={() => handleMenuClick(subItem.url)}
                         >
-                          <span className="lg:text-[16px]">
+                          <span className="lg:text-[15px]">
                             {subItem.title}
                           </span>
                         </SidebarMenuSubButton>
