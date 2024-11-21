@@ -9,6 +9,7 @@ import { SelectClinic } from "../components/SelectClinic";
 import { TbMenu2, TbX } from "react-icons/tb";
 
 import PatientRegistration from "../Forms/PatientRegistration";
+import PatientTable from "./components/PatientTable";
 
 const PatientsManangement = () => {
   const [showMenu, setShowMenu] = useState(false);
@@ -24,7 +25,7 @@ const PatientsManangement = () => {
         <ContentTitle title={"Patients"} />
         <div className="relative flex ">
           <div className="flex items-center gap-2">
-            <SearchBar />
+            {/* <SearchBar /> */}
             <div className="hidden lg:block">
               <div className="flex gap-3">
                 <PatientRegistration />
@@ -53,6 +54,9 @@ const PatientsManangement = () => {
         </div>
       </div>
       <Separator orientation="horizontal" className="w-full" />
+      <div>
+        <PatientTable />
+      </div>
     </>
   );
 };
