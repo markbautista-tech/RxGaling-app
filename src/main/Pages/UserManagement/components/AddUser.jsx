@@ -62,24 +62,40 @@ const AddUser = () => {
   }, []);
 
   const onSubmit = async (data) => {
-    setUrl(null);
+    // switch (data.role) {
+    //   case "Doctor":
+    //
+    //     break;
+    //   case "Clinic Administrator":
+    //   case "Clinic Nurse":
+    //   case "Clinic Assistant":
+    //   case "Clinic Secretary":
+    //     setUrl("http://localhost:3000/staff-registration");
+    //     break;
 
-    switch (data.role) {
-      case "Doctor":
+    //   default:
+    //     break;
+    // }
+
+    if (data.role) {
+      if (data.role === "Doctor") {
+        setUrl(null);
         setUrl("http://localhost:3000/doctor-registration");
-        break;
-      case "Clinic Administrator":
-      case "Clinic Nurse":
-      case "Clinic Assistant":
-      case "Clinic Secretary":
-        setUrl("http://localhost:3000/staff-registration");
-        break;
+      }
 
-      default:
-        break;
+      if (
+        data.role === "Clinic Nurse" ||
+        data.role === "Clinic Administrator" ||
+        data.role === "Clinic Secretary" ||
+        data.role === "Clinic Assistant"
+      ) {
+        setUrl(null);
+        setUrl("http://localhost:3000/staff-registration");
+      }
     }
 
     // const response = sendInvite(data.email, data.role, url);
+    console.log(url);
     const response = await sendInviteNodemailer(data.email, data.role, url);
 
     if (response) {

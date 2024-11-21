@@ -92,62 +92,6 @@ const UserRegistration = () => {
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-3 lg:space-y-5">
-              {/* <div className="lg:flex gap-3 items-center">
-                <div className="grid grid-flow-row gap-3 lg:grid-flow-col w-full pb-3 lg:p-0">
-                  <div className="">
-                    <Label htmlFor="fname">First Name</Label>
-                    <Input
-                      {...register("first_name")}
-                      type="text"
-                      placeholder="Juan"
-                    />
-                    {errors.first_name && (
-                      <p className="text-red-400 italic text-xs py-1 lg:text-sm">
-                        {errors.first_name.message}
-                      </p>
-                    )}
-                  </div>
-                  <div>
-                    <Label htmlFor="mname">Middle Name</Label>
-                    <Input
-                      {...register("middle_name")}
-                      type="text"
-                      placeholder="Manansala"
-                    />
-                    {errors.middle_name && (
-                      <p className="text-red-400 italic text-xs py-1 lg:text-sm">
-                        {errors.middle_name.message}
-                      </p>
-                    )}
-                  </div>
-                  <div>
-                    <Label htmlFor="lname">Last Name</Label>
-                    <Input
-                      {...register("last_name")}
-                      type="text"
-                      placeholder="Dela Cruz"
-                    />
-                    {errors.last_name && (
-                      <p className="text-red-400 italic text-xs py-1 lg:text-sm">
-                        {errors.last_name.message}
-                      </p>
-                    )}
-                  </div>
-                </div>
-                <div className="lg:w-28">
-                  <Label htmlFor="ename">Ext. Name</Label>
-                  <Input
-                    {...register("ext_name")}
-                    type="text"
-                    placeholder="Sr Jr I II III"
-                  />
-                  {errors.ext_name && (
-                    <p className="text-red-400 italic text-xs py-1 lg:text-sm">
-                      {errors.ext_name.message}
-                    </p>
-                  )}
-                </div>
-              </div> */}
               <NameComponent register={register} errors={errors} />
               <div>
                 {/* <div>
