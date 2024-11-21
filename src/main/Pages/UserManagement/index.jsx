@@ -9,38 +9,53 @@ import AddUser from "./components/AddUser";
 import UserCard from "./components/userCard";
 import { RoleFilter } from "../components/Filter";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-} from "@/components/ui/select";
+import
+  {
+    Select,
+    SelectTrigger,
+    SelectValue,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+  } from "@/components/ui/select";
 import fetchRole from "@/utils/data/fetch/fetchRole";
 import { CiFilter } from "react-icons/ci";
+import { useUser } from "@/context/UserContext";
 
-const UserManagement = () => {
-  const [showMenu, setShowMenu] = useState(false);
-  const [roleData, setRoleData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [fetchError, setFetchError] = useState(null);
+const UserManagement = () =>
+{
+  const { user, setUser, role, email } = useUser();
+  const [ showMenu, setShowMenu ] = useState(false);
+  const [ roleData, setRoleData ] = useState([]);
+  const [ loading, setLoading ] = useState(true);
+  const [ fetchError, setFetchError ] = useState(null);
 
-  const toggleMenu = () => {
+
+  const toggleMenu = () =>
+  {
     setShowMenu(!showMenu);
   };
 
-  useEffect(() => {
-    const getRoles = async () => {
-      try {
+  useEffect(() =>
+  {
+    const getRoles = async () =>
+    {
+      try
+      {
         const roles = await fetchRole();
         setRoleData(roles);
-      } catch (error) {
+      } catch (error)
+      {
         setFetchError("Failed to fetch roles.");
       }
     };
     getRoles();
   }, []);
+  useEffect(() =>
+  {
+    const filter = roleData.filter(val => val.role !== role)
+    setRoleData(filter)
+  }, [ roleData ])
 
   return (
     <>
@@ -52,7 +67,10 @@ const UserManagement = () => {
               <SearchBar />
               <div className="hidden lg:block">
                 <div className="flex gap-3">
-                  <AddUser />
+                  {
+                    role === "admin" || role === 'Clinic Administrator' ? <AddUser /> : null
+                  }
+
                   {/* <SelectClinic /> */}
                 </div>
               </div>
