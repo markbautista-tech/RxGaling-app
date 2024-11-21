@@ -64,7 +64,7 @@ const UserManagement = () =>
           <ContentTitle title={"User Management"} />
           <div className="relative flex ">
             <div className="flex items-center gap-2">
-              <SearchBar />
+              {/* <SearchBar /> */}
               <div className="hidden lg:block">
                 <div className="flex gap-3">
                   {

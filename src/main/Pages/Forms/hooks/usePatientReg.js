@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { patientSchema } from "../schema/patientReg";
 import addPatientDetails from "@/utils/data/add/addPatientDetails";
+import getPatientID from "@/utils/data/fetch/getPatientID";
 
 export default function usePatientReg() {
   const [age, setAge] = useState(null);
@@ -13,7 +14,7 @@ export default function usePatientReg() {
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [currentNum, setCurrentNum] = useState(1001);
+  const [currentNum, setCurrentNum] = useState(null);
 
   const {
     register,
@@ -26,10 +27,21 @@ export default function usePatientReg() {
     resolver: zodResolver(patientSchema),
   });
 
+  useEffect(() => {
+    const fetchPatientIdData = async () => {
+      const patientID = await getPatientID();
+
+      const digitsAfterDash = parseInt(patientID.id_number.split("-")[1], 10);
+
+      setCurrentNum(digitsAfterDash + 1);
+    };
+
+    fetchPatientIdData();
+  }, []);
+
   const generateSequentialId = () => {
     const year = new Date().getFullYear(); // Get current year
-    const newId = `${year}-${currentNum}`; // Format: "2024-1001"
-    setCurrentNum(currentNum + 1); // Increment for the next ID
+    const newId = `${year}-${currentNum}`;
     return newId;
   };
 
@@ -63,8 +75,14 @@ export default function usePatientReg() {
     try {
       const response = await addPatientDetails(dataSubmit);
 
+      if (response.error) {
+        toast.error(response.error.message);
+        return;
+      }
       if (response) {
         toast.success("Patient registered successfully");
+        reset();
+        return;
       }
     } catch (error) {
       toast.error("Registration Error!");

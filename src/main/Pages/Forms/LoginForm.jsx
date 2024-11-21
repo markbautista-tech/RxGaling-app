@@ -69,11 +69,14 @@ export default function LoginForm() {
         setUser(response);
         if (userRole === "admin") {
           navigate("/admin");
-        } else if (userRole === "clinic owner") {
-          navigate("/clinic-app");
-        } else if (userRole === "Doctor") {
-          navigate("/clinic-app");
-        }else if(userRole === "Clinic Administrator"){
+        } else if (
+          userRole === "clinic owner" ||
+          userRole === "Doctor" ||
+          userRole === "Clinic Nurse" ||
+          userRole === "Clinic Administrator" ||
+          userRole === "Clinic Secretary" ||
+          userRole === "Clinic Assistant"
+        ) {
           navigate("/clinic-app");
         }
       }
