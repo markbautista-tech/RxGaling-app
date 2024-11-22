@@ -75,7 +75,7 @@ export default function SignUpForm() {
       <div className="bg-gray-300 h-screen flex-center-all flex-col gap-5">
         <div>
           <img
-            src="src/assets/logo-rxgaling.svg"
+            src="/logo-rxgaling.svg"
             alt="Logo"
             className="w-20 h-20 lg:w-24 lg:h-24"
           />
