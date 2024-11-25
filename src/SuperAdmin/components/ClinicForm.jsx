@@ -46,6 +46,7 @@ const ClinicForm = () => {
     setIsFailedDialog,
     loading,
     setLoading,
+    watch
   } = useClinicRegForm();
 
   const { registrationNumber } = useClinicDetails();
@@ -65,6 +66,7 @@ const ClinicForm = () => {
             >
               <div>
                 <ClinicOwnerForm
+                  watch={watch}
                   register={register}
                   errors={errors}
                   control={control}

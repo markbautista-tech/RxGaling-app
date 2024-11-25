@@ -11,8 +11,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import NewBirthday from "@/main/Pages/Forms/components/NewBirthday";
 
-const ClinicOwnerForm = ({ register, errors, control }) => {
+const ClinicOwnerForm = ({ register, errors, control, watch }) => {
   return (
     <>
       <div className="no-scrollbar">
@@ -29,6 +30,11 @@ const ClinicOwnerForm = ({ register, errors, control }) => {
                 <SelectGender errors={errors} control={control} />
                 <NumberEmail register={register} errors={errors} />
               </div>
+              <NewBirthday 
+                control={control}
+                watch={watch}
+                errors={errors}
+              />
               <Address register={register} errors={errors} control={control} />
             </div>
           </div>

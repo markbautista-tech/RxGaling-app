@@ -64,7 +64,7 @@ export default function staffRegForm() {
       const addUser = addStaff(dataSubmit, addressDataSubmit);
       if (addUser) {
         toast.success("Registered successfully");
-        navigate("/user/sign-up");
+        navigate("/sign-up");
       }
     } catch (error) {
       toast.error("Registration Error!");

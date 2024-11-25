@@ -28,6 +28,7 @@ const useClinicRegForm = () => {
   const {
     register,
     handleSubmit,
+    watch,
     control,
     formState: { errors },
   } = useForm({
@@ -55,15 +56,13 @@ const useClinicRegForm = () => {
 
     try {
       setIsError(false);
-      const id = await addClinicDetails(dataSubmit);
-      const regNum = await getRegNumber(id);
-      if (id) {
-        navigate(`/register-success/${regNum}`);
+      const clinic_id = await addClinicDetails(dataSubmit);
+      if (clinic_id) {
+        navigate(`/register-success/${clinic_id}`);
         toast.success("Registered successfully");
-        sendAppreciation(dataSubmit.email, regNum);
+        sendAppreciation(dataSubmit.email, clinic_id);
         return;
       }
-      console.log(regNum);
     } catch (error) {
       setIsError(true);
       console.log(error);
@@ -95,6 +94,7 @@ const useClinicRegForm = () => {
     setIsFailedDialog,
     loading,
     setLoading,
+    watch
   };
 };
 
