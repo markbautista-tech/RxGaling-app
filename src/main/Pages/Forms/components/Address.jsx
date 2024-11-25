@@ -75,7 +75,7 @@ const Address = ({ register, control, errors }) => {
                   render={({ field }) => (
                     <Select
                       id="region"
-                      value={address.region && field.value}
+                      value={address.region}
                       onValueChange={(value) => {
                         regionChange(value);
                         field.onChange(value);
@@ -113,7 +113,7 @@ const Address = ({ register, control, errors }) => {
                   render={({ field }) => (
                     <Select
                       id="province"
-                      value={field.value}
+                      value={address.province}
                       onValueChange={(value) => {
                         provinceChange(value);
                         field.onChange(value);
@@ -153,7 +153,7 @@ const Address = ({ register, control, errors }) => {
                   render={({ field }) => (
                     <Select
                       id="municipality"
-                      value={field.value}
+                      value={address.municipality}
                       onValueChange={(value) => {
                         muniChange(value);
                         field.onChange(value);
@@ -190,7 +190,7 @@ const Address = ({ register, control, errors }) => {
                   render={({ field }) => (
                     <Select
                       id="barangay"
-                      value={field.value}
+                      value={address.barangay}
                       onValueChange={(value) => {
                         field.onChange(value);
                       }}

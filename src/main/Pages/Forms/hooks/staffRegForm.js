@@ -13,6 +13,7 @@ export default function staffRegForm() {
   const navigate = useNavigate();
 
   const [dataSubmit, setDataSubmit] = useState({});
+  const [addressDataSubmit, setAddressDataSubmit] = useState({});
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -37,34 +38,30 @@ export default function staffRegForm() {
     queryFn: userDetails,
   });
 
-  // const { mutate } = useMutation({ mutationFn:  });
-
   const onSubmit = (data) => {
     setIsDialogOpen(true);
 
+    const { region, province, municipality, barangay, additional_address: address_line, ...rest } = data;
+
+    setAddressDataSubmit({ region, province, city: municipality, barangay, address_line });
+
     const birthdate = data.month + "-" + data.day + "-" + data.year;
     setDataSubmit({
-      age: data.age,
-      birthday: birthdate,
-      contact_num: data.contact_num,
-      email: data.email,
-      ext_name: data.extname,
-      first_name: data.fname,
-      gender: data.gender,
-      last_name: data.lname,
-      middle_name: data.mname,
-      region: data.region,
-      province: data.province,
-      city_muni: data.municipality,
-      barangay: data.barangay,
-      add_address: data.additional_address,
+      first_name: rest.fname,
+      last_name: rest.lname,
+      middle_name: rest.mname,
+      suffix: rest.extname,
+      birthdate,
+      mobile_number: rest.contact_num,
+      email: rest.email,
+      gender: rest.gender
     });
   };
 
   const finalSubmit = () => {
     setLoading(true);
     try {
-      const addUser = addStaff(dataSubmit);
+      const addUser = addStaff(dataSubmit, addressDataSubmit);
       if (addUser) {
         toast.success("Registered successfully");
         navigate("/user/sign-up");
