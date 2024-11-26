@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { centralSupabase } from "../../supabaseClient";
+import e from "cors";
 
 const getRegionName = async (regionId) => {
   try {
@@ -57,104 +58,66 @@ const addUserDetails = async (userData) => {
   const {
     region,
     province,
-    city_muni,
+    city,
     barangay,
-    add_address,
-    specialty,
-    license,
-    ptr_num,
-    s2_license_num,
-    prc_no,
+    address_line,
+    specialization,
+    license_number,
+    ptr_number,
+    s2_number,
+    prc_number,
+    professional_extension,
     ...userDetails
   } = userData;
-  // const {age,birthday,contact_num,email,ext_name,first_name,gender,last_name,middle_name,...userAddres} = userData
 
-  // console.log(userDetails);
-
-  const { data, error } = await centralSupabase
-    .from("UserDetails")
-    .insert([userDetails])
+  const { data: address_data, error } = await centralSupabase
+    .from("addresses")
+    .insert([{
+        region,
+        province,
+        city,
+        barangay,
+        address_line,
+      },
+    ])
     .select();
 
-  if (error) {
+  if(error){
     console.log("UserDetails: Server Error ", error);
     return { error: error };
   }
+  else{
+    const { data: user_data, error } = await centralSupabase
+    .from("users")
+    .insert([{...userDetails, address_id: address_data[0].id}])
+    .select();
 
-  const userAddress = {
-    user_id: data[0].id,
-    region: await getRegionName(userData.region),
-    province: await getProvinceName(userData.province),
-    city_muni: await getCityMuniName(userData.city_muni),
-    barangay: await getBarangayName(userData.barangay),
-    add_address: userData.add_address,
-  };
-
-  if (data) {
-    const { data, error } = await centralSupabase
-      .from("Address")
-      .insert([userAddress])
-      .select();
-
-    if (error) {
+    if(error){
       console.log("UserDetails: Server Error ", error);
       return { error: error };
     }
-  }
+    else{
+      const { data, error } = await centralSupabase
+        .from("doctor_details")
+        .insert({
+          user_id: user_data[0].id,
+          license_number,
+          ptr_number,
+          s2_number,
+          prc_number,
+          professional_extension,
+        })
+        .select();
 
-  const userSpecialty = {
-    user_id: data[0].id,
-    specialty: userData.specialty,
-  };
-
-  if (data) {
-    const { data, error } = await centralSupabase
-      .from("Specialty")
-      .insert([userSpecialty])
-      .select();
-
-    if (error) {
-      console.log("UserDetails: Server Error ", error);
-      return { error: error };
+      if(error){
+        console.log("UserDetails: Server Error ", error);
+        return { error: error };
+      }
+      else{
+        return data;
+      }
     }
   }
-
-  const licenseNum = [
-    {
-      user_id: data[0].id,
-      license: userData.license,
-      type: "License Number",
-    },
-    {
-      user_id: data[0].id,
-      license: userData.ptr_num,
-      type: "PTR Number",
-    },
-    {
-      user_id: data[0].id,
-      license: userData.s2_license_num,
-      type: "S2 License Number",
-    },
-    {
-      user_id: data[0].id,
-      license: userData.prc_no,
-      type: "PRC License Number",
-    },
-  ];
-
-  if (data) {
-    const { data, error } = await centralSupabase
-      .from("License")
-      .insert(licenseNum)
-      .select();
-
-    if (error) {
-      console.log("UserDetails: Server Error ", error);
-      return { error: error };
-    }
-  }
-
-  return data;
 };
 
 export default addUserDetails;

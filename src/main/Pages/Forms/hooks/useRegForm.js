@@ -45,26 +45,25 @@ export default function useRegForm() {
 
     const birthdate = data.month + "-" + data.day + "-" + data.year;
     setDataSubmit({
-      age: data.age,
-      birthday: birthdate,
-      contact_num: data.contact_num,
+      birthdate,
+      mobile_number: data.contact_num,
       email: data.email,
-      ext_name: data.extname,
+      suffix: data.extname,
       first_name: data.fname,
       gender: data.gender,
       last_name: data.lname,
       middle_name: data.mname,
       region: data.region,
       province: data.province,
-      city_muni: data.municipality,
+      city: data.municipality,
       barangay: data.barangay,
-      add_address: data.additional_address,
-      specialty: data.specialty,
-      license: data.license_num,
-      ptr_num: data.ptr_num,
-      s2_license_num: data.s2_license_num,
-      prof_extension: data.prof_extension,
-      prc_no: data.prc_no,
+      address_line: data.additional_address,
+      specialization: data.specialty,
+      license_number: data.license_num,
+      ptr_number: data.ptr_num,
+      s2_number: data.s2_license_num,
+      professional_extension: data.prof_extension,
+      prc_number: data.prc_no,
     });
   };
 
@@ -75,7 +74,7 @@ export default function useRegForm() {
 
       if (addUser) {
         toast.success("Registered successfully");
-        navigate("/user/sign-up");
+        navigate("/sign-up");
       }
     } catch (error) {
       toast.error("Registration Error!");
