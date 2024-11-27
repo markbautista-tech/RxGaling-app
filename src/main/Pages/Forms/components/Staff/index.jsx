@@ -91,7 +91,6 @@ const StaffRegFormComponent = () => {
               <NameComponent register={register} errors={errors} />
               {/* <Birthday register={register} errors={errors} control={control} /> */}
               <NewBirthday
-                register={register}
                 errors={errors}
                 control={control}
                 watch={watch}

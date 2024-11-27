@@ -51,42 +51,26 @@ const getBarangayName = async (barangayId) => {
   }
 };
 
-const addStaff = async (userData) => {
-  const { region, province, city_muni, barangay, add_address, ...userDetails } =
-    userData;
+const addStaff = async (userData, addressData) => {
+  const { data: address_data, error: address_error } = await centralSupabase
+    .from("addresses")
+    .insert([addressData])
+    .select();
 
-  console.log(userDetails);
+  if (address_error) {
+    console.log("Address: Server Error ", address_error);
+    return { error: address_error };
+  }
 
   const { data, error } = await centralSupabase
-    .from("UserDetails")
-    .insert([userDetails])
-    .select();
+    .from("users")
+    .insert([{ ...userData, address_id: address_data[0].id }]);
 
   if (error) {
     console.log("UserDetails: Server Error ", error);
     return { error: error };
   }
 
-  const userAddress = {
-    user_id: data[0].id,
-    region: await getRegionName(userData.region),
-    province: await getProvinceName(userData.province),
-    city_muni: await getCityMuniName(userData.city_muni),
-    barangay: await getBarangayName(userData.barangay),
-    add_address: userData.add_address,
-  };
-
-  if (data) {
-    const { data, error } = await centralSupabase
-      .from("Address")
-      .insert([userAddress])
-      .select();
-
-    if (error) {
-      console.log("UserDetails: Server Error ", error);
-      return { error: error };
-    }
-  }
   return data;
 };
 

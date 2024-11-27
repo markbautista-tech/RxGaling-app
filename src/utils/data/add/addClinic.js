@@ -53,36 +53,45 @@ const getBarangayName = async (barangayId) => {
 };
 
 export const addClinic = async (givenData) => {
-  const clinicDetails = {
-    name: givenData.name,
-    owner_id: givenData.owner_id,
-    status: "Unverified",
-  };
-
   try {
-    const { data, error } = await centralSupabase
-      .from("ClinicDetails")
-      .insert([clinicDetails])
-      .select();
-
-    if (error) {
-      console.log("Error inserting clinic details", error);
-    } else {
-      console.log("Successful add clinic details");
-    }
 
     const clinicAddress = {
-      clinic_id: data[0].id,
-      region: await getRegionName(givenData.clinic_region),
-      province: await getProvinceName(givenData.clinic_province),
-      city_muni: await getCityMuniName(givenData.clinic_municipality),
-      barangay: await getBarangayName(givenData.clinic_barangay),
-      add_address: givenData.clinic_add_address,
+      region: givenData.clinic_region,
+      province: givenData.clinic_province,
+      city: givenData.clinic_municipality,
+      barangay: givenData.clinic_barangay,
+      address_line: givenData.clinic_add_address,
     };
 
-    await addClinicAddress(clinicAddress);
+    const { data: clinic_address_data, clinic_address_error } = await centralSupabase
+      .from("addresses")
+      .insert([clinicAddress])
+      .select();
 
-    return data[0].id;
+    if (clinic_address_error) {
+      console.log("Error inserting clinic address", clinic_address_error);
+    } else {
+      console.log("Successfull add clinic address.");
+
+      const clinicDetails = {
+        name: givenData.name,
+        owner_id: givenData.owner_id,
+        address_id: clinic_address_data[0].id,
+      };
+
+      const { data, error } = await centralSupabase
+        .from("clinics")
+        .insert([clinicDetails])
+        .select();
+  
+      if (error) {
+        console.log("Error inserting clinic details", error);
+      } else {
+        console.log("Successful add clinic details");
+
+        return data[0].id;
+      }
+    }
   } catch (error) {
     console.log("Catch error add clinic details", error);
   }

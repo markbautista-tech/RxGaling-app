@@ -20,7 +20,6 @@ export const registrationSchema = z.object({
     .refine((val) => val >= 1700 && val <= new Date().getFullYear(), {
       message: `Year must be between 1700 and ${new Date().getFullYear()}`,
     }),
-  age: z.string().min(1, "Age is required."),
   gender: z.string().min(1, "Gender is required."),
   region: z.string().min(1, { message: "Region is required" }),
   province: z.string().min(1, { message: "Province is required" }),
@@ -31,12 +30,6 @@ export const registrationSchema = z.object({
   specialty: z.string().min(1, "Specialization is required."),
   prc_no: z.string().optional(),
   prof_extension: z.string().optional(),
-  // valid_id: z
-  //   .any()
-  //   .refine((file) => file?.length !== 0, "File is required")
-  //   .refine((file) => file.size < 300000000, "Max size is 30MB."),
-  // .refine((file) => checkFileType(file), "Only .pdf, .docx formats are supported."),
-  //z.string().optional(),
   ptr_num: z.string().optional(),
   s2_license_num: z.string().optional(),
 });

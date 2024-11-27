@@ -16,7 +16,7 @@ import useRegForm from "../hooks/useRegForm";
 import { Input } from "@/components/ui/input";
 import staffRegForm from "../hooks/staffRegForm";
 
-const NewBirthday = ({ register, control, errors, watch }) => {
+const NewBirthday = ({ control, errors, watch }) => {
   const [age, setAge] = useState(null);
 
   // Watch the values of month and year
@@ -151,23 +151,6 @@ const NewBirthday = ({ register, control, errors, watch }) => {
           {errors.year && (
             <p className="text-red-400 italic text-xs py-1 lg:text-sm">
               {errors.year.message}
-            </p>
-          )}
-        </div>
-
-        {/* Age */}
-        <div className="w-full">
-          <Label>Age</Label>
-          <Input
-            {...register("age")}
-            type="number"
-            value={age ? age : ""}
-            placeholder=""
-            readOnly
-          />
-          {errors.age && (
-            <p className="text-red-400 italic text-xs py-1 lg:text-sm">
-              {errors.age.message}
             </p>
           )}
         </div>

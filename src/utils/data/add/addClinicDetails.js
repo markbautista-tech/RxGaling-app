@@ -59,80 +59,100 @@ const getBarangayName = async (barangayId) => {
 };
 
 export const addClinicDetails = async (givenData) => {
-  const clinicOwnerDetails = {
-    first_name: givenData.fname,
-    middle_name: givenData.mname,
-    last_name: givenData.lname,
-    ext_name: givenData.extname,
-    gender: givenData.gender,
-    contact_num: givenData.contact_num,
-    email: givenData.email,
-    uid: uuidv4(),
-  };
-
   try {
-    const { data, error } = await centralSupabase
-      .from("ClinicOwnerDetails")
-      .insert([clinicOwnerDetails])
+    const ownerAddress = {
+      region: givenData.region,
+      province: givenData.province,
+      city: givenData.municipality,
+      barangay: givenData.barangay,
+      address_line: givenData.additional_address
+    };
+
+    const { data: address_data, error } = await centralSupabase
+      .from("addresses")
+      .insert([ownerAddress])
       .select();
 
-    const ownerAddress = {
-      owner_id: data[0].id,
-      region: await getRegionName(givenData.region),
-      province: await getProvinceName(givenData.province),
-      city_muni: await getCityMuniName(givenData.municipality),
-      barangay: await getBarangayName(givenData.barangay),
-      add_address: givenData.additional_address,
-    };
-
     if (error) {
-      console.log("Error inserting clinic owner details", error);
+      console.log("Error inserting clinic address details", error);
     } else {
-      console.log("Successfull inserting clinic owner details");
+      console.log("Successfull inserting clinic address details");
 
-      try {
-        const { data, error } = await centralSupabase
-          .from("ClinicOwnerAddress")
-          .insert([ownerAddress])
+        const birthdate = givenData.month + "-" + givenData.day + "-" + givenData.year;
+        const clinicOwnerDetails = {
+          address_id: address_data[0].id,
+          first_name: givenData.fname,
+          middle_name: givenData.mname,
+          last_name: givenData.lname,
+          suffix: givenData.extname,
+          gender: givenData.gender,
+          mobile_number: givenData.contact_num,
+          email: givenData.email,
+          birthdate
+        };
+
+        const { data: user_data, error } = await centralSupabase
+          .from("users")
+          .insert([clinicOwnerDetails])
           .select();
 
+        const owner_id = user_data[0].id;
+        
         if (error) {
-          console.log("Error inserting clinic owner address", error);
+          console.log("Error inserting clinic owner details", error);
         } else {
-          console.log("Successfull inserting clinic owner address");
+          console.log("Successfull inserting clinic owner details");
+
+          const clinic = {
+            name: givenData.clinic_name,
+            owner_id,
+            clinic_region: givenData.clinic_region,
+            clinic_province: givenData.clinic_province,
+            clinic_municipality: givenData.clinic_municipality,
+            clinic_barangay: givenData.clinic_barangay,
+            clinic_add_address: givenData.clinic_additional_address,
+          };
+      
+          const clinic_id = await addClinic(clinic);
+
+          if(clinic_id){
+            console.log("Successfull inserting clinic details");
+
+            const { clinic_staff_data, error } = await centralSupabase
+              .from("clinic_staffs")
+              .insert([{
+                clinic_id,
+                user_id: owner_id,
+                role: "Owner"
+              }]);
+
+            if(error){
+              console.log("Error inserting clinic staff details", error);
+            }
+            else{
+              console.log("Successfull inserting clinic staff details");
+            }
+          }
+          else{
+            console.log("Error inserting clinic details", error); 
+          }
+      
+          const request = {
+            owner_id: user_data[0].id,
+          };
+      
+          addClinicRequest(request);
+      
+          addFiles(
+            user_data[0].uid,
+            givenData.bir[0],
+            givenData.permit[0],
+            givenData.clinic_pic[0]
+          );
+      
+          return clinic_id;
         }
-      } catch (error) {
-        console.log("catch error owner address", error);
-      }
     }
-
-    const clinic = {
-      name: givenData.clinic_name,
-      owner_id: data[0].id,
-      // status: "Unverified",
-      clinic_region: givenData.clinic_region,
-      clinic_province: givenData.clinic_province,
-      clinic_municipality: givenData.clinic_municipality,
-      clinic_barangay: givenData.clinic_barangay,
-      clinic_add_address: givenData.clinic_additional_address,
-    };
-
-    addClinic(clinic);
-
-    const request = {
-      owner_id: data[0].id,
-    };
-
-    addClinicRequest(request);
-
-    addFiles(
-      data[0].uid,
-      givenData.bir[0],
-      givenData.permit[0],
-      givenData.clinic_pic[0]
-    );
-
-    return data[0].id;
   } catch (error) {
     console.log("Error inserting all Clinic Details", error);
   }

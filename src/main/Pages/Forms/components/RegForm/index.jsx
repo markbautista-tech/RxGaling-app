@@ -112,15 +112,6 @@ const RegFormComponent = () => {
                     </p>
                   )}
                 </div>
-                {/* <div>
-                  <Label>Valid ID</Label>
-                  <Input {...register("valid_id")} type="file" placeholder="" />
-                  {errors.valid_id && (
-                    <p className="text-red-400 italic text-xs py-1 lg:text-sm">
-                      {errors.valid_id.message}
-                    </p>
-                  )}
-                </div> */}
               </div>
             </div>
             <div className="grid grid-flow-row w-full gap-4 lg:grid-flow-col lg:justify-end py-5">
