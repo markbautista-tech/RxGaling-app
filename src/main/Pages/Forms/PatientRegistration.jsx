@@ -52,6 +52,7 @@ import usePatientReg from "./hooks/usePatientReg";
 import NewBirthday from "./components/NewBirthday";
 import NumberEmail from "./components/NumberEmail";
 import NameComponent from "./components/Name";
+import { UserRoundPlus } from "lucide-react";
 
 const UserRegistration = () => {
   const {
@@ -75,9 +76,12 @@ const UserRegistration = () => {
     <>
       <Dialog>
         <DialogTrigger asChild>
-          <Button variant="" className="rounded-md border">
-            Add Patient
-            {/* <IoAddCircle className="w-8 h-8 cursor-pointer lg:w-10 lg:h-10" /> */}
+          <Button
+            variant=""
+            className="rounded-md border flex items-center space-x-2"
+          >
+            <UserRoundPlus className="w-6 h-6" />
+            <span className="hidden sm:block">Add Patient</span>{" "}
           </Button>
         </DialogTrigger>
         <DialogContent className="lg:w-[80%] pb-[100px] lg:pb-10 lg:px-10">

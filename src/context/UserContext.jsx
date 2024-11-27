@@ -29,7 +29,7 @@ export const UserProvider = ({ children }) => {
     getAuth();
   }, []);
 
-  const value = { user, loading, setUser, role, email };
+  const value = { user, loading, setUser, role, email, setRole, setEmail };
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };

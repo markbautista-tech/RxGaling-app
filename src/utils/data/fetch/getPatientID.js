@@ -3,8 +3,8 @@ import React from "react";
 
 const getPatientID = async () => {
   const { data: patientIDData, error: patientIDError } = await centralSupabase
-    .from("PatientIDNumber")
-    .select("*")
+    .from("PatientDetails")
+    .select("id_number")
     .order("created_at", { ascending: false })
     .limit(1); // Get only the last inserted record
 

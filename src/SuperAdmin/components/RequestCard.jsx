@@ -22,6 +22,7 @@ import getClinicRequest from "../../utils/data/fetch/getClinicRequest";
 import getClinicDetails from "../../utils/data/fetch/getClinicDetails";
 import { Link } from "react-router-dom";
 import useClinicDetails from "../hooks/useClinicDetails";
+import { FileText, FileUser } from "lucide-react";
 
 const ClinicRequestCard = () => {
   const { clinicData, clinicReq, countRequest } = useClinicDetails();
@@ -37,9 +38,10 @@ const ClinicRequestCard = () => {
 
   return (
     <Dialog>
-      <DialogTrigger className="rounded-md bg-primary text-white text-xs lg:text-[16px] p-3 lg:p-4 shadow-md">
-        Clinic Request{" "}
-        <span className="ml-3 px-2 bg-white text-black rounded-sm font-semibold">
+      <DialogTrigger className="rounded-md bg-primary text-white text-xs lg:text-[16px] py-3 px-4 shadow-md flex gap-3 items-center">
+        <FileUser className="w-5 h-5" />
+        <span className="hidden sm:block">Clinic Request</span>
+        <span className=" text-white rounded-sm font-semibold">
           {countRequest()}
         </span>
       </DialogTrigger>

@@ -27,7 +27,7 @@ const loginSchema = z.object({
 
 export default function LoginForm() {
   const navigate = useNavigate();
-  const { user, loading, setUser, role } = useUser();
+  const { user, loading, setUser, role, setRole, setEmail } = useUser();
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
@@ -67,16 +67,12 @@ export default function LoginForm() {
       } else {
         toast.success("Login Successfully!");
         setUser(response);
+
         if (userRole === "admin") {
+          setRole(userRole);
+          setEmail(data.email);
           navigate("/admin");
-        } else if (
-          userRole === "clinic owner" ||
-          userRole === "Doctor" ||
-          userRole === "Clinic Nurse" ||
-          userRole === "Clinic Administrator" ||
-          userRole === "Clinic Secretary" ||
-          userRole === "Clinic Assistant"
-        ) {
+        } else {
           navigate("/clinic-app");
         }
       }
