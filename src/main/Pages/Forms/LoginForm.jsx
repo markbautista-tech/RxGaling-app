@@ -71,16 +71,16 @@ export default function LoginForm() {
           setRole(userRole);
           setEmail(data.email);
 
-        if (userRole === "admin") {
-          navigate("/admin");
-        } else {
-          navigate("/clinic-app");
+          if (userRole === "admin") {
+            navigate("/admin");
+          } else {
+            navigate("/clinic-app");
+          }
         }
-      }
-      else{
-        navigate("/");
-        toast.error("You are currently not in any clinics or pharmacies.");
-      }
+        else{
+          navigate("/");
+          toast.error("You are currently not in any clinics or pharmacies.");
+        }
       }
     } catch (err) {
       setError("Invalid email or password", err);
