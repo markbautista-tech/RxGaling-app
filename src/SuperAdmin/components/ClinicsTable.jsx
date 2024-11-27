@@ -8,25 +8,31 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { PiDotsThreeCircle } from "react-icons/pi";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ShowerHead } from "lucide-react";
 import ClinicActions from "./ClinicActions";
+import { Input } from "@/components/ui/input";
 
 const ClinicsTable = () => {
   return (
     <>
+      <div className="">
+        <Input
+          type="text"
+          placeholder="Search clinic..."
+          className="mb-4 text-xs lg:text-sm"
+        />
+      </div>
       <Table className="min-w-[90%]">
         <TableHeader>
           <TableRow>
             {/* Always visible headers */}
-            <TableHead className="text-left">Profile</TableHead>
+            <TableHead className="text-left w-[20px]"></TableHead>
             <TableHead className=" lg:table-cell">Clinic Name</TableHead>
-            <TableHead className=" lg:table-cell">Owner Name</TableHead>
-            <TableHead className="hidden lg:table-cell">
-              Clinic Address
-            </TableHead>
+            <TableHead className="hidden lg:table-cell">Owner Name</TableHead>
             <TableHead className="hidden lg:table-cell">Status</TableHead>
 
             <TableHead className="">Actions</TableHead>
@@ -44,14 +50,16 @@ const ClinicsTable = () => {
             <TableCell className="lg:table-cell max-w-[90px] lg:max-w-full truncate overflow-hidden">
               Acculife Medical Laboratory
             </TableCell>
-            <TableCell className="lg:table-cell max-w-[90px] lg:max-w-full truncate overflow-hidden">
+            <TableCell className="hidden lg:table-cell max-w-[90px] lg:max-w-full truncate overflow-hidden">
               Dr. Ray Mark Bautista
             </TableCell>
             <TableCell className="hidden lg:table-cell max-w-[90px] lg:max-w-full truncate overflow-hidden">
-              Aringay, La Union
-            </TableCell>
-            <TableCell className="hidden lg:table-cell max-w-[90px] lg:max-w-full truncate overflow-hidden">
-              Verified
+              <Badge
+                variant=""
+                className="bg-green-500 text-white border-green-500"
+              >
+                Verified
+              </Badge>
             </TableCell>
             <TableCell>
               <ClinicActions />

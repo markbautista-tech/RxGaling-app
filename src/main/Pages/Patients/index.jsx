@@ -22,17 +22,15 @@ const PatientsManangement = () => {
   return (
     <>
       <div className="py-2 lg:py-4 flex justify-between items-center no-scrollbar">
-        <ContentTitle title={"Patients"} />
+        <ContentTitle title={"Patients Management"} />
         <div className="relative flex ">
           <div className="flex items-center gap-2">
-            {/* <SearchBar /> */}
-            <div className="hidden lg:block">
+            <div className="">
               <div className="flex gap-3">
                 <PatientRegistration />
-                {/* <SelectClinic /> */}
               </div>
             </div>
-            <div className="relative">
+            {/* <div className="relative">
               {showMenu ? (
                 <TbX className="w-8 h-8 lg:hidden" onClick={toggleMenu} />
               ) : (
@@ -44,12 +42,9 @@ const PatientsManangement = () => {
                   <div>
                     <PatientRegistration />
                   </div>
-                  {/* <div className="w-full">
-                    <SelectClinic />
-                  </div> */}
                 </div>
               )}
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

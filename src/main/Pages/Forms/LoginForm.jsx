@@ -27,7 +27,7 @@ const loginSchema = z.object({
 
 export default function LoginForm() {
   const navigate = useNavigate();
-  const { user, loading, setUser, role } = useUser();
+  const { user, loading, setUser, role, setRole, setEmail } = useUser();
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
@@ -60,35 +60,27 @@ export default function LoginForm() {
         toast.error(loginError);
         return;
       }
-      else{
-        if(user?.error){
-          toast.error(user?.error);
-          return;
-        } 
-        else{
-          if(response.clinic_id && response.role){
-            setUser(response);
-            toast.success("Login Successfully!");
 
-            if(userRole === "admin"){
-              navigate("/admin");
-            } 
-            else if(
-              userRole === "Owner" ||
-              userRole === "Doctor" ||
-              userRole === "Clinic Nurse" ||
-              userRole === "Clinic Administrator" ||
-              userRole === "Clinic Secretary" ||
-              userRole === "Clinic Assistant"
-            ){
-              navigate("/clinic-app");
-            }
-          }
-          else{
-            navigate("/");
-            toast.error("You are currently not in any clinics or pharmacies.");
-          }
+      if (user?.error) {
+        toast.error(user?.error);
+        return;
+      } else {
+        if(response.clinic_id && response.role){
+          toast.success("Login Successfully!");
+          setUser(response);
+          setRole(userRole);
+          setEmail(data.email);
+
+        if (userRole === "admin") {
+          navigate("/admin");
+        } else {
+          navigate("/clinic-app");
         }
+      }
+      else{
+        navigate("/");
+        toast.error("You are currently not in any clinics or pharmacies.");
+      }
       }
     } catch (err) {
       setError("Invalid email or password", err);

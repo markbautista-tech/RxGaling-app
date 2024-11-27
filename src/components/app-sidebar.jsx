@@ -5,9 +5,11 @@ import {
   AudioWaveform,
   BookOpen,
   Bot,
+  ChartPie,
   Command,
   Frame,
   GalleryVerticalEnd,
+  Hospital,
   Map,
   PieChart,
   Settings2,
@@ -33,6 +35,8 @@ import { useUser } from "@/context/UserContext";
 import { AdminManage } from "./nav-adminManagement";
 import { AdminDashboard } from "./admin-dashboard";
 import { NavAdmin } from "./nav-admin";
+import { GiMedicines } from "react-icons/gi";
+import { NavReports } from "./nav-reports";
 
 // This is sample data.
 const data = {
@@ -69,6 +73,13 @@ const data = {
       icon: RiUserHeartLine,
     },
   ],
+  navReports: [
+    {
+      title: "Reports",
+      url: "",
+      icon: ChartPie,
+    },
+  ],
   navMain: [
     {
       title: "Management",
@@ -81,7 +92,7 @@ const data = {
         },
         {
           title: "Manage Staff",
-          url: "/clinic-app/user-management",
+          url: "/clinic-app/staff-management",
         },
         {
           title: "Pharmacy",
@@ -102,7 +113,7 @@ const data = {
         },
         {
           title: "Manage Pharmacy",
-          url: "#",
+          url: "",
         },
       ],
     },
@@ -113,6 +124,16 @@ const data = {
       url: "/admin/dashboard",
       icon: RiDashboardHorizontalLine,
       isActive: true,
+    },
+    {
+      title: "Manage Clinic",
+      url: "/admin/clinic-page",
+      icon: Hospital,
+    },
+    {
+      title: "Manage Pharmacy",
+      url: "/admin/pharmacy-page",
+      icon: GiMedicines,
     },
   ],
 };
@@ -131,16 +152,18 @@ export function AppSidebar({ ...props }) {
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         {!admin && <TeamSwitcher teams={data.teams} />}
+        {role === "admin" && <NavAdmin user={data.admin} email={email} />}
       </SidebarHeader>
       <SidebarContent>
         {role === "admin" && <AdminDashboard items={data.adminDash} />}
-        {role === "admin" && <AdminManage items={data.navAdmin} />}
-        {!admin && <NavNoDrop items={data.navNoDrop} />}
+        {/* {role === "admin" && <AdminManage items={data.navAdmin} />} */}
+        {role !== "admin" && <NavNoDrop items={data.navNoDrop} />}
 
         {!admin && <NavMain items={data.navMain} />}
+        {!admin && <NavReports items={data.navReports} />}
       </SidebarContent>
       <SidebarFooter>
-        {role === "admin" && <NavAdmin user={data.admin} email={email} />}
+        {/* {role === "admin" && <NavAdmin user={data.admin} email={email} />} */}
         {!admin && <NavUser user={data.user} email={email} />}
       </SidebarFooter>
       <SidebarRail />

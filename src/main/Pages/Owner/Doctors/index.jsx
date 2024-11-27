@@ -25,14 +25,18 @@ import ContentTitle from "../../../PageContent/ContentTitle";
 import CreateClinicDoctors from "./create";
 
 import { Switch } from "@/components/ui/switch";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import classNames from "classnames";
 import AddDoctor from "@/main/Doctor/components/AddDoctor";
+import AddNewExistingDoctor from "@/main/Doctor/components/AddNewExistingDoctor";
+import DoctorAction from "@/main/Doctor/components/DoctorAction";
 
 const ClinicDoctors = () => {
   const [users, setUsers] = useState([
     {
       id: 1,
       name: "Doc 1",
+      specialization: "Internal Medicine",
       days: "MWF",
       hrs: "8am-5pm",
       isIn: false,
@@ -40,6 +44,7 @@ const ClinicDoctors = () => {
     {
       id: 2,
       name: "Doc 2",
+      specialization: "Internal Medicine",
       days: "MWF",
       hrs: "9am-6pm",
       isIn: false,
@@ -47,13 +52,15 @@ const ClinicDoctors = () => {
     {
       id: 3,
       name: "Doc 3",
+      specialization: "Internal Medicine",
       days: "MWF",
       hrs: "10am-7pm",
       isIn: false,
     },
     {
       id: 4,
-      name: "MWF",
+      name: "Doc 4",
+      specialization: "Internal Medicine",
       days: "MWF",
       hrs: "11am-8pm",
       isIn: false,
@@ -61,6 +68,7 @@ const ClinicDoctors = () => {
     {
       id: 5,
       name: "Doc 5",
+      specialization: "Internal Medicine",
       days: "MWF",
       hrs: "12pm-9pm",
       isIn: false,
@@ -68,6 +76,7 @@ const ClinicDoctors = () => {
     {
       id: 6,
       name: "Doc 1",
+      specialization: "Internal Medicine",
       days: "TTHS",
       hrs: "8am-5pm",
       isIn: false,
@@ -75,6 +84,7 @@ const ClinicDoctors = () => {
     {
       id: 7,
       name: "Doc 7",
+      specialization: "General Medicine",
       days: "TTHS",
       hrs: "9am-6pm",
       isIn: true,
@@ -82,6 +92,7 @@ const ClinicDoctors = () => {
     {
       id: 8,
       name: "Doc 8",
+      specialization: "General Medicine",
       days: "TTHS",
       hrs: "10am-7pm",
       isIn: false,
@@ -89,6 +100,7 @@ const ClinicDoctors = () => {
     {
       id: 9,
       name: "Doc 9",
+      specialization: "General Medicine",
       days: "TTHS",
       hrs: "11am-8pm",
       isIn: false,
@@ -96,6 +108,7 @@ const ClinicDoctors = () => {
     {
       id: 10,
       name: "Doc 10",
+      specialization: "General Medicine",
       days: "TTHS",
       hrs: "12pm-9pm",
       isIn: false,
@@ -113,7 +126,8 @@ const ClinicDoctors = () => {
       <div className="py-2 lg:py-4 flex justify-between items-center no-scrollbar">
         <ContentTitle title={"Clinic Doctors"} />
         <div className="relative flex ">
-          <AddDoctor />
+          {/* <AddDoctor /> */}
+          <AddNewExistingDoctor />
         </div>
       </div>
       <div className="py-4">
@@ -130,21 +144,37 @@ const ClinicDoctors = () => {
       <Table className="text-xs lg:text-sm w-full ">
         <TableHeader>
           <TableRow>
-            {/* <TableHead className="text-primary font-bold" /> */}
+            <TableHead className=""></TableHead>
             <TableHead className="w-[80px] lg:w-[200px] text-primary font-bold">
               Name
             </TableHead>
-            <TableHead className="text-primary font-bold">Days</TableHead>
-            <TableHead className="text-primary font-bold">Hours</TableHead>
-            <TableHead className="text-primary font-bold">Action</TableHead>
+            <TableHead className="text-primary font-bold">
+              Specialization
+            </TableHead>
+            <TableHead className="text-primary font-bold">Schedule</TableHead>
+            <TableHead className="text-primary font-bold lg:w-[50px]">
+              Action
+            </TableHead>
+            <TableHead className="w-[20px]"></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody className="-z-40">
           {users.map((item, index) => (
             <TableRow key={index}>
+              <TableCell className="w-[20px]">
+                <Avatar>
+                  <AvatarImage src="https://github.com/shadcn.png" />
+                  <AvatarFallback>{item.name[0]}</AvatarFallback>
+                </Avatar>
+              </TableCell>
               <TableCell>{item.name}</TableCell>
-              <TableCell>{item.days}</TableCell>
-              <TableCell>{item.hrs}</TableCell>
+              <TableCell>{item.specialization}</TableCell>
+              <TableCell>
+                <div className="flex flex-col">
+                  <span>{item.days}</span>
+                  <span>{item.hrs}</span>
+                </div>
+              </TableCell>
               <TableCell className="flex items-center">
                 <Switch
                   id={`isIn-${item.name}`}
@@ -161,20 +191,9 @@ const ClinicDoctors = () => {
                   {item.isIn ? "Present" : "Absent"}
                 </Label>
               </TableCell>
-              {/* <TableCell className="space-x-2">
-                <Button size="icon">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                  </svg>
-
-                </Button>
-                <Button size="icon">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 3.75V16.5L12 14.25 7.5 16.5V3.75m9 0H18A2.25 2.25 0 0 1 20.25 6v12A2.25 2.25 0 0 1 18 20.25H6A2.25 2.25 0 0 1 3.75 18V6A2.25 2.25 0 0 1 6 3.75h1.5m9 0h-9" />
-                  </svg>
-
-                </Button>
-              </TableCell> */}
+              <TableCell>
+                <DoctorAction />
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

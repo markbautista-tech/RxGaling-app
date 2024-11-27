@@ -7,8 +7,10 @@ import {
   Link,
   useLocation,
 } from "react-router-dom";
-import AdminDashboard from "./components/Dashboard";
-import ClinicPage from "./components/ClinicPage";
+
+import ClinicPage from "./Pages/ClinicPage";
+import AdminDashboard from "./Pages/Dashboard";
+import PharmacyPage from "./Pages/PharmacyPage";
 
 const AdminRouterContent = () => {
   return (
@@ -17,6 +19,7 @@ const AdminRouterContent = () => {
         <Route path="/" element={<AdminDashboard />} />
         <Route path="/dashboard" element={<AdminDashboard />} />
         <Route path="/clinic-page/*" element={<ClinicPage />} />
+        <Route path="/pharmacy-page/*" element={<PharmacyPage />} />
       </Routes>
     </>
   );

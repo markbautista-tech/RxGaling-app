@@ -27,7 +27,7 @@ const PageTemplate = () => {
         <div className="lg:flex w-screen h-screen no-scrollbar">
           {/* <Sidebar /> */}
           <div className="w-full">
-            <div className="fixed w-full">
+            <div className="fixed w-full z-50">
               <PageHeader />
             </div>
             <div className=" lg:px-10 h-full pt-14 px-5 mb-10 no-scrollbar">

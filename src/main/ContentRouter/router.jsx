@@ -18,11 +18,12 @@ import ClinicStaff from "../Pages/Owner/Staff";
 import ClinicDoctors from "../Pages/Owner/Doctors";
 import Pharmacy from "../Pages/Pharmacy";
 import DoctorPage from "../Doctor";
+import StaffManagement from "../Pages/StaffManagement";
 
 const ContentRouter = () => {
   return (
     <Routes>
-      <Route path="/" exact element={<Dashboard />} />
+      <Route path="/*" exact element={<Dashboard />} />
       <Route path="/dashboard/*" exact element={<Dashboard />} />
 
       <Route path="/appointments/*" element={<Appointments />} />
@@ -30,7 +31,7 @@ const ContentRouter = () => {
       <Route path="/clinic-staff/*" element={<ClinicStaff />} />
       <Route path="/doctor-management/*" element={<ClinicDoctors />} />
       <Route path="/clinic-pharmacy/*" element={<Pharmacy />} />
-      <Route path="/user-management/*" element={<UserManagement />} />
+      <Route path="/staff-management/" element={<StaffManagement />} />
       <Route path="/profile-management/*" element={<ProfileManagement />} />
     </Routes>
   );

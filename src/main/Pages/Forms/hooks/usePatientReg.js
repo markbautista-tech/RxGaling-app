@@ -31,9 +31,17 @@ export default function usePatientReg() {
     const fetchPatientIdData = async () => {
       const patientID = await getPatientID();
 
-      const digitsAfterDash = parseInt(patientID.id_number.split("-")[1], 10);
+      if (!patientID) {
+        setCurrentNum(1001);
+      } else {
+        setCurrentNum(null);
+        const digitsAfterDash = parseInt(
+          patientID?.id_number.split("-")[1],
+          10
+        );
 
-      setCurrentNum(digitsAfterDash + 1);
+        setCurrentNum(digitsAfterDash + 1);
+      }
     };
 
     fetchPatientIdData();
@@ -66,7 +74,7 @@ export default function usePatientReg() {
       city_muni: data.municipality,
       barangay: data.barangay,
       add_address: data.additional_address,
-      patientIDNum: patientIDNum,
+      id_number: patientIDNum,
     });
   };
 

@@ -48,7 +48,7 @@ const useClinicDetails = () => {
 
   const countRequest = () => {
     if (!countReq || countReq.length === 0) {
-      return 0;
+      return null;
     } else {
       return countReq.length;
     }

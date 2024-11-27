@@ -20,12 +20,14 @@ import LoginForm from "@/main/Pages/Forms/LoginForm";
 import { useUser } from "@/context/UserContext";
 import UserSignUpForm from "@/main/Pages/Forms/UserSignUpForm";
 import Registered from "@/main/Pages/Forms/Registered";
+import PharmacyApp from "@/PharmacyApp";
+import PharmacyRegistration from "@/PharmacyApp/components/PharmacyRegistration";
 
 const MainRouter = () => {
   return (
     <>
       <Routes>
-        <Route path="/" element={<LoginForm />} />
+        <Route path="/*" element={<LoginForm />} />
         <Route path="/user-login" element={<LoginForm />} />
         <Route path="/sign-up" element={<SignUpForm />} />
         <Route path="/user/sign-up" element={<UserSignUpForm />} />
@@ -36,7 +38,6 @@ const MainRouter = () => {
         />
         <Route path="/clinic-registration" element={<ClinicForm />} />
         <Route path="/register-success/:id" element={<AppreciationMessage />} />
-
         <Route path="/clinic-app/*" element={<PageTemplate />} />
         {/* <Route path="/user-registration/*" element={<UserRegistration />} /> */}
         <Route path="/doctor-registration/*" element={<RegistrationForm />} />
@@ -45,9 +46,15 @@ const MainRouter = () => {
         <Route path="/clinic-manager/*" element={<ClinicManager />} />
         <Route path="/add-vitals" element={<AddVitals />} />
         <Route path="/add-prescription" element={<AddPrescription />} />
-
         {/* CLINIC STAFF/DOCTOR REGISTERED */}
         <Route path="/registered" element={<Registered />} />
+
+        {/* PHARMACY ROUTE */}
+        <Route path="/pharmacy-app/*" element={<PharmacyApp />} />
+        <Route
+          path="/pharmacy-registration/"
+          element={<PharmacyRegistration />}
+        />
       </Routes>
     </>
   );

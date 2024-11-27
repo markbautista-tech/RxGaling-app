@@ -58,7 +58,6 @@ const addPatientDetails = async (patientdata) => {
     city_muni,
     barangay,
     add_address,
-    patientIDNum,
     ...patientDetails
   } = patientdata;
 
@@ -98,31 +97,31 @@ const addPatientDetails = async (patientdata) => {
       return { error: patientAddressError };
     }
 
-    const patientIdData = {
-      patient_id: patientdetails[0].id,
-      id_number: patientdata.patientIDNum,
-    };
+    // const patientIdData = {
+    //   patient_id: patientdetails[0].id,
+    //   id_number: patientdata.patientIDNum,
+    // };
 
-    const { data: patientIDNum, error: patientIDNumError } =
-      await centralSupabase
-        .from("PatientIDNumber")
-        .insert([patientIdData])
-        .select();
+    // const { data: patientIDNum, error: patientIDNumError } =
+    //   await centralSupabase
+    //     .from("PatientIDNumber")
+    //     .insert([patientIdData])
+    //     .select();
 
-    if (patientIDNumError) {
-      await centralSupabase
-        .from("PatientDetails")
-        .delete()
-        .eq("id", patientdetails[0].id);
+    // if (patientIDNumError) {
+    //   await centralSupabase
+    //     .from("PatientDetails")
+    //     .delete()
+    //     .eq("id", patientdetails[0].id);
 
-      await centralSupabase
-        .from("PatientAddress")
-        .delete()
-        .eq("id", patientdetails[0].id);
+    //   await centralSupabase
+    //     .from("PatientAddress")
+    //     .delete()
+    //     .eq("id", patientdetails[0].id);
 
-      console.log("PatientIDNumber: Server Error ", patientIDNumError);
-      return { error: patientIDNumError };
-    }
+    //   console.log("PatientIDNumber: Server Error ", patientIDNumError);
+    //   return { error: patientIDNumError };
+    // }
 
     return "success";
   } catch (error) {
