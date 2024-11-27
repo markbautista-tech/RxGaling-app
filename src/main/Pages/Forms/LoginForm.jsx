@@ -54,30 +54,40 @@ export default function LoginForm() {
       await new Promise((resolve) => setTimeout(resolve, 500));
       const response = await login(data.email, data.password);
       const loginError = response.message;
-      const userRole = response?.user?.user_metadata?.role;
+      const userRole = response.role;
 
       if (loginError) {
         toast.error(loginError);
         return;
       }
+      else{
+        if(user?.error){
+          toast.error(user?.error);
+          return;
+        } 
+        else{
+          if(response.clinic_id && response.role){
+            setUser(response);
+            toast.success("Login Successfully!");
 
-      if (user?.error) {
-        toast.error(user?.error);
-        return;
-      } else {
-        toast.success("Login Successfully!");
-        setUser(response);
-        if (userRole === "admin") {
-          navigate("/admin");
-        } else if (
-          userRole === "clinic owner" ||
-          userRole === "Doctor" ||
-          userRole === "Clinic Nurse" ||
-          userRole === "Clinic Administrator" ||
-          userRole === "Clinic Secretary" ||
-          userRole === "Clinic Assistant"
-        ) {
-          navigate("/clinic-app");
+            if(userRole === "admin"){
+              navigate("/admin");
+            } 
+            else if(
+              userRole === "Owner" ||
+              userRole === "Doctor" ||
+              userRole === "Clinic Nurse" ||
+              userRole === "Clinic Administrator" ||
+              userRole === "Clinic Secretary" ||
+              userRole === "Clinic Assistant"
+            ){
+              navigate("/clinic-app");
+            }
+          }
+          else{
+            navigate("/");
+            toast.error("You are currently not in any clinics or pharmacies.");
+          }
         }
       }
     } catch (err) {
@@ -115,6 +125,7 @@ export default function LoginForm() {
                   id="email"
                   type="email"
                   placeholder="you@example.com"
+                  defaultValue="reguyalkirt6111@gmail.com"
                   {...register("email")}
                   aria-invalid={errors.email ? "true" : "false"}
                 />
@@ -129,6 +140,7 @@ export default function LoginForm() {
                 <Input
                   id="password"
                   type={showPassword ? "text" : "password"}
+                  defaultValue="TestP@ss123"
                   {...register("password")}
                   aria-invalid={errors.password ? "true" : "false"}
                 />
