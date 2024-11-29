@@ -37,6 +37,7 @@ import { AdminDashboard } from "./admin-dashboard";
 import { NavAdmin } from "./nav-admin";
 import { GiMedicines } from "react-icons/gi";
 import { NavReports } from "./nav-reports";
+import { useUserClinics } from "@/utils/data/fetch/fetchUserClinics";
 
 // This is sample data.
 const data = {
@@ -142,6 +143,8 @@ export function AppSidebar({ ...props }) {
   const { user, loading, setUser, role, email } = useUser();
   const [admin, setAdmin] = React.useState(false);
 
+  const { data: clinics, isLoading } = useUserClinics(user.id, user.clinic_id);
+  
   React.useEffect(() => {
     if (role === "admin") {
       setAdmin(true);
@@ -151,7 +154,7 @@ export function AppSidebar({ ...props }) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        {!admin && <TeamSwitcher teams={data.teams} />}
+        {!admin && isLoading ? <div>Loading...</div> : <TeamSwitcher teams={clinics} />}
         {role === "admin" && <NavAdmin user={data.admin} email={email} />}
       </SidebarHeader>
       <SidebarContent>
