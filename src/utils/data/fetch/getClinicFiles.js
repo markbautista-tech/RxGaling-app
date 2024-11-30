@@ -1,11 +1,11 @@
 import React from "react";
 import { centralSupabase } from "../../supabaseClient";
 
-export const getClinicPermit = (uid) => {
+export const getClinicPermit = (name) => {
   try {
     const { data, error } = centralSupabase.storage
       .from("Clinic_Storage")
-      .getPublicUrl(`${uid}/permit/${uid}-permit.jpg`);
+      .getPublicUrl(`${name}/permit/${name}-permit.jpg`);
 
     if (error) throw error;
 
@@ -13,11 +13,11 @@ export const getClinicPermit = (uid) => {
   } catch (error) {}
 };
 
-export const getClinicBIR = (uid) => {
+export const getClinicBIR = (name) => {
   try {
     const { data, error } = centralSupabase.storage
       .from("Clinic_Storage")
-      .getPublicUrl(`${uid}/bir/${uid}-bir.jpg`);
+      .getPublicUrl(`${name}/bir/${name}-bir.jpg`);
 
     if (error) throw error;
 
@@ -25,11 +25,11 @@ export const getClinicBIR = (uid) => {
   } catch (error) {}
 };
 
-export const getClinicPic = (uid) => {
+export const getClinicPic = (name) => {
   try {
     const { data, error } = centralSupabase.storage
       .from("Clinic_Storage")
-      .getPublicUrl(`${uid}/clinic_pic/${uid}-clinic_pic.jpg`);
+      .getPublicUrl(`${name}/clinic_pic/${name}-clinic_pic.jpg`);
 
     if (error) throw error;
 

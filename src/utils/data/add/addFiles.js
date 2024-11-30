@@ -1,7 +1,7 @@
 import React from "react";
 import { centralSupabase } from "../../supabaseClient";
 
-const addFiles = async (uid, bir, permit, clinic_pic) => {
+const addFiles = async (name, bir, permit, clinic_pic) => {
   // Function to upload a file to Supabase
   const uploadFile = async (file, filePath) => {
     try {
@@ -20,9 +20,9 @@ const addFiles = async (uid, bir, permit, clinic_pic) => {
     }
   };
 
-  const newBIR = `${uid}/bir/${uid}-bir.jpg`;
-  const newPermit = `${uid}/permit/${uid}-permit.jpg`;
-  const newPic = `${uid}/clinic_pic/${uid}-clinic_pic.jpg`;
+  const newBIR = `${name}/bir/${name}-bir.jpg`;
+  const newPermit = `${name}/permit/${name}-permit.jpg`;
+  const newPic = `${name}/clinic_pic/${name}-clinic_pic.jpg`;
 
   try {
     if (bir) {
