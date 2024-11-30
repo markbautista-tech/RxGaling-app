@@ -19,8 +19,8 @@ export const UserProvider = ({ children }) => {
       setUser(null);
     } else {
       setUser(auth);
-      setRole(auth?.user?.user_metadata?.role);
-      setEmail(auth?.user?.email);
+      setRole(auth.role);
+      setEmail(auth.email);
     }
     setLoading(false);
   };
