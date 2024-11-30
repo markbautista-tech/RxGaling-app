@@ -54,7 +54,7 @@ export default function LoginForm() {
       await new Promise((resolve) => setTimeout(resolve, 500));
       const response = await login(data.email, data.password);
       const loginError = response.message;
-      const userRole = response.role;
+      const userRole = response.role || response.user.user_metadata.role;
 
       if (loginError) {
         toast.error(loginError);
@@ -65,7 +65,7 @@ export default function LoginForm() {
         toast.error(user?.error);
         return;
       } else {
-        if (response.clinic_id && response.role) {
+        if (response.clinic_id && response.role || userRole === "admin") {
           toast.success("Login Successfully!");
           setUser(response);
           setRole(userRole);

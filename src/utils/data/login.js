@@ -16,6 +16,15 @@ export async function login(email, password) {
         data: [user_data],
         error,
       } = await centralSupabase.from("users").select().eq("email", email);
+
+      if(!user_data){
+        if(data.user.user_metadata.role === "admin"){
+          return data;
+        }
+
+        throw new Error("User data not found.");
+      }
+
       const {
         first_name,
         gender,
@@ -106,6 +115,10 @@ export async function fetchAuth() {
 
   // Ensure user_data is defined before destructuring
   if (!user_data) {
+    if(data.user.user_metadata.role === "admin"){
+      return data;
+    }
+
     throw new Error("User data not found.");
   }
 
