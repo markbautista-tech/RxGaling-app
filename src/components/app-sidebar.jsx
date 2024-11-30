@@ -141,21 +141,14 @@ const data = {
 
 export function AppSidebar({ ...props }) {
   const { user, loading, setUser, role, email } = useUser();
-  const [admin, setAdmin] = React.useState(false);
+  const [admin, setAdmin] = React.useState(role === "admin");
 
   const { data: clinics, isLoading } = useUserClinics(user.id, user.clinic_id);
-  
-  React.useEffect(() => {
-    if (role === "admin") {
-      setAdmin(true);
-    }
-  }, [role]);
 
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        {!admin && isLoading ? <div>Loading...</div> : <TeamSwitcher teams={clinics} />}
-        {role === "admin" && <NavAdmin user={data.admin} email={email} />}
+        {!admin ? (!admin && isLoading ? <div>Loading...</div> : <TeamSwitcher teams={clinics} />) : <NavAdmin user={data.admin} email={email} />}
       </SidebarHeader>
       <SidebarContent>
         {role === "admin" && <AdminDashboard items={data.adminDash} />}

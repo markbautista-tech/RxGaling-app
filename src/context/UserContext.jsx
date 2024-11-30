@@ -22,7 +22,7 @@ export const UserProvider = ({ children }) => {
       setUser(null);
     } else {
       setUser(auth);
-      setRole(auth.role);
+      setRole(auth.role ?? auth.user.user_metadata.role);
       setEmail(auth.email);
       setOwnerId(auth.id);
       setOwnerName(name);
