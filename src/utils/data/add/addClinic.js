@@ -1,60 +1,15 @@
 import React from "react";
 import { centralSupabase } from "../../supabaseClient";
 import addClinicAddress from "./addClinicAddress";
+import addFiles from "./addFiles";
+import {
+  getClinicBIR,
+  getClinicPermit,
+  getClinicPic,
+} from "../fetch/getClinicFiles";
 
-const getRegionName = async (regionId) => {
+export const addClinic = async (givenData, userId) => {
   try {
-    const response = await fetch(`https://psgc.cloud/api/regions/${regionId}`);
-    const data = await response.json();
-    return data.name;
-  } catch (err) {
-    console.log(err);
-    return null;
-  }
-};
-
-const getProvinceName = async (provinceId) => {
-  try {
-    const response = await fetch(
-      `https://psgc.cloud/api/provinces/${provinceId}`
-    );
-    const data = await response.json();
-    return data.name;
-  } catch (err) {
-    console.log(err);
-    return null;
-  }
-};
-
-const getCityMuniName = async (cityMuniId) => {
-  try {
-    const response = await fetch(
-      `https://psgc.cloud/api/cities-municipalities/${cityMuniId}`
-    );
-    const data = await response.json();
-    return data.name;
-  } catch (err) {
-    console.log(err);
-    return null;
-  }
-};
-
-const getBarangayName = async (barangayId) => {
-  try {
-    const response = await fetch(
-      `https://psgc.cloud/api/barangays/${barangayId}`
-    );
-    const data = await response.json();
-    return data.name;
-  } catch (err) {
-    console.log(err);
-    return null;
-  }
-};
-
-export const addClinic = async (givenData) => {
-  try {
-
     const clinicAddress = {
       region: givenData.clinic_region,
       province: givenData.clinic_province,
@@ -63,27 +18,39 @@ export const addClinic = async (givenData) => {
       address_line: givenData.clinic_add_address,
     };
 
-    const { data: clinic_address_data, clinic_address_error } = await centralSupabase
-      .from("addresses")
-      .insert([clinicAddress])
-      .select();
+    const { data: clinic_address_data, clinic_address_error } =
+      await centralSupabase.from("addresses").insert([clinicAddress]).select();
 
     if (clinic_address_error) {
       console.log("Error inserting clinic address", clinic_address_error);
     } else {
       console.log("Successfull add clinic address.");
 
+      await addFiles(
+        userId,
+        givenData.bir[0],
+        givenData.permit[0],
+        givenData.clinic_pic[0]
+      );
+
+      const birUrl = getClinicBIR(userId);
+      const permitUrl = getClinicPermit(userId);
+      const clinicPicUrl = getClinicPic(userId);
+
       const clinicDetails = {
         name: givenData.name,
         owner_id: givenData.owner_id,
         address_id: clinic_address_data[0].id,
+        mayor_permit_url: permitUrl.publicUrl,
+        bir_url: birUrl.publicUrl,
+        site_pic_url: clinicPicUrl.publicUrl,
       };
 
       const { data, error } = await centralSupabase
         .from("clinics")
         .insert([clinicDetails])
         .select();
-  
+
       if (error) {
         console.log("Error inserting clinic details", error);
       } else {

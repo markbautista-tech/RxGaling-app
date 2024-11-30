@@ -1,7 +1,7 @@
 import { Button, Html, Tailwind, Img } from "@react-email/components";
 import * as React from "react";
 
-export default function Appreciation(registration_number) {
+export default function Appreciation() {
   return (
     <Html>
       <Tailwind>
@@ -18,14 +18,6 @@ export default function Appreciation(registration_number) {
               <p className="font-semibold text-lg text-center">
                 Thank you for registering in our app! We’re excited to have you
                 on board.
-              </p>
-            </div>
-            <div className="p-7">
-              <p className="text-sm text-center font-semibold">
-                Registration Number:
-              </p>
-              <p className="text-2xl text-center font-bold">
-                {registration_number}
               </p>
             </div>
             <div>

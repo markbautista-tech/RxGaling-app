@@ -37,7 +37,7 @@ const MainRouter = () => {
           element={<DisplayRequestForm />}
         />
         <Route path="/clinic-registration" element={<ClinicForm />} />
-        <Route path="/register-success/:id" element={<AppreciationMessage />} />
+        <Route path="/register-success" element={<AppreciationMessage />} />
         <Route path="/clinic-app/*" element={<PageTemplate />} />
         {/* <Route path="/user-registration/*" element={<UserRegistration />} /> */}
         <Route path="/doctor-registration/*" element={<RegistrationForm />} />

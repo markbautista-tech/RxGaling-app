@@ -9,7 +9,6 @@ import SearchBar from "../main/Pages/components/Search";
 import Profile from "./components/Profile";
 import getClinicRequest from "../utils/data/fetch/getClinicRequest";
 import getClinicDetails from "../utils/data/fetch/getClinicDetails";
-import useClinicDetails from "./hooks/useClinicDetails";
 import { fetchAuth } from "@/utils/data/login";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "@/context/UserContext";

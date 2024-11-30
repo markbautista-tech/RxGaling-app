@@ -1,7 +1,7 @@
 import { Button, Html, Tailwind, Text } from "@react-email/components";
 import * as React from "react";
 
-export default function DeclineClinicRequest({ name, clinicName, reg_num }) {
+export default function DeclineClinicRequest({ name, clinicName }) {
   return (
     <Html>
       <Tailwind>
@@ -9,9 +9,6 @@ export default function DeclineClinicRequest({ name, clinicName, reg_num }) {
           <h1 className="text-2xl font-bold text-red-600">
             Registration Update
           </h1>
-          <span className="text-md font-semibold font-sans">
-            Registration Number: <b>{reg_num}</b>
-          </span>
           <Text className="text-gray-700 mt-4 font-sans">Dear Dr. {name},</Text>
           <Text className="text-gray-700 mt-4 font-sans">
             Thank you for your interest in registering <b>{clinicName}</b> with

@@ -4,9 +4,9 @@ import React from "react";
 const countClinicReq = async () => {
   try {
     const { data, error } = await centralSupabase
-      .from("ClinicRegistrationRequest")
+      .from("clinics")
       .select("*")
-      .eq("status", "Requested");
+      .eq("status", "Unverified");
 
     if (error) {
       console.log(error);

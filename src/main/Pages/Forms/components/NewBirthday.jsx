@@ -64,7 +64,7 @@ const NewBirthday = ({ control, errors, watch }) => {
       <div>
         <Label className="text-md">Birthday</Label>
       </div>
-      <div className="w-full grid grid-row-4 lg:grid-cols-4 gap-3">
+      <div className="w-full grid grid-row-4 lg:grid-cols-3 gap-3">
         {/* Month */}
         <div>
           <Label htmlFor="month">Month</Label>

@@ -48,6 +48,7 @@ const useClinicRegForm = () => {
   const onSubmit = (data) => {
     setIsDialogOpen(true);
     setDataSubmit(data);
+    // console.log(data);
   };
 
   const finalSubmit = async () => {
@@ -58,9 +59,9 @@ const useClinicRegForm = () => {
       setIsError(false);
       const clinic_id = await addClinicDetails(dataSubmit);
       if (clinic_id) {
-        navigate(`/register-success/${clinic_id}`);
+        navigate(`/register-success`);
         toast.success("Registered successfully");
-        sendAppreciation(dataSubmit.email, clinic_id);
+        sendAppreciation(dataSubmit.email);
         return;
       }
     } catch (error) {
@@ -94,7 +95,7 @@ const useClinicRegForm = () => {
     setIsFailedDialog,
     loading,
     setLoading,
-    watch
+    watch,
   };
 };
 

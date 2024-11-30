@@ -5,7 +5,6 @@ import { RiArrowRightDoubleLine } from "react-icons/ri";
 import { Link, useParams } from "react-router-dom";
 
 const AppreciationMessage = () => {
-  const { id } = useParams();
   return (
     <>
       <div className="h-screen flex-center-all px-5 lg:px-16 bg-gray-200">
@@ -16,21 +15,11 @@ const AppreciationMessage = () => {
           <h1 className="text-center font-bold text-2xl text-green-700">
             CONGRATULATIONS!
           </h1>
-
-          {/* <div className="flex-center-all">
-            <FcAcceptDatabase className="w-24 h-24" />
-          </div> */}
           <div>
             <p className="font-semibold text-lg text-center">
               Thank you for registering in our app! We’re excited to have you on
               board.
             </p>
-          </div>
-          <div className="p-7">
-            <p className="text-sm lg:text-md text-center font-semibold">
-              Registration Number:
-            </p>
-            <p className="text-2xl lg:text-3xl text-center font-bold">{id}</p>
           </div>
           <div>
             <p className="text-gray-600 text-center">

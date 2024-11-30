@@ -24,7 +24,6 @@ import LoadingUI from "@/main/components/loadingUI";
 import { FcOk } from "react-icons/fc";
 import { FcHighPriority } from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
-import useClinicDetails from "../hooks/useClinicDetails";
 
 const ClinicForm = () => {
   const navigate = useNavigate();
@@ -46,10 +45,9 @@ const ClinicForm = () => {
     setIsFailedDialog,
     loading,
     setLoading,
-    watch
+    watch,
   } = useClinicRegForm();
 
-  const { registrationNumber } = useClinicDetails();
   return (
     <>
       <div>
@@ -162,11 +160,7 @@ const ClinicForm = () => {
                           </AlertDialogHeader>
                           <AlertDialogFooter className="flex justify-center">
                             <AlertDialogAction
-                              onClick={() =>
-                                navigate(
-                                  `/register-success/${registrationNumber}`
-                                )
-                              }
+                              onClick={() => navigate(`/register-success`)}
                               className="lg:w-40"
                             >
                               Continue

@@ -6,6 +6,7 @@ import dns from "node:dns";
 dns.setDefaultResultOrder("verbatim");
 
 export default defineConfig({
+  base: "/",
   plugins: [react()],
   resolve: {
     alias: {

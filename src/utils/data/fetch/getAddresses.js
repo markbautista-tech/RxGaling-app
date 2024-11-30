@@ -1,7 +1,7 @@
 import React from "react";
 import { centralSupabase } from "../../supabaseClient";
 
-const getClinicAddress = async (id) => {
+const getAddresses = async (id) => {
   try {
     const { data, error } = await centralSupabase
       .from("addresses")
@@ -18,4 +18,4 @@ const getClinicAddress = async (id) => {
   }
 };
 
-export default getClinicAddress;
+export default getAddresses;

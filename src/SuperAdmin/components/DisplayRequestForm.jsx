@@ -6,7 +6,6 @@ import { Separator } from "@/components/ui/separator";
 
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
-import useClinicDetails from "../hooks/useClinicDetails";
 import { Button } from "@/components/ui/button";
 import Welcome from "../../emails/Welcome";
 
@@ -28,38 +27,38 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import useAddresses from "../hooks/useAddresses";
+import { useClinicRequestData } from "../hooks/useClinicRequestData";
 
 const DisplayRequestForm = () => {
   const navigate = useNavigate();
+
   const {
-    clinicReq,
+    getOwnerID,
     clinicData,
-    requestDate,
-    getOwnerFirstName,
-    getOwnerMiddleName,
-    getOwnerLastName,
-    getOwnerExtName,
-    getOwnerGender,
-    getOwnerNumber,
-    getOwnerEmail,
-    getOwnerRegion,
-    getOwnerProvince,
-    getOwnerCityMuni,
-    getOwnerBarangay,
-    getOwnerAddAddress,
-    getClinicName,
-    getClinicID,
-    getClinicRegion,
-    getClinicProvince,
-    getClinicCityMuni,
-    getClinicBarangay,
-    getClinicAddAddress,
-    getOwnerUID,
-    getPermit,
-    getBIR,
-    getPic,
-    regNumber,
-  } = useClinicDetails();
+    clinicDataName,
+    setClinicData,
+    setClinicDataName,
+    dateReq,
+    clinicRegion,
+    clinicProvince,
+    clinicCityMuni,
+    clinicBarangay,
+    clinicAddress,
+    regionName,
+    provinceName,
+    cityMuniName,
+    barangayName,
+    ownerFname,
+    ownerLname,
+    ownerMname,
+    ownerEname,
+    ownerContact,
+    ownerEmail,
+    ownerBirthdate,
+    ownerGender,
+    ownerAddress,
+  } = useClinicRequestData();
 
   const {
     declineClinicRequest,
@@ -72,38 +71,30 @@ const DisplayRequestForm = () => {
     setIsAcceptDialogOpen,
   } = useUpdateClinicStatus();
 
-  const { id } = useParams();
-
-  const clinicID = getClinicID(id);
-  const ownerUID = getOwnerUID(id);
-
-  const permitURL = getPermit(ownerUID);
-  const birURL = getBIR(ownerUID);
-  const picURL = getPic(ownerUID);
-
   const handlePermit = () => {
-    window.open(permitURL, "_blank");
+    window.open(clinicData[0].mayor_permit_url, "_blank");
   };
 
   const handleBIR = () => {
-    window.open(birURL, "_blank");
+    window.open(clinicData[0].bir_url, "_blank");
   };
 
   const handlePic = () => {
-    window.open(picURL, "_blank");
+    window.open(clinicData[0].site_pic_url, "_blank");
   };
 
-  const name = getOwnerLastName(id);
-  const clinicName = getClinicName(id);
-  const email = getOwnerEmail(id);
-  const reg_num = regNumber(id);
+  const { id } = useParams();
+
+  useEffect(() => {
+    getOwnerID(id);
+  }, [id]);
 
   return (
     <>
       <div className="no-scrollbar px-5 lg:px-14 bg-gray-100">
         <div className="w-full flex items-center gap-5 p-5 lg:p-10">
           <div>
-            <Link to="/admin">
+            <Link to="/admin/clinic-page">
               <IoMdArrowRoundBack className="w-6 h-6 cursor-pointer" />
             </Link>
           </div>
@@ -122,15 +113,11 @@ const DisplayRequestForm = () => {
               <div className="flex flex-col gap-2 lg:flex-row lg:gap-7">
                 <p className="text-sm lg:text-md">
                   <span className="font-semibold">Date Requested: </span>
-                  {new Date(requestDate(id)).toLocaleDateString("en-US", {
+                  {new Date(dateReq).toLocaleDateString("en-US", {
                     year: "numeric",
                     month: "long",
                     day: "numeric",
                   })}
-                </p>
-                <p className="text-sm lg:text-md">
-                  <span className="font-semibold">Registration Number: </span>
-                  {reg_num}
                 </p>
               </div>
             </div>
@@ -138,59 +125,71 @@ const DisplayRequestForm = () => {
               <div className="grid grid-flow-row gap-3 lg:grid-flow-col w-full pb-3 lg:p-0">
                 <div className="">
                   <Label htmlFor="fname">First Name</Label>
-                  <Input type="text" readOnly value={getOwnerFirstName(id)} />
+                  <Input type="text" readOnly value={ownerFname} />
                 </div>
                 <div>
                   <Label htmlFor="mname">Middle Name</Label>
-                  <Input type="text" readOnly value={getOwnerMiddleName(id)} />
+                  <Input type="text" readOnly value={ownerMname} />
                 </div>
                 <div>
                   <Label htmlFor="lname">Last Name</Label>
-                  <Input type="text" readOnly value={getOwnerLastName(id)} />
+                  <Input type="text" readOnly value={ownerLname} />
                 </div>
               </div>
               <div className="">
                 <Label htmlFor="ename">Ext. Name</Label>
-                <Input type="text" readOnly value={getOwnerExtName(id)} />
+                <Input type="text" readOnly value={ownerEname} />
               </div>
             </div>
             <div className="grid grid-flow-row gap-3 lg:grid-flow-col w-full pb-3 lg:p-0">
               <div className="">
                 <Label htmlFor="gender">Gender</Label>
-                <Input type="text" readOnly value={getOwnerGender(id)} />
+                <Input type="text" readOnly value={ownerGender} />
               </div>
               <div className="">
                 <Label htmlFor="number">Mobile Number</Label>
-                <Input type="text" readOnly value={getOwnerNumber(id)} />
+                <Input type="text" readOnly value={ownerContact} />
               </div>
               <div className="">
                 <Label htmlFor="email">Email</Label>
-                <Input type="text" readOnly value={getOwnerEmail(id)} />
+                <Input type="text" readOnly value={ownerEmail} />
+              </div>
+              <div className="">
+                <Label htmlFor="email">Birthdate</Label>
+                <Input
+                  type="text"
+                  readOnly
+                  value={new Date(ownerBirthdate).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                />
               </div>
             </div>
             <div className="grid grid-flow-row gap-3 lg:grid-flow-col w-full pb-3 lg:p-0">
               <div className="">
                 <Label htmlFor="region">Region</Label>
-                <Input type="text" readOnly value={getOwnerRegion(id)} />
+                <Input type="text" readOnly value={regionName} />
               </div>
               <div className="">
                 <Label htmlFor="province">Province</Label>
-                <Input type="text" readOnly value={getOwnerProvince(id)} />
+                <Input type="text" readOnly value={provinceName} />
               </div>
             </div>
             <div className="grid grid-flow-row gap-3 lg:grid-flow-col w-full pb-3 lg:p-0">
               <div className="">
                 <Label htmlFor="city">City/Municipality</Label>
-                <Input type="text" readOnly value={getOwnerCityMuni(id)} />
+                <Input type="text" readOnly value={cityMuniName} />
               </div>
               <div className="">
                 <Label htmlFor="barangay">Barangay</Label>
-                <Input type="text" readOnly value={getOwnerBarangay(id)} />
+                <Input type="text" readOnly value={barangayName} />
               </div>
             </div>
             <div className="">
               <Label htmlFor="add_address">Additional Address</Label>
-              <Input type="text" readOnly value={getOwnerAddAddress(id)} />
+              <Input type="text" readOnly value={ownerAddress} />
             </div>
             <div className="py-5 px-3">
               <Separator orientation="horizontal" className="" />
@@ -198,47 +197,31 @@ const DisplayRequestForm = () => {
             <p className="font-bold text-md lg:text-xl">Clinic Details</p>
             <div className="">
               <Label htmlFor="clinic">Clinic Name</Label>
-              <Input type="text" readOnly value={getClinicName(id)} />
+              <Input type="text" readOnly value={clinicDataName} />
             </div>
             <div className="grid grid-flow-row gap-3 lg:grid-flow-col w-full pb-3 lg:p-0">
               <div className="">
                 <Label htmlFor="region">Region</Label>
-                <Input type="text" readOnly value={getClinicRegion(clinicID)} />
+                <Input type="text" readOnly value={clinicRegion} />
               </div>
               <div className="">
                 <Label htmlFor="province">Province</Label>
-                <Input
-                  type="text"
-                  readOnly
-                  value={getClinicProvince(clinicID)}
-                />
+                <Input type="text" readOnly value={clinicProvince} />
               </div>
             </div>
             <div className="grid grid-flow-row gap-3 lg:grid-flow-col w-full pb-3 lg:p-0">
               <div className="">
                 <Label htmlFor="city">City/Municipality</Label>
-                <Input
-                  type="text"
-                  readOnly
-                  value={getClinicCityMuni(clinicID)}
-                />
+                <Input type="text" readOnly value={clinicCityMuni} />
               </div>
               <div className="">
                 <Label htmlFor="barangay">Barangay</Label>
-                <Input
-                  type="text"
-                  readOnly
-                  value={getClinicBarangay(clinicID)}
-                />
+                <Input type="text" readOnly value={clinicBarangay} />
               </div>
             </div>
             <div className="">
               <Label htmlFor="add_address">Additional Address</Label>
-              <Input
-                type="text"
-                readOnly
-                value={getClinicAddAddress(clinicID)}
-              />
+              <Input type="text" readOnly value={clinicAddress} />
             </div>
             <div className="flex flex-col gap-3">
               <div className="flex flex-col gap-3">
@@ -310,7 +293,9 @@ const DisplayRequestForm = () => {
               <AlertDialogContent>
                 <AlertDialogHeader>
                   <AlertDialogTitle>
-                    Are you sure declining {getClinicName(id)}'s request?
+                    Are you sure declining{" "}
+                    <span className="text-red-600">{clinicDataName}</span>'s
+                    request?
                   </AlertDialogTitle>
                   <AlertDialogDescription className="flex gap-3">
                     This action cannot be undone. This will decline the clinic
@@ -320,13 +305,13 @@ const DisplayRequestForm = () => {
                 <AlertDialogFooter>
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
                   <AlertDialogAction
+                    className="hover:bg-red-500"
                     onClick={() => {
                       declineClinicRequest(
                         id,
-                        name,
-                        clinicName,
-                        email,
-                        reg_num
+                        ownerLname,
+                        clinicDataName,
+                        ownerEmail
                       ) && navigate("/admin/clinic-page");
                     }}
                   >
@@ -352,7 +337,9 @@ const DisplayRequestForm = () => {
               <AlertDialogContent>
                 <AlertDialogHeader>
                   <AlertDialogTitle>
-                    Confirm accepting {getClinicName(id)}'s request?
+                    Confirm accepting{" "}
+                    <span className="text-green-600">{clinicDataName}</span>'s
+                    request?
                   </AlertDialogTitle>
                   <AlertDialogDescription className="flex gap-3">
                     This action confirms the clinic request to be accepted to
@@ -362,13 +349,13 @@ const DisplayRequestForm = () => {
                 <AlertDialogFooter>
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
                   <AlertDialogAction
+                    className="hover:bg-green-500"
                     onClick={() => {
                       acceptClinicRequest(
                         id,
-                        name,
-                        clinicName,
-                        email,
-                        reg_num
+                        ownerLname,
+                        clinicDataName,
+                        ownerEmail
                       ) && navigate("/admin/clinic-page");
                     }}
                   >

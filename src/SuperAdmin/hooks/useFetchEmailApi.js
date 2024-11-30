@@ -79,8 +79,8 @@ const useFetchEmailApi = () => {
     }
   };
 
-  const sendAppreciation = async (email, reg_number) => {
-    const emailHtml = ReactDOMServer.renderToString(Appreciation(reg_number));
+  const sendAppreciation = async (email) => {
+    const emailHtml = ReactDOMServer.renderToString(Appreciation());
     try {
       const response = await fetch("/api/send-appreciation", {
         method: "POST",

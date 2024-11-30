@@ -1,6 +1,7 @@
 import {
   declineRequest,
   acceptRequest,
+  archive,
 } from "@/utils/data/update/updateRequest";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -23,14 +24,8 @@ const useUpdateClinicStatus = () => {
     setIsAcceptDialogOpen(true);
   };
 
-  const declineClinicRequest = async (
-    ownerId,
-    name,
-    clinicName,
-    email,
-    reg_num
-  ) => {
-    sendEmailDecline(name, clinicName, email, reg_num);
+  const declineClinicRequest = async (ownerId, name, clinicName, email) => {
+    sendEmailDecline(name, clinicName, email);
     const response = await declineRequest(ownerId);
 
     if (response === "success") {
@@ -44,14 +39,8 @@ const useUpdateClinicStatus = () => {
     }
   };
 
-  const acceptClinicRequest = async (
-    ownerId,
-    name,
-    clinicName,
-    email,
-    reg_num
-  ) => {
-    sendEmailAccept(name, clinicName, email, reg_num);
+  const acceptClinicRequest = async (ownerId, name, clinicName, email) => {
+    sendEmailAccept(name, clinicName, email);
     const response = await acceptRequest(ownerId);
 
     if (response === "success") {
@@ -64,7 +53,17 @@ const useUpdateClinicStatus = () => {
     }
   };
 
+  const updateArchive = async (ownerId) => {
+    const response = await archive(ownerId);
+    if (response === "Archived") {
+      toast.success("Clinic request archived");
+    } else {
+      toast.error("Error archiving clinic request");
+    }
+  };
+
   return {
+    updateArchive,
     declineClinicRequest,
     acceptClinicRequest,
     isDecline,

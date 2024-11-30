@@ -1,0 +1,15 @@
+{
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/",
+      "has": [
+        {
+          "type": "header",
+          "key": "X-Vercel-Ignore",
+          "value": "1"
+        }
+      ]
+    }
+  ]
+}

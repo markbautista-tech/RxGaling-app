@@ -21,33 +21,29 @@ import ViewRequestDetails from "./ViewRequest";
 import getClinicRequest from "../../utils/data/fetch/getClinicRequest";
 import getClinicDetails from "../../utils/data/fetch/getClinicDetails";
 import { Link } from "react-router-dom";
-import useClinicDetails from "../hooks/useClinicDetails";
 import { FileText, FileUser } from "lucide-react";
+import useRequestCard from "../hooks/useRequestCard";
 
 const ClinicRequestCard = () => {
-  const { clinicData, clinicReq, countRequest } = useClinicDetails();
-
-  const getClinicName = (ownerId) => {
-    if (!clinicData || clinicData.length === 0) {
-      return "No Clinic";
-    }
-
-    const clinicName = clinicData.find((name) => name.owner_id === ownerId);
-    return clinicName ? clinicName.name : "No Clinic";
-  };
+  const { clinicOwner, clinic, countRequest, getClinicName } = useRequestCard();
 
   return (
     <Dialog>
       <DialogTrigger className="rounded-md bg-primary text-white text-xs lg:text-[16px] py-3 px-4 shadow-md flex gap-3 items-center">
         <FileUser className="w-5 h-5" />
         <span className="hidden sm:block">Clinic Request</span>
-        <span className=" text-white rounded-sm font-semibold">
-          {countRequest()}
-        </span>
+        {countRequest != null && (
+          <span className="bg-white py-1 px-2 text-red-600 rounded-full font-semibold">
+            {countRequest()}
+          </span>
+        )}
       </DialogTrigger>
       <DialogContent className="lg:max-w-[70%] p-2 lg:p-10">
         <DialogHeader>
-          <DialogTitle className="font-bold text-sm lg:text-2xl">
+          <DialogTitle className="font-bold text-sm lg:text-2xl flex items-center gap-5">
+            <span className="bg-white py-1 px-2 text-red-600 rounded-full font-semibold">
+              {countRequest()}
+            </span>
             Clinic Requests
           </DialogTitle>
           <DialogDescription></DialogDescription>
@@ -61,7 +57,7 @@ const ClinicRequestCard = () => {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {clinicReq.map((clinic_req) => (
+              {clinic.map((clinic_req) => (
                 <div
                   key={clinic_req.id}
                   className="border border-primary shadow-md p-3 rounded-md"
@@ -74,10 +70,10 @@ const ClinicRequestCard = () => {
                     {/* <p className="text-sm lg:text-lg font-bold">Clinic Name:</p> */}
                     <p className="text-sm lg:text-md">
                       <span className="font-semibold">Owner: </span>
-                      Dr. {clinic_req.ClinicOwnerDetails.first_name}{" "}
-                      {clinic_req.ClinicOwnerDetails.middle_name.charAt(0)}
+                      Dr. {clinic_req.users.first_name}{" "}
+                      {clinic_req.users.middle_name.charAt(0)}
                       {". "}
-                      {clinic_req.ClinicOwnerDetails.last_name}
+                      {clinic_req.users.last_name}
                     </p>
                     <p className="text-sm lg:text-md">
                       <span className="font-semibold">Date Requested: </span>
@@ -89,12 +85,6 @@ const ClinicRequestCard = () => {
                           day: "numeric",
                         }
                       )}
-                    </p>
-                    <p className="text-sm lg:text-md">
-                      <span className="font-semibold">
-                        Registration Number:{" "}
-                      </span>
-                      {clinic_req.registration_number}
                     </p>
                   </div>
                   <div className="flex justify-end">
