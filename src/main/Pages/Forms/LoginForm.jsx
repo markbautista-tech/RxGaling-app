@@ -65,7 +65,7 @@ export default function LoginForm() {
         toast.error(user?.error);
         return;
       } else {
-        if(response.clinic_id && response.role){
+        if (response.clinic_id && response.role) {
           toast.success("Login Successfully!");
           setUser(response);
           setRole(userRole);
@@ -76,8 +76,7 @@ export default function LoginForm() {
           } else {
             navigate("/clinic-app");
           }
-        }
-        else{
+        } else {
           navigate("/");
           toast.error("You are currently not in any clinics or pharmacies.");
         }
@@ -117,7 +116,7 @@ export default function LoginForm() {
                   id="email"
                   type="email"
                   placeholder="you@example.com"
-                  defaultValue="reguyalkirt6111@gmail.com"
+                  defaultValue=""
                   {...register("email")}
                   aria-invalid={errors.email ? "true" : "false"}
                 />
@@ -132,7 +131,7 @@ export default function LoginForm() {
                 <Input
                   id="password"
                   type={showPassword ? "text" : "password"}
-                  defaultValue="TestP@ss123"
+                  defaultValue=""
                   {...register("password")}
                   aria-invalid={errors.password ? "true" : "false"}
                 />
