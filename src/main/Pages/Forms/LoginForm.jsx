@@ -116,7 +116,6 @@ export default function LoginForm() {
                   id="email"
                   type="email"
                   placeholder="you@example.com"
-                  defaultValue=""
                   {...register("email")}
                   aria-invalid={errors.email ? "true" : "false"}
                 />
@@ -131,7 +130,6 @@ export default function LoginForm() {
                 <Input
                   id="password"
                   type={showPassword ? "text" : "password"}
-                  defaultValue=""
                   {...register("password")}
                   aria-invalid={errors.password ? "true" : "false"}
                 />
