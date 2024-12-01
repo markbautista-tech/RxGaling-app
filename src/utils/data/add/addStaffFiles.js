@@ -1,12 +1,12 @@
 import React from "react";
 import { centralSupabase } from "../../supabaseClient";
 
-const addFiles = async (name, bir, permit, clinic_pic) => {
+const addStaffFiles = async (id, valid_id, gov_valid_id) => {
   // Function to upload a file to Supabase
   const uploadFile = async (file, filePath) => {
     try {
-      const { data: clinicFiles, error } = await centralSupabase.storage
-        .from("Clinic_Storage")
+      const { data: staffFiles, error } = await centralSupabase.storage
+        .from("Staff_Storage")
         .upload(filePath, file, {
           cacheControl: "3600",
           upsert: false,
@@ -20,25 +20,20 @@ const addFiles = async (name, bir, permit, clinic_pic) => {
     }
   };
 
-  const newBIR = `${name}/bir/${name}-bir.jpg`;
-  const newPermit = `${name}/permit/${name}-permit.jpg`;
-  const newPic = `${name}/clinic_pic/${name}-clinic_pic.jpg`;
+  const newValidID = `${id}/valid_id/${id}-valid_id.jpg`;
+  const newGovValidID = `${id}/gov_valid_id/${id}-gov_valid_id.jpg`;
 
   try {
-    if (bir) {
-      await uploadFile(bir, newBIR);
+    if (valid_id) {
+      await uploadFile(valid_id, newValidID);
     }
 
-    if (permit) {
-      await uploadFile(permit, newPermit);
-    }
-
-    if (clinic_pic) {
-      await uploadFile(clinic_pic, newPic);
+    if (gov_valid_id) {
+      await uploadFile(gov_valid_id, newGovValidID);
     }
   } catch (error) {
     console.error("Error handling file uploads:", error.message);
   }
 };
 
-export default addFiles;
+export default addStaffFiles;

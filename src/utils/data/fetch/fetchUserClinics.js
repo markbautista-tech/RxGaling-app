@@ -5,12 +5,14 @@ import { centralSupabase } from "../../supabaseClient";
 const getUserClinics = async (user_id) => {
   const { data, error } = await centralSupabase
     .from("clinic_staffs")
-    .select(`
+    .select(
+      `
       clinics!inner (
         id,
         name
       )
-    `)
+    `
+    )
     .eq("user_id", user_id);
 
   if (error) {
@@ -30,3 +32,17 @@ export const useUserClinics = (user_id) => {
 };
 
 export default useUserClinics;
+
+export const getAllUsersClinics = async () => {
+  const { data, error } = await centralSupabase
+    .from("clinic_staffs")
+    .select(
+      "*, users(first_name, middle_name, last_name, suffix, birthdate, mobile_number, email)"
+    );
+
+  if (error) {
+    return { error: error.message };
+  }
+
+  return data;
+};

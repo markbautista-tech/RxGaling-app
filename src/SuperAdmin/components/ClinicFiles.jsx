@@ -13,7 +13,7 @@ const ClinicFiles = ({ register, errors }) => {
       <div>
         <div className="space-y-3 lg:space-y-5">
           <p className="italic text-sm lg:text-md">
-            Please upload pictures for the following:
+            Please upload pictures(.jpeg, .jpg) for the following:
           </p>
           <div>
             <Label>Mayor's Permit</Label>

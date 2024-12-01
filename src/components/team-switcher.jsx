@@ -19,6 +19,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { useUser } from "@/context/UserContext";
+import { Link } from "react-router-dom";
 
 export function TeamSwitcher({ teams }) {
   const { role } = useUser();
@@ -66,8 +67,7 @@ export function TeamSwitcher({ teams }) {
                 onClick={() => setActiveTeam(team)}
                 className="gap-2 p-2"
               >
-                <div className="flex size-6 items-center justify-center rounded-sm border">
-                </div>
+                <div className="flex size-6 items-center justify-center rounded-sm border"></div>
                 {team.name}
                 {/* <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut> */}
               </DropdownMenuItem>
@@ -75,14 +75,16 @@ export function TeamSwitcher({ teams }) {
             <DropdownMenuSeparator />
 
             {owner && (
-              <DropdownMenuItem className="gap-2 p-2">
-                <div className="flex size-6 items-center justify-center rounded-md border bg-background">
-                  <Plus className="size-4" />
-                </div>
-                <div className="font-medium text-muted-foreground">
-                  Add Clinic
-                </div>
-              </DropdownMenuItem>
+              <Link to="/clinic-app/register-new-clinic">
+                <DropdownMenuItem className="gap-2 p-2 cursor-pointer">
+                  <div className="flex size-6 items-center justify-center rounded-md border bg-background ">
+                    <Plus className="size-4" />
+                  </div>
+                  <div className="font-medium text-muted-foreground">
+                    Add Clinic
+                  </div>
+                </DropdownMenuItem>
+              </Link>
             )}
           </DropdownMenuContent>
         </DropdownMenu>

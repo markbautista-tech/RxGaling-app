@@ -6,9 +6,9 @@ import ReactDOMServer from "react-dom/server";
 const useEmailApi = () => {
   const [loading, setloading] = useState(false);
 
-  const sendInvite = async (email, role, url) => {
+  const sendInvite = async (email, role, url, clinicName) => {
     const emailHtml = ReactDOMServer.renderToString(
-      InviteUserClinic({ url, role })
+      InviteUserClinic({ url, role, clinicName })
     );
     try {
       const response = await fetch("/api/send-email", {
@@ -18,7 +18,7 @@ const useEmailApi = () => {
         },
         body: JSON.stringify({
           to: email,
-          subject: "Welcome to [Clinic name]",
+          subject: `Welcome to ${clinicName}`,
           html: emailHtml,
         }),
       });

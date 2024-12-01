@@ -42,7 +42,7 @@ const MainRouter = () => {
         {/* <Route path="/user-registration/*" element={<UserRegistration />} /> */}
         <Route path="/doctor-registration/*" element={<RegistrationForm />} />
         {/* <Route path="/nurse-registration/*" element={<NurseRegistration />} /> */}
-        <Route path="/staff-registration/*" element={<StaffRegistration />} />
+        <Route path="/staff-registration/:id" element={<StaffRegistration />} />
         <Route path="/clinic-manager/*" element={<ClinicManager />} />
         <Route path="/add-vitals" element={<AddVitals />} />
         <Route path="/add-prescription" element={<AddPrescription />} />

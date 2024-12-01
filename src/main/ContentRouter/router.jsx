@@ -19,6 +19,7 @@ import ClinicDoctors from "../Pages/Owner/Doctors";
 import Pharmacy from "../Pages/Pharmacy";
 import DoctorPage from "../Doctor";
 import StaffManagement from "../Pages/StaffManagement";
+import AddNewClinic from "../Pages/AddNewClinic";
 
 const ContentRouter = () => {
   return (
@@ -33,6 +34,8 @@ const ContentRouter = () => {
       <Route path="/clinic-pharmacy/*" element={<Pharmacy />} />
       <Route path="/staff-management/" element={<StaffManagement />} />
       <Route path="/profile-management/*" element={<ProfileManagement />} />
+
+      <Route path="/register-new-clinic/*" element={<AddNewClinic />} />
     </Routes>
   );
 };

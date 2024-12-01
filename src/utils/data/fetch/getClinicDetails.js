@@ -31,3 +31,20 @@ export const getCompleteClinicDetails = async () => {
     return error;
   }
 };
+
+export const getClinicData = async (clinicId) => {
+  try {
+    const { data, error } = await centralSupabase
+      .from("clinics")
+      .select()
+      .eq("id", clinicId);
+
+    if (error) {
+      return { error: error.message };
+    } else {
+      return data[0].name;
+    }
+  } catch (err) {
+    return { error: err.message };
+  }
+};

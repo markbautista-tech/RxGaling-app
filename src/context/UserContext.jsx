@@ -10,17 +10,24 @@ export const UserProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [role, setRole] = useState(null);
   const [email, setEmail] = useState(null);
+  const [ownerId, setOwnerId] = useState(null);
+  const [ownerName, setOwnerName] = useState(null);
+  const [clinicId, setClinicId] = useState(null);
 
   const getAuth = async () => {
     setLoading(true);
     const auth = await fetchAuth();
 
+    const name = `${auth.first_name} ${auth.middle_name} ${auth.last_name} ${auth.suffix}`;
     if (auth.error) {
       setUser(null);
     } else {
       setUser(auth);
       setRole(auth.role ?? auth.user?.user_metadata?.role);
       setEmail(auth.email);
+      setOwnerId(auth.id);
+      setOwnerName(name);
+      setClinicId(auth.clinic_id);
     }
     setLoading(false);
   };
@@ -29,7 +36,18 @@ export const UserProvider = ({ children }) => {
     getAuth();
   }, []);
 
-  const value = { user, loading, setUser, role, email, setRole, setEmail };
+  const value = {
+    user,
+    loading,
+    setUser,
+    role,
+    email,
+    setRole,
+    setEmail,
+    ownerId,
+    ownerName,
+    clinicId,
+  };
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };
