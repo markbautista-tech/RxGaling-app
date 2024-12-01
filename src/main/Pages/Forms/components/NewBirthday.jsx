@@ -85,7 +85,7 @@ const NewBirthday = ({ control, errors, watch, birthdate }) => {
                 value={field.value}
               >
                 <SelectTrigger id="month">
-                  <SelectValue placeholder={months ? months[month - 1] : "Select month"} />
+                  <SelectValue placeholder={month ? months[month - 1] : "Select month"} />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem selected={month === "01"} value="01">January</SelectItem>
@@ -145,7 +145,6 @@ const NewBirthday = ({ control, errors, watch, birthdate }) => {
               <Select
                 onValueChange={(value) => {
                   field.onChange(value);
-                  setAge(calculateAge(value));
                 }}
                 value={field.value}
               >

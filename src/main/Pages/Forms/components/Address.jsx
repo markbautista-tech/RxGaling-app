@@ -282,6 +282,10 @@ const Address = ({ register, control, errors, existing_address }) => {
                       id="barangay"
                       value={address.barangay}
                       onValueChange={(value) => {
+                        setAddress({
+                          ...address,
+                          barangay: value
+                        })
                         field.onChange(value);
                       }}
                     >
