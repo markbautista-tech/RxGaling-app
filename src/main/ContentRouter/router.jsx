@@ -13,7 +13,7 @@ import Dashboard from "../Pages/Dashboard";
 import PatientsManangement from "../Pages/Patients";
 import UserManagement from "../Pages/UserManagement";
 import PatientRegistration from "../Pages/Forms/PatientRegistration";
-import ProfileManagement from "../Pages/ProfileManagement";
+import ProfileManagement from "../Pages/ProfileManagement/Profile";
 import ClinicStaff from "../Pages/Owner/Staff";
 import ClinicDoctors from "../Pages/Owner/Doctors";
 import Pharmacy from "../Pages/Pharmacy";

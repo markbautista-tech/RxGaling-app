@@ -14,7 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import useRegForm from "../hooks/useRegForm";
 
-const SelectGender = ({ control, errors }) => {
+const SelectGender = ({ control, errors, gender }) => {
   return (
     <div className="">
       <div className="grid lg:grid-flow-col gap-3">
@@ -23,6 +23,7 @@ const SelectGender = ({ control, errors }) => {
           <Controller
             name="gender"
             control={control}
+            {...(gender ? { defaultValue: gender } : {})}
             render={({ field }) => (
               <Select
                 id="gender"
@@ -30,7 +31,7 @@ const SelectGender = ({ control, errors }) => {
                 onValueChange={field.onChange}
               >
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select gender" />
+                  <SelectValue placeholder={ gender || "Select gender" } />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>

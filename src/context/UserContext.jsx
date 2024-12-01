@@ -19,7 +19,7 @@ export const UserProvider = ({ children }) => {
       setUser(null);
     } else {
       setUser(auth);
-      setRole(auth.role ?? auth.user.user_metadata.role);
+      setRole(auth.role ?? auth.user?.user_metadata?.role);
       setEmail(auth.email);
     }
     setLoading(false);
