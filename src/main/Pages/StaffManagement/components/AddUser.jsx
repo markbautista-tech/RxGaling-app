@@ -28,6 +28,9 @@ import fetchRole from "../../../../utils/data/fetch/fetchRole";
 import useEmailApi from "../hooks/useEmailApi";
 import { toast } from "sonner";
 import { SquarePlus } from "lucide-react";
+import { useUser } from "@/context/UserContext";
+import inviteNewStaff from "@/utils/data/add/inviteNewStaff";
+import { getClinicData } from "@/utils/data/fetch/getClinicDetails";
 
 const addUserSchema = z.object({
   email: z.string().email("Invalid email address").trim(),
@@ -35,10 +38,11 @@ const addUserSchema = z.object({
 });
 
 const AddUser = () => {
+  const { role, clinicId } = useUser();
+
   const [roleData, setRoleData] = useState([]);
   const [fetchError, setFetchError] = useState(null);
   const { sendInvite, sendInviteNodemailer, loading } = useEmailApi();
-  const [url, setUrl] = useState(null);
 
   const {
     register,
@@ -54,38 +58,49 @@ const AddUser = () => {
     const getRoles = async () => {
       try {
         const roles = await fetchRole();
-        setRoleData(roles);
+        const filteredRoles = roles.filter(
+          (r) =>
+            r.role.toLowerCase() !== "doctor" &&
+            !(
+              r.role.toLowerCase() === "clinic administrator" &&
+              role.toLowerCase() === "clinic administrator"
+            )
+        );
+        setRoleData(filteredRoles);
       } catch (error) {
         setFetchError("Failed to fetch roles.");
       }
     };
     getRoles();
-  }, []);
+  }, [role]);
 
   const onSubmit = async (data) => {
-    if (data.role) {
-      if (data.role === "Doctor") {
-        setUrl(null);
-        setUrl("http://localhost:3000/doctor-registration");
-      }
+    let url = "";
+    let userId = "";
+    const inviteResponse = await inviteNewStaff(
+      data.email,
+      clinicId,
+      data.role
+    );
 
-      if (
-        data.role === "Clinic Nurse" ||
-        data.role === "Clinic Administrator" ||
-        data.role === "Clinic Secretary" ||
-        data.role === "Clinic Assistant"
-      ) {
-        setUrl(null);
-        setUrl("http://localhost:3000/staff-registration");
-      }
+    if (inviteResponse) {
+      userId = inviteResponse.userID;
     }
+    console.log(userId);
 
-    // const response = sendInvite(data.email, data.role, url);
+    if (data.role) {
+      url = `http://localhost:3000/staff-registration/${userId}`;
+      // url = (`http://rxgaling.online/staff-registration/${clinicId}`);
+    }
     console.log(url);
-    const response = await sendInviteNodemailer(data.email, data.role, url);
 
-    if (response) {
-      toast.success("Invitation sent successfully");
+    const clinicName = await getClinicData(clinicId);
+
+    const response = sendInvite(data.email, data.role, url, clinicName);
+    // const response = await sendInviteNodemailer(data.email, data.role, url);
+
+    if (response && inviteResponse) {
+      toast.success(inviteResponse.success);
       reset();
     } else {
       toast.error("Invitation error!");

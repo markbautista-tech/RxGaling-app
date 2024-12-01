@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { centralSupabase } from "../../supabaseClient";
 import checkAuth from "../checkAuth";
+import addStaffFiles from "./addStaffFiles";
 const getRegionName = async (regionId) => {
   try {
     const response = await fetch(`https://psgc.cloud/api/regions/${regionId}`);
@@ -51,7 +52,7 @@ const getBarangayName = async (barangayId) => {
   }
 };
 
-const addStaff = async (userData, addressData) => {
+const addStaff = async (userData, addressData, userId, staffIdPic) => {
   const { data: address_data, error: address_error } = await centralSupabase
     .from("addresses")
     .insert([addressData])
@@ -64,12 +65,19 @@ const addStaff = async (userData, addressData) => {
 
   const { data, error } = await centralSupabase
     .from("users")
-    .insert([{ ...userData, address_id: address_data[0].id }]);
+    .update([{ ...userData, address_id: address_data[0].id }])
+    .eq("id", userId);
 
   if (error) {
     console.log("UserDetails: Server Error ", error);
     return { error: error };
   }
+
+  await addStaffFiles(
+    userId,
+    staffIdPic.valid_id[0],
+    staffIdPic.gov_valid_id[0]
+  );
 
   return data;
 };

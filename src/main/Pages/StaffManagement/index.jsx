@@ -17,8 +17,7 @@ const StaffManagement = () => {
               {/* <SearchBar /> */}
               <div className="hidden lg:block">
                 <div className="flex gap-3">
-                  {role === "clinic owner" ||
-                  role === "Clinic Administrator" ? (
+                  {role === "Owner" || role === "Clinic Administrator" ? (
                     <AddNewExistingStaff />
                   ) : null}
                 </div>

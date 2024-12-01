@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { ClinicStaffSchema } from "../schema/ClinicStaff";
@@ -8,6 +8,7 @@ import { centralSupabase } from "../../../../utils/supabaseClient";
 import { addStaff } from "../../../../utils/data/add/addStaff";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import getUserEmail from "@/utils/data/fetch/getUserDetails";
 
 export default function staffRegForm() {
   const navigate = useNavigate();
@@ -17,6 +18,8 @@ export default function staffRegForm() {
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [userEmail, setUserEmail] = useState(null);
+  const [idDataSubmit, setIdDataSubmit] = useState({});
 
   const {
     register,
@@ -38,12 +41,31 @@ export default function staffRegForm() {
     queryFn: userDetails,
   });
 
+  const getEmail = async (userId) => {
+    const email = await getUserEmail(userId);
+
+    return email ? email : null;
+  };
+
   const onSubmit = (data) => {
     setIsDialogOpen(true);
 
-    const { region, province, municipality, barangay, additional_address: address_line, ...rest } = data;
+    const {
+      region,
+      province,
+      municipality,
+      barangay,
+      additional_address: address_line,
+      ...rest
+    } = data;
 
-    setAddressDataSubmit({ region, province, city: municipality, barangay, address_line });
+    setAddressDataSubmit({
+      region,
+      province,
+      city: municipality,
+      barangay,
+      address_line,
+    });
 
     const birthdate = data.month + "-" + data.day + "-" + data.year;
     setDataSubmit({
@@ -53,15 +75,24 @@ export default function staffRegForm() {
       suffix: rest.extname,
       birthdate,
       mobile_number: rest.contact_num,
-      email: rest.email,
-      gender: rest.gender
+      gender: rest.gender,
+    });
+
+    setIdDataSubmit({
+      valid_id: rest.picture,
+      gov_valid_id: rest.gov_id_picture,
     });
   };
 
-  const finalSubmit = () => {
+  const finalSubmit = (userId) => {
     setLoading(true);
     try {
-      const addUser = addStaff(dataSubmit, addressDataSubmit);
+      const addUser = addStaff(
+        dataSubmit,
+        addressDataSubmit,
+        userId,
+        idDataSubmit
+      );
       if (addUser) {
         toast.success("Registered successfully");
         navigate("/sign-up");
@@ -86,5 +117,6 @@ export default function staffRegForm() {
     setIsDialogOpen,
     watch,
     loading,
+    getEmail,
   };
 }

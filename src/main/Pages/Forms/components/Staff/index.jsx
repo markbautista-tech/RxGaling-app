@@ -44,8 +44,10 @@ import { ConfirmUserReg } from "../../../components/ConfirmDialog";
 import { HiMiniBellAlert } from "react-icons/hi2";
 import fetchRole from "../../../../../utils/data/fetch/fetchRole";
 import NewBirthday from "../NewBirthday";
+import { useParams } from "react-router-dom";
 
 const StaffRegFormComponent = () => {
+  const { id } = useParams();
   const {
     handleSubmit,
     onSubmit,
@@ -59,9 +61,11 @@ const StaffRegFormComponent = () => {
     setIsDialogOpen,
     watch,
     loading,
+    getEmail,
   } = staffRegForm();
 
   const [roleData, setRoleData] = useState([]);
+  const [userEmail, setUserEmail] = useState("");
 
   useEffect(() => {
     const getRoles = async () => {
@@ -76,6 +80,16 @@ const StaffRegFormComponent = () => {
     };
     getRoles();
   }, []);
+
+  useEffect(() => {
+    const fetchEmail = async () => {
+      const user_email = await getEmail(id);
+      setUserEmail(user_email?.email);
+    };
+
+    fetchEmail();
+  }, [id]);
+
   return (
     <>
       <Card className="lg:px-10 bg-gray-200">
@@ -90,14 +104,39 @@ const StaffRegFormComponent = () => {
             <div className="space-y-3 lg:space-y-5">
               <NameComponent register={register} errors={errors} />
               {/* <Birthday register={register} errors={errors} control={control} /> */}
-              <NewBirthday
-                errors={errors}
-                control={control}
-                watch={watch}
-              />
+              <NewBirthday errors={errors} control={control} watch={watch} />
               <div className="grid grid-flow-row gap-3 lg:grid-flow-col w-full pb-3 lg:p-0">
                 <SelectGender errors={errors} control={control} />
-                <NumberEmail register={register} errors={errors} />
+
+                <div>
+                  <Label>Mobile Number</Label>
+                  <Input
+                    {...register("contact_num")}
+                    type="number"
+                    placeholder=""
+                  />
+                  {errors.contact_num && (
+                    <p className="text-red-400 italic text-xs py-1 lg:text-sm">
+                      {errors.contact_num.message}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <Label>Email</Label>
+                  <Input
+                    {...register("email")}
+                    type="email"
+                    placeholder="example@gmail.com"
+                    value={userEmail}
+                  />
+                  {errors.email && (
+                    <p className="text-red-400 italic text-xs py-1 lg:text-sm">
+                      {errors.email.message}
+                    </p>
+                  )}
+                </div>
+
+                {/* <NumberEmail register={register} errors={errors} /> */}
               </div>
               <Address register={register} errors={errors} control={control} />
 
@@ -177,7 +216,7 @@ const StaffRegFormComponent = () => {
                   </AlertDialogHeader>
                   <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction onClick={finalSubmit}>
+                    <AlertDialogAction onClick={() => finalSubmit(id)}>
                       Confirm
                     </AlertDialogAction>
                   </AlertDialogFooter>
