@@ -19,7 +19,6 @@ export const ClinicStaffSchema = z.object({
     .string()
     .min(10, "Contact number should be at least 10 digits.")
     .max(11, "Contact number should be no longer than 11 digits."),
-  age: z.string().min(1, "Age is required."),
   gender: z.string().min(1, "Gender is required."),
   region: z.string().min(1, { message: "Region is required" }),
   province: z.string().min(1, { message: "Province is required" }),

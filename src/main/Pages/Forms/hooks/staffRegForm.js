@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { ClinicStaffSchema } from "../schema/ClinicStaff";
@@ -48,6 +48,7 @@ export default function staffRegForm() {
   };
 
   const onSubmit = (data) => {
+    console.log(data);
     setIsDialogOpen(true);
 
     const {
