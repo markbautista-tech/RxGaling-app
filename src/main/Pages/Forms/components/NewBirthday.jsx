@@ -19,9 +19,9 @@ import staffRegForm from "../hooks/staffRegForm";
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 const NewBirthday = ({ control, errors, watch, birthdate }) => {
-  const [month, setMonth] = useState(birthdate.split("-")[1]);
-  const [day, setDay] = useState(birthdate.split("-")[2]);
-  const [year, setYear] = useState(birthdate.split("-")[0]);
+  const [month, setMonth] = useState(birthdate?.split("-")[1]);
+  const [day, setDay] = useState(birthdate?.split("-")[2]);
+  const [year, setYear] = useState(birthdate?.split("-")[0]);
 
   // Watch the values of month and year
   const selectedMonth = watch("month");

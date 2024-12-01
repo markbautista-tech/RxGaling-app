@@ -25,10 +25,10 @@ const Address = ({ register, control, errors, existing_address }) => {
   const [barangay, setBarangay] = useState([]);
 
   const [address, setAddress] = useState({
-    region: existing_address.region || "",
-    province: existing_address.province || "",
-    municipality: existing_address.city || "",
-    barangay: existing_address.barangay || ""
+    region: existing_address?.region || "",
+    province: existing_address?.province || "",
+    municipality: existing_address?.city || "",
+    barangay: existing_address?.barangay || ""
   });
 
   useEffect(() => {
@@ -37,15 +37,15 @@ const Address = ({ register, control, errors, existing_address }) => {
       .then((data) => setRegions(data))
       .catch((err) => console.log(err));
 
-    if(existing_address.region){
+    if(existing_address?.region){
       regionChange(existing_address.region, true);
     }
 
-    if(existing_address.province, true){
+    if(existing_address?.province){
       provinceChange(existing_address.province, true);
     }
 
-    if(existing_address.city, true){
+    if(existing_address?.city){
       muniChange(existing_address.city, true);
     }
   }, []);
@@ -326,7 +326,7 @@ const Address = ({ register, control, errors, existing_address }) => {
               {...register("additional_address")}
               type="text"
               placeholder="House No., Street, Building..."
-              defaultValue={existing_address.address_line}
+              defaultValue={existing_address?.address_line}
             />
           </div>
         </div>
