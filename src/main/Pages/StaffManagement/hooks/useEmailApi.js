@@ -93,50 +93,41 @@ const useEmailApi = () => {
     }
   };
 
-  const sendDoctorInvite = async (email, url) => {
-    const emailHtml = ReactDOMServer.renderToString(InviteDoctor({ url }));
-    setloading(true);
-
+  const sendDoctorInvite = async (email, url, clinicName) => {
+    const emailHtml = ReactDOMServer.renderToString(
+      InviteDoctor({ url, clinicName })
+    );
     try {
-      //FOR LOCAL DEV
-      const response = await fetch("http://localhost:5000/send-email", {
+      const response = await fetch("/api/send-email", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          recipient: email,
-          subject: "Welcome to Clinic",
-          htmlContent: emailHtml,
+          to: email,
+          subject: `Welcome to ${clinicName}`,
+          html: emailHtml,
         }),
       });
 
-      //FOR PRODUCTION
-      // const response = await fetch("https://user.rxgaling.online:5000/send-email", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify({
-      //     recipient: email,
-      //     subject: "Welcome to Clinic",
-      //     htmlContent: emailHtml,
-      //   }),
-      // });
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Failed to send email you:", response.status, errorText);
 
-      const data = await response.json();
-
-      if (response.ok) {
-        console.log(data.message);
-      } else {
-        console.error("Error: ", data.error);
+        return;
       }
 
-      return response;
+      // Check if response has content
+      const contentType = response.headers.get("content-type");
+      if (contentType && contentType.includes("application/json")) {
+        const data = await response.json();
+        console.log("Email sent successfully:", data);
+        return data;
+      } else {
+        console.warn("Response is not JSON:", await response.text());
+      }
     } catch (error) {
-      console.error("Error occurred: ", error.message);
-    } finally {
-      setloading(false);
+      console.error("Error:", error);
     }
   };
 

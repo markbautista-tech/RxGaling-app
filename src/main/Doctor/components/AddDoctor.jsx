@@ -25,17 +25,21 @@ import {
 } from "@/components/ui/select";
 
 import { toast } from "sonner";
-import useEmailApi from "@/main/Pages/UserManagement/hooks/useEmailApi";
+import useEmailApi from "@/main/Pages/StaffManagement/hooks/useEmailApi";
 import { SquarePlus } from "lucide-react";
+import { useUser } from "@/context/UserContext";
+import inviteNewStaff from "@/utils/data/add/inviteNewStaff";
+import { getClinicData } from "@/utils/data/fetch/getClinicDetails";
 
 const addUserSchema = z.object({
   email: z.string().email("Invalid email address").trim(),
 });
 
 const AddDoctor = () => {
+  const { clinicId } = useUser();
+
   const [fetchError, setFetchError] = useState(null);
   const { sendDoctorInvite, loading } = useEmailApi();
-  const [url, setUrl] = useState(null);
 
   const {
     register,
@@ -48,14 +52,25 @@ const AddDoctor = () => {
   });
 
   const onSubmit = async (data) => {
-    setUrl(null);
-    setUrl("http://localhost:3000/doctor-registration");
+    let userid = "";
+
+    const inviteResponse = await inviteNewStaff(data.email, clinicId, "Doctor");
+
+    if (inviteResponse) {
+      userid = inviteResponse.userID;
+    }
+
+    const url = `http://localhost:3000/doctor-registration/${userid}`;
+
+    // setUrl("http://localhost:3000/doctor-registration");
 
     //FOR DEPLOYMENT
     //setUrl("https://user.rxgaling.online/doctor-registration");
 
+    const clinicName = await getClinicData(clinicId);
+    console.log(clinicName);
     console.log(url);
-    const response = await sendDoctorInvite(data.email, url);
+    const response = await sendDoctorInvite(data.email, url, clinicName);
 
     if (response) {
       toast.success("Invitation sent successfully");

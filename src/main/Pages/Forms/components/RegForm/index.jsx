@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   Card,
@@ -35,8 +35,12 @@ import useRegForm from "../../hooks/useRegForm";
 import { ConfirmUserReg } from "../../../components/ConfirmDialog";
 import { HiMiniBellAlert } from "react-icons/hi2";
 import NewBirthday from "../NewBirthday";
+import { useParams } from "react-router-dom";
+import { IdCard } from "lucide-react";
 
 const RegFormComponent = () => {
+  const { id } = useParams();
+
   const {
     handleSubmit,
     onSubmit,
@@ -50,7 +54,19 @@ const RegFormComponent = () => {
     setIsDialogOpen,
     loading,
     watch,
+    getEmail,
   } = useRegForm();
+
+  const [userEmail, setUserEmail] = useState("");
+
+  useEffect(() => {
+    const fetchEmail = async () => {
+      const user_email = await getEmail(id);
+      setUserEmail(user_email?.email);
+    };
+
+    fetchEmail();
+  }, [id]);
 
   return (
     <>
@@ -79,7 +95,34 @@ const RegFormComponent = () => {
                   errors={errors}
                   control={control}
                 />
-                <NumberEmail register={register} errors={errors} />
+                <div>
+                  <Label>Mobile Number</Label>
+                  <Input
+                    {...register("contact_num")}
+                    type="number"
+                    placeholder=""
+                  />
+                  {errors.contact_num && (
+                    <p className="text-red-400 italic text-xs py-1 lg:text-sm">
+                      {errors.contact_num.message}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <Label>Email</Label>
+                  <Input
+                    {...register("email")}
+                    type="email"
+                    placeholder="example@gmail.com"
+                    value={userEmail}
+                  />
+                  {errors.email && (
+                    <p className="text-red-400 italic text-xs py-1 lg:text-sm">
+                      {errors.email.message}
+                    </p>
+                  )}
+                </div>
+                {/* <NumberEmail register={register} errors={errors} /> */}
               </div>
               <Address register={register} errors={errors} control={control} />
               <div className="grid grid-flow-row gap-3 lg:grid-flow-col w-full pb-3 lg:p-0">
@@ -165,7 +208,7 @@ const RegFormComponent = () => {
                   </AlertDialogHeader>
                   <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction onClick={finalSubmit}>
+                    <AlertDialogAction onClick={() => finalSubmit(id)}>
                       Confirm
                     </AlertDialogAction>
                   </AlertDialogFooter>

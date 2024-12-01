@@ -1,59 +1,14 @@
-import { useNavigate } from "react-router-dom";
 import { centralSupabase } from "../../supabaseClient";
-import e from "cors";
 
-const getRegionName = async (regionId) => {
-  try {
-    const response = await fetch(`https://psgc.cloud/api/regions/${regionId}`);
-    const data = await response.json();
-    return data.name;
-  } catch (err) {
-    console.log(err);
-    return null;
+const addUserDetails = async (userData, userid) => {
+  // Debug: Log userData and userid
+  console.log("User ID:", userid);
+  console.log("User Data:", userData);
+
+  if (!userid) {
+    console.error("Error: User ID is undefined or null.");
+    return { error: "User ID is required." };
   }
-};
-
-const getProvinceName = async (provinceId) => {
-  try {
-    const response = await fetch(
-      `https://psgc.cloud/api/provinces/${provinceId}`
-    );
-    const data = await response.json();
-    return data.name;
-  } catch (err) {
-    console.log(err);
-    return null;
-  }
-};
-
-const getCityMuniName = async (cityMuniId) => {
-  try {
-    const response = await fetch(
-      `https://psgc.cloud/api/cities-municipalities/${cityMuniId}`
-    );
-    const data = await response.json();
-    return data.name;
-  } catch (err) {
-    console.log(err);
-    return null;
-  }
-};
-
-const getBarangayName = async (barangayId) => {
-  try {
-    const response = await fetch(
-      `https://psgc.cloud/api/barangays/${barangayId}`
-    );
-    const data = await response.json();
-    return data.name;
-  } catch (err) {
-    console.log(err);
-    return null;
-  }
-};
-
-const addUserDetails = async (userData) => {
-  // const navigate = useNavigate();
 
   const {
     region,
@@ -67,56 +22,68 @@ const addUserDetails = async (userData) => {
     s2_number,
     prc_number,
     professional_extension,
+    email,
     ...userDetails
   } = userData;
 
-  const { data: address_data, error } = await centralSupabase
-    .from("addresses")
-    .insert([{
-        region,
-        province,
-        city,
-        barangay,
-        address_line,
-      },
-    ])
-    .select();
+  try {
+    // Insert address and get the returned data
+    const { data: address_data, error: addressError } = await centralSupabase
+      .from("addresses")
+      .insert([
+        {
+          region,
+          province,
+          city,
+          barangay,
+          address_line,
+        },
+      ])
+      .select();
 
-  if(error){
-    console.log("UserDetails: Server Error ", error);
-    return { error: error };
-  }
-  else{
-    const { data: user_data, error } = await centralSupabase
-    .from("users")
-    .insert([{...userDetails, address_id: address_data[0].id}])
-    .select();
-
-    if(error){
-      console.log("UserDetails: Server Error ", error);
-      return { error: error };
+    if (addressError) {
+      throw new Error(`Address Insertion Error: ${addressError.message}`);
     }
-    else{
-      const { data, error } = await centralSupabase
-        .from("doctor_details")
-        .insert({
-          user_id: user_data[0].id,
-          license_number,
-          ptr_number,
-          s2_number,
-          prc_number,
-          professional_extension,
-        })
-        .select();
 
-      if(error){
-        console.log("UserDetails: Server Error ", error);
-        return { error: error };
-      }
-      else{
-        return data;
-      }
+    if (!address_data || address_data.length === 0) {
+      throw new Error("Address data is missing after insertion.");
     }
+
+    const addressId = address_data[0].id;
+    console.log("Address ID:", addressId);
+
+    // Update the user data with the address ID
+    const { data: user_data, error: userError } = await centralSupabase
+      .from("users")
+      .update({ ...userDetails, address_id: addressId })
+      .eq("id", userid)
+      .select();
+
+    if (userError) {
+      throw new Error(`User Update Error: ${userError.message}`);
+    }
+
+    // Insert doctor details
+    const { data: doctor_data, error: doctorError } = await centralSupabase
+      .from("doctor_details")
+      .insert({
+        user_id: userid,
+        license_number,
+        ptr_number,
+        s2_number,
+        prc_number,
+        professional_extension,
+      })
+      .select();
+
+    if (doctorError) {
+      throw new Error(`Doctor Details Insertion Error: ${doctorError.message}`);
+    }
+
+    return doctor_data;
+  } catch (error) {
+    console.error("Operation failed:", error.message);
+    return { error: error.message };
   }
 };
 

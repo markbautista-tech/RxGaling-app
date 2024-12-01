@@ -40,7 +40,7 @@ const MainRouter = () => {
         <Route path="/register-success" element={<AppreciationMessage />} />
         <Route path="/clinic-app/*" element={<PageTemplate />} />
         {/* <Route path="/user-registration/*" element={<UserRegistration />} /> */}
-        <Route path="/doctor-registration/*" element={<RegistrationForm />} />
+        <Route path="/doctor-registration/:id" element={<RegistrationForm />} />
         {/* <Route path="/nurse-registration/*" element={<NurseRegistration />} /> */}
         <Route path="/staff-registration/:id" element={<StaffRegistration />} />
         <Route path="/clinic-manager/*" element={<ClinicManager />} />

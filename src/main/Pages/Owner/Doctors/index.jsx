@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 import { format } from "date-fns";
-import { Calendar as CalendarIcon } from "lucide-react";
+import { ArrowUpDown, Calendar as CalendarIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -141,12 +141,15 @@ const ClinicDoctors = () => {
         />
       </div>
 
-      <Table className="text-xs lg:text-sm w-full ">
+      <Table className="text-xs lg:text-sm w-full border-t">
         <TableHeader>
           <TableRow>
             <TableHead className=""></TableHead>
             <TableHead className="w-[80px] lg:w-[200px] text-primary font-bold">
-              Name
+              <Button variant="ghost" className="font-bold flex items-center">
+                Name
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+              </Button>
             </TableHead>
             <TableHead className="text-primary font-bold">
               Specialization

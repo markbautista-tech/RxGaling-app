@@ -8,6 +8,7 @@ import { centralSupabase } from "../../../../utils/supabaseClient";
 import addUserDetails from "../../../../utils/data/add/addUserDetails";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import getUserEmail from "@/utils/data/fetch/getUserDetails";
 
 export default function useRegForm() {
   const navigate = useNavigate();
@@ -38,6 +39,12 @@ export default function useRegForm() {
     queryFn: userDetails,
   });
 
+  const getEmail = async (userId) => {
+    const email = await getUserEmail(userId);
+
+    return email ? email : null;
+  };
+
   // const { mutate } = useMutation({ mutationFn:  });
 
   const onSubmit = (data) => {
@@ -67,10 +74,10 @@ export default function useRegForm() {
     });
   };
 
-  const finalSubmit = () => {
+  const finalSubmit = (userid) => {
     setLoading(true);
     try {
-      const addUser = addUserDetails(dataSubmit);
+      const addUser = addUserDetails(dataSubmit, userid);
 
       if (addUser) {
         toast.success("Registered successfully");
@@ -98,5 +105,6 @@ export default function useRegForm() {
     setIsDialogOpen,
     loading,
     watch,
+    getEmail,
   };
 }
