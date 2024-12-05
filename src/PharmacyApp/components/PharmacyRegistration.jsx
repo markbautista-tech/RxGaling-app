@@ -38,6 +38,8 @@ const PharmacyRegistration = () => {
     finalSubmit,
     isDialogOpen,
     setIsDialogOpen,
+    setError,
+    clearErrors,
   } = usePharmacyReg();
   return (
     <>
@@ -64,7 +66,13 @@ const PharmacyRegistration = () => {
                   />
                   <div className="grid grid-flow-row gap-3 lg:grid-flow-col w-full pb-3 lg:p-0">
                     <SelectGender errors={errors} control={control} />
-                    <NumberEmail register={register} errors={errors} />
+                    <NumberEmail
+                      register={register}
+                      errors={errors}
+                      watch={watch}
+                      setError={setError}
+                      clearErrors={clearErrors}
+                    />
                   </div>
 
                   <Address

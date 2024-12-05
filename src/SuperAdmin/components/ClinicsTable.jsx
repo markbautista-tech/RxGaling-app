@@ -21,9 +21,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { SkeletonLoading } from "@/main/components/Skeleton";
 
 const ClinicsTable = () => {
-  const { clinicDetails } = useCompleteClinicDetails();
+  const { clinicDetails, loading } = useCompleteClinicDetails();
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState("All");
   const [sortConfig, setSortConfig] = useState({
@@ -111,7 +112,9 @@ const ClinicsTable = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {filteredAndSortedClinics.length > 0 ? (
+          {loading ? (
+            <SkeletonLoading />
+          ) : filteredAndSortedClinics.length > 0 ? (
             filteredAndSortedClinics.map((clinic, index) => (
               <TableRow key={index}>
                 <TableCell>
@@ -135,17 +138,16 @@ const ClinicsTable = () => {
                         ? "bg-gray-500"
                         : clinic.status.toLowerCase() === "deactivated"
                           ? "bg-red-500"
-                          : "bg-green-500"
+                          : clinic.status.toLowerCase() === "declined"
+                            ? "bg-red-500"
+                            : "bg-green-500"
                     } text-white`}
                   >
                     {clinic.status}
                   </Badge>
                 </TableCell>
                 <TableCell>
-                  <ClinicActions
-                    ownerId={clinic.owner_id}
-                    status={clinic.status}
-                  />
+                  <ClinicActions clinic={clinic} />
                 </TableCell>
               </TableRow>
             ))

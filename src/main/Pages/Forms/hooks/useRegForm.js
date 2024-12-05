@@ -72,9 +72,12 @@ export default function useRegForm() {
       professional_extension: data.prof_extension,
       prc_number: data.prc_no,
     });
+
+    console.log(dataSubmit);
   };
 
   const finalSubmit = (userid) => {
+    console.log(dataSubmit);
     setLoading(true);
     try {
       const addUser = addUserDetails(dataSubmit, userid);

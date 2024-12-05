@@ -5,7 +5,7 @@ export const patientSchema = z.object({
   mname: z.string().optional(),
   lname: z.string().min(1, "Last Name is required."),
   extname: z.string().optional(),
-  email: z.string().email("Invalid email address").trim(),
+  email: z.string().optional(),
   contact_num: z
     .string()
     .min(10, "Contact number should be at least 10 digits.")
@@ -16,7 +16,6 @@ export const patientSchema = z.object({
     message: "Day must be between 1 and 31",
   }),
   year: z.string(),
-  age: z.string().min(1, "Age is required."),
   gender: z.string().min(1, "Gender is required."),
   region: z.string().min(1, { message: "Region is required" }),
   province: z.string().min(1, { message: "Province is required" }),

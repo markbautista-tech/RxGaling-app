@@ -22,7 +22,7 @@ import ViewDetails from "./ViewDetails";
 import useUpdateClinicStatus from "../hooks/useUpdateClinicStatus";
 import { Archive } from "lucide-react";
 
-const ClinicActions = ({ ownerId, status }) => {
+const ClinicActions = ({ clinic }) => {
   const { updateArchive } = useUpdateClinicStatus();
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -31,9 +31,9 @@ const ClinicActions = ({ ownerId, status }) => {
     setIsDialogOpen(true);
   };
 
-  const handleArchive = async () => {
-    await updateArchive(ownerId);
-  };
+  // const handleArchive = async () => {
+  //   await updateArchive(ownerId);
+  // };
 
   return (
     <>
@@ -43,7 +43,7 @@ const ClinicActions = ({ ownerId, status }) => {
         </PopoverTrigger>
         <PopoverContent className="max-w-fit" align="center">
           <div className="flex flex-col gap-3">
-            <ViewDetails ownerId={ownerId} status={status} />
+            <ViewDetails clinic={clinic} />
             <Button
               variant="ghost"
               className="flex w-full items-center justify-start gap-2 px-2 py-1.5 text-sm"
@@ -77,10 +77,7 @@ const ClinicActions = ({ ownerId, status }) => {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction
-              className="hover:bg-red-500"
-              onClick={handleArchive}
-            >
+            <AlertDialogAction className="hover:bg-red-500">
               Confirm
             </AlertDialogAction>
           </AlertDialogFooter>

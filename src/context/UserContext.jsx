@@ -13,6 +13,7 @@ export const UserProvider = ({ children }) => {
   const [ownerId, setOwnerId] = useState(null);
   const [ownerName, setOwnerName] = useState(null);
   const [clinicId, setClinicId] = useState(null);
+  const [ownerLname, setOwnerLname] = useState(null);
 
   const getAuth = async () => {
     setLoading(true);
@@ -28,6 +29,7 @@ export const UserProvider = ({ children }) => {
       setOwnerId(auth.id);
       setOwnerName(name);
       setClinicId(auth.clinic_id);
+      setOwnerLname(auth.last_name);
     }
     setLoading(false);
   };
@@ -47,6 +49,7 @@ export const UserProvider = ({ children }) => {
     ownerId,
     ownerName,
     clinicId,
+    ownerLname,
   };
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

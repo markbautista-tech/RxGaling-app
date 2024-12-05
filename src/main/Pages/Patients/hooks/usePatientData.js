@@ -18,7 +18,7 @@ const usePatientData = () => {
       .channel("custom-all-channel")
       .on(
         "postgres_changes",
-        { event: "*", schema: "public", table: "PatientDetails" },
+        { event: "*", schema: "public", table: "patients" },
         (payload) => {
           console.log("Change received!", payload);
           fetchPatientData();

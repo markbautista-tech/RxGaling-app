@@ -7,19 +7,19 @@ const useUserDetails = () => {
   const [loading, setLoading] = useState(true); // Loading state
   const [error, setError] = useState(null); // Error state
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const users = await getAllUsersClinics();
-        setUserClinics(users);
-      } catch (err) {
-        setError("Failed to fetch user clinics");
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchData = async () => {
+    try {
+      const users = await getAllUsersClinics();
+      setUserClinics(users);
+    } catch (err) {
+      setError("Failed to fetch user clinics");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchData();
 
     // Subscribe to real-time updates

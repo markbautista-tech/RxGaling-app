@@ -21,7 +21,9 @@ export const getCompleteClinicDetails = async () => {
   try {
     const { data, error } = await centralSupabase
       .from("clinics")
-      .select("*, users(first_name, middle_name, last_name, suffix)");
+      .select(
+        `*, users(first_name, middle_name, last_name, suffix, addresses(region,province,city,barangay,address_line)), addresses(region, province, city, barangay, address_line)`
+      );
 
     if (error) {
       console.log("Error fetching clinic details", error);

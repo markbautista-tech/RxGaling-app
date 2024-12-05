@@ -6,9 +6,7 @@ const AddUserEmailRole = async (email, password, role) => {
       email: email,
       password: password,
       options: {
-        data: {
-          role: role,
-        },
+        data: {},
       },
       redirectTo: "http://localhost:3000/user-login",
     });

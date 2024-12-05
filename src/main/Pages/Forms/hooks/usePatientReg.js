@@ -21,6 +21,8 @@ export default function usePatientReg() {
     handleSubmit,
     control,
     watch,
+    setError,
+    clearErrors,
     formState: { errors },
     reset,
   } = useForm({
@@ -54,14 +56,13 @@ export default function usePatientReg() {
   };
 
   const onSubmit = async (data) => {
-    console.log(data);
     setIsDialogOpen(true);
 
     const birthdate = data.month + "-" + data.day + "-" + data.year;
     const patientIDNum = generateSequentialId();
     setDataSubmit({
-      age: data.age,
-      birthday: birthdate,
+      age,
+      birthdate,
       contact_num: data.contact_num,
       email: data.email,
       ext_name: data.extname,
@@ -84,7 +85,7 @@ export default function usePatientReg() {
       const response = await addPatientDetails(dataSubmit);
 
       if (response.error) {
-        toast.error(response.error.message);
+        toast.error(response.error);
         return;
       }
       if (response) {
@@ -97,6 +98,8 @@ export default function usePatientReg() {
     } finally {
       setLoading(false);
     }
+    // console.log(dataSubmit);
+    // reset();
   };
 
   return {
@@ -114,5 +117,7 @@ export default function usePatientReg() {
     setIsDialogOpen,
     loading,
     watch,
+    setError,
+    clearErrors,
   };
 }

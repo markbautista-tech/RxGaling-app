@@ -2,6 +2,7 @@ import { Separator } from "@/components/ui/separator";
 import ContentTitle from "@/main/PageContent/ContentTitle";
 import React from "react";
 import PharmacyRequest from "../components/PharmacyRequest";
+import PharmacyTable from "../components/PharmacyTable";
 
 const PharmacyPage = () => {
   return (
@@ -21,7 +22,9 @@ const PharmacyPage = () => {
           <Separator orientation="horizontal" className="w-full" />
         </div>
         <div className="flex justify-center gap-10 p-5 ">
-          <div className="w-full"></div>
+          <div className="w-full">
+            <PharmacyTable />
+          </div>
         </div>
       </div>
     </>

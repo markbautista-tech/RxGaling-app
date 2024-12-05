@@ -38,6 +38,7 @@ import { NavAdmin } from "./nav-admin";
 import { GiMedicines } from "react-icons/gi";
 import { NavReports } from "./nav-reports";
 import { useUserClinics } from "@/utils/data/fetch/fetchUserClinics";
+import NavAllData from "./nav-all-data";
 
 // This is sample data.
 const data = {
@@ -140,7 +141,7 @@ const data = {
 };
 
 export function AppSidebar({ ...props }) {
-  const { user, loading, setUser, role, email } = useUser();
+  const { user, loading, setUser, role, email, ownerLname } = useUser();
   const [admin, setAdmin] = React.useState(role === "admin");
 
   const { data: clinics, isLoading } = useUserClinics(user.id, user.clinic_id);
@@ -148,19 +149,37 @@ export function AppSidebar({ ...props }) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        {!admin ? (!admin && isLoading ? <div>Loading...</div> : <TeamSwitcher teams={clinics} />) : <NavAdmin user={data.admin} email={email} />}
+        {!admin ? (
+          !admin && isLoading ? (
+            <div>Loading...</div>
+          ) : (
+            <TeamSwitcher teams={clinics} />
+          )
+        ) : (
+          <NavAdmin user={data.admin} email={email} />
+        )}
       </SidebarHeader>
       <SidebarContent>
+        {role !== "admin" && <NavAllData />}
         {role === "admin" && <AdminDashboard items={data.adminDash} />}
-        {/* {role === "admin" && <AdminManage items={data.navAdmin} />} */}
+        {/* {role === "admin" && <AdminManage items={data.navAdmin} />}
         {role !== "admin" && <NavNoDrop items={data.navNoDrop} />}
 
-        {!admin && <NavMain items={data.navMain} />}
-        {!admin && <NavReports items={data.navReports} />}
+        {role !== "admin" && role !== "Doctor" && (
+          <NavMain items={data.navMain} />
+        )}
+        {!admin && <NavReports items={data.navReports} />} */}
       </SidebarContent>
       <SidebarFooter>
         {/* {role === "admin" && <NavAdmin user={data.admin} email={email} />} */}
-        {!admin && <NavUser user={data.user} email={email} />}
+        {!admin && (
+          <NavUser
+            user={data.user}
+            email={email}
+            lname={ownerLname}
+            role={role}
+          />
+        )}
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

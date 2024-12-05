@@ -1,8 +1,4 @@
 import { useEffect, useState } from "react";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
@@ -19,6 +15,13 @@ import {
   TableBody,
   TableCell,
 } from "@/components/ui/table";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import SearchBar from "../../components/Search";
 import ContentTitle from "../../../PageContent/ContentTitle";
@@ -30,177 +33,159 @@ import classNames from "classnames";
 import AddDoctor from "@/main/Doctor/components/AddDoctor";
 import AddNewExistingDoctor from "@/main/Doctor/components/AddNewExistingDoctor";
 import DoctorAction from "@/main/Doctor/components/DoctorAction";
+import useDoctorDetails from "@/main/Doctor/hooks/useDoctorDetails";
 
 const ClinicDoctors = () => {
-  const [users, setUsers] = useState([
-    {
-      id: 1,
-      name: "Doc 1",
-      specialization: "Internal Medicine",
-      days: "MWF",
-      hrs: "8am-5pm",
-      isIn: false,
-    },
-    {
-      id: 2,
-      name: "Doc 2",
-      specialization: "Internal Medicine",
-      days: "MWF",
-      hrs: "9am-6pm",
-      isIn: false,
-    },
-    {
-      id: 3,
-      name: "Doc 3",
-      specialization: "Internal Medicine",
-      days: "MWF",
-      hrs: "10am-7pm",
-      isIn: false,
-    },
-    {
-      id: 4,
-      name: "Doc 4",
-      specialization: "Internal Medicine",
-      days: "MWF",
-      hrs: "11am-8pm",
-      isIn: false,
-    },
-    {
-      id: 5,
-      name: "Doc 5",
-      specialization: "Internal Medicine",
-      days: "MWF",
-      hrs: "12pm-9pm",
-      isIn: false,
-    },
-    {
-      id: 6,
-      name: "Doc 1",
-      specialization: "Internal Medicine",
-      days: "TTHS",
-      hrs: "8am-5pm",
-      isIn: false,
-    },
-    {
-      id: 7,
-      name: "Doc 7",
-      specialization: "General Medicine",
-      days: "TTHS",
-      hrs: "9am-6pm",
-      isIn: true,
-    },
-    {
-      id: 8,
-      name: "Doc 8",
-      specialization: "General Medicine",
-      days: "TTHS",
-      hrs: "10am-7pm",
-      isIn: false,
-    },
-    {
-      id: 9,
-      name: "Doc 9",
-      specialization: "General Medicine",
-      days: "TTHS",
-      hrs: "11am-8pm",
-      isIn: false,
-    },
-    {
-      id: 10,
-      name: "Doc 10",
-      specialization: "General Medicine",
-      days: "TTHS",
-      hrs: "12pm-9pm",
-      isIn: false,
-    },
-  ]);
-  const handleToggleChange = (payload) => {
-    const payloadIndex = users.findIndex((user) => user.id === payload.id);
-    const usersCopy = [...users];
-    const user = usersCopy[payloadIndex];
-    user.isIn = !user.isIn;
-    setUsers(usersCopy);
+  const { doctorDetails: rawDoctorDetails } = useDoctorDetails();
+
+  // Ensure doctorDetails is always an array
+  const doctorDetails = Array.isArray(rawDoctorDetails)
+    ? rawDoctorDetails.filter((doctor) => doctor.role === "Doctor")
+    : [];
+
+  // Static arrays for filtering
+  const statuses = ["Active", "On Leave", "Retired"];
+  const specializations = [
+    "Community and Family Medicine",
+    "Internal Medicine",
+    "Pediatrics",
+    "Obstetrics and Gynecology",
+    "Surgery",
+    "General Medicine",
+  ];
+
+  // State for search, sorting, and filters
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedSpecialization, setSelectedSpecialization] = useState(
+    "All Specializations"
+  );
+  const [sortOrder, setSortOrder] = useState({ field: "last_name", asc: true });
+
+  // Sorting logic
+  const sortBy = (field) => {
+    setSortOrder((prev) => ({
+      field,
+      asc: prev.field === field ? !prev.asc : true,
+    }));
   };
+
+  const sortedData = [...doctorDetails]
+    .filter((doctor) =>
+      doctor.users?.last_name?.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .filter(
+      (doctor) =>
+        selectedSpecialization === "All Specializations" ||
+        doctor.users?.doctor_details[0]?.specialization ===
+          selectedSpecialization
+    )
+    .sort((a, b) => {
+      const fieldA = (a.users?.[sortOrder.field] || "").toLowerCase();
+      const fieldB = (b.users?.[sortOrder.field] || "").toLowerCase();
+      return fieldA.localeCompare(fieldB) * (sortOrder.asc ? 1 : -1);
+    });
+
+  // console.log(sortedData);
+
   return (
     <>
       <div className="py-2 lg:py-4 flex justify-between items-center no-scrollbar">
-        <ContentTitle title={"Clinic Doctors"} />
-        <div className="relative flex ">
-          {/* <AddDoctor /> */}
+        <ContentTitle title="Clinic Doctors" />
+        <div className="relative flex">
           <AddNewExistingDoctor />
         </div>
       </div>
       <div className="py-4">
-        <Separator orientation="horizontal" className="w-full " />
+        <Separator orientation="horizontal" className="w-full" />
       </div>
-      <div>
-        <Input
-          type="text"
-          placeholder="Search doctor's lastname..."
-          className="mb-4 text-xs lg:text-sm"
-        />
-      </div>
-
-      <Table className="text-xs lg:text-sm w-full border-t">
-        <TableHeader>
-          <TableRow>
-            <TableHead className=""></TableHead>
-            <TableHead className="w-[80px] lg:w-[200px] text-primary font-bold">
-              <Button variant="ghost" className="font-bold flex items-center">
-                Name
-                <ArrowUpDown className="ml-2 h-4 w-4" />
-              </Button>
-            </TableHead>
-            <TableHead className="text-primary font-bold">
-              Specialization
-            </TableHead>
-            <TableHead className="text-primary font-bold">Schedule</TableHead>
-            <TableHead className="text-primary font-bold lg:w-[50px]">
-              Action
-            </TableHead>
-            <TableHead className="w-[20px]"></TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody className="-z-40">
-          {users.map((item, index) => (
-            <TableRow key={index}>
-              <TableCell className="w-[20px]">
-                <Avatar>
-                  <AvatarImage src="https://github.com/shadcn.png" />
-                  <AvatarFallback>{item.name[0]}</AvatarFallback>
-                </Avatar>
-              </TableCell>
-              <TableCell>{item.name}</TableCell>
-              <TableCell>{item.specialization}</TableCell>
-              <TableCell>
-                <div className="flex flex-col">
-                  <span>{item.days}</span>
-                  <span>{item.hrs}</span>
-                </div>
-              </TableCell>
-              <TableCell className="flex items-center">
-                <Switch
-                  id={`isIn-${item.name}`}
-                  checked={item.isIn}
-                  value={item.isIn}
-                  onCheckedChange={() => handleToggleChange(item)}
-                />
-                <Label
-                  htmlFor={`isIn-${item.name}`}
-                  className={classNames(
-                    `${item.isIn ? "text-green-500" : "text-red-500"} `
-                  )}
+      <div className="mt-4">
+        <div className="flex gap-3 mb-4">
+          <Input
+            placeholder="Search doctor lastname..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <Select
+            onValueChange={(value) => setSelectedSpecialization(value)}
+            defaultValue="All Specializations"
+          >
+            <SelectTrigger className="w-[300px]">
+              <SelectValue placeholder="" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="All Specializations">
+                All Specializations
+              </SelectItem>
+              {specializations.map((spec, index) => (
+                <SelectItem value={spec} key={index}>
+                  {spec}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        <Table className="border-t-2">
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-[50px]"></TableHead>
+              <TableHead>
+                <Button
+                  variant="ghost"
+                  onClick={() => sortBy("name")}
+                  className="font-bold flex items-center text-primary"
                 >
-                  {item.isIn ? "Present" : "Absent"}
-                </Label>
-              </TableCell>
-              <TableCell>
-                <DoctorAction />
-              </TableCell>
+                  Name
+                  <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+              </TableHead>
+              <TableHead className="text-primary font-bold">
+                Specialization
+              </TableHead>
+              <TableHead className="text-primary font-bold">Schedule</TableHead>
+              <TableHead className="text-primary font-bold">Action</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {sortedData.length > 0 ? (
+              sortedData.map((doctor, index) => (
+                <TableRow key={index} className="cursor-pointer">
+                  <TableCell className="">
+                    <Avatar>
+                      <AvatarImage src={doctor.users?.image || ""} />{" "}
+                      {/* Corrected to nested image */}
+                      <AvatarFallback>
+                        {doctor.users?.last_name?.[0]?.toUpperCase() || "?"}{" "}
+                        {/* Safe access to first initial */}
+                      </AvatarFallback>
+                    </Avatar>
+                  </TableCell>
+                  <TableCell className="font-bold">
+                    {`Dr. ${doctor.users?.last_name}, ${doctor.users?.first_name} ${doctor.users?.middle_name?.[0]}. ${doctor.users?.doctor_details[0]?.professional_extension}.` ||
+                      "Unknown"}{" "}
+                  </TableCell>
+                  <TableCell className="">
+                    {doctor.users?.doctor_details[0]?.specialization ||
+                      "Not specified"}
+                  </TableCell>
+                  <TableCell className="flex flex-col">
+                    <span>{doctor.working_days}</span>
+                    <span>{doctor.working_hours}</span>
+                  </TableCell>
+                  <TableCell className="">
+                    <DoctorAction doctor={doctor} />
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan="6" className="text-center p-4">
+                  No doctors found.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
     </>
   );
 };

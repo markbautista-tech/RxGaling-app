@@ -103,7 +103,8 @@ const AddUser = () => {
       toast.success(inviteResponse.success);
       reset();
     } else {
-      toast.error("Invitation error!");
+      toast.error(response.error);
+      toast.error(inviteResponse.error);
     }
   };
 

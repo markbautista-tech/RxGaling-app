@@ -46,6 +46,8 @@ const ClinicForm = () => {
     loading,
     setLoading,
     watch,
+    setError,
+    clearErrors,
   } = useClinicRegForm();
 
   return (
@@ -68,6 +70,8 @@ const ClinicForm = () => {
                   register={register}
                   errors={errors}
                   control={control}
+                  setError={setError}
+                  clearErrors={clearErrors}
                 />
               </div>
               <div className="py-5 px-3 lg:px-8">

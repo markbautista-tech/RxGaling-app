@@ -3,10 +3,10 @@ import tailwindcssAnimate from "tailwindcss-animate";
 
 export const darkMode = ["class"];
 export const content = [
-  "./pages/**/*.{js,jsx}",
-  "./components/**/*.{js,jsx}",
-  "./app/**/*.{js,jsx}",
-  "./src/**/*.{js,jsx}",
+  "./pages/**/*.{js,jsx,ts,tsx}",
+  "./components/**/*.{js,jsx,ts,tsx}",
+  "./app/**/*.{js,jsx,ts,tsx}",
+  "./src/**/*.{js,jsx,ts,tsx}",
 ];
 export const prefix = "";
 export const theme = {

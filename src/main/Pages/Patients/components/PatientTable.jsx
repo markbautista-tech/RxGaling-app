@@ -78,59 +78,88 @@ const PatientTable = () => {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-        <div className="flex items-center gap-3 mb-4">
+        {/* <div className="flex items-center gap-3 mb-4">
           <Switch id="show-archive" />
           <Label htmlFor="show-archive" className="text-xs w-full text-nowrap">
             Show Archive
           </Label>
-        </div>
+        </div> */}
       </div>
-
-      <Table className=" border-t-2 border-primary mt-4 ">
-        <TableHeader>
-          <TableRow>
-            <TableHead className="w-[20px]"></TableHead>
-            <TableHead className="w-[50px] text-primary">
-              <Button
-                variant="ghost"
-                onClick={() => sortBy("id_number")}
-                className="font-bold"
-              >
-                ID Number <ArrowUpDown className="ml-2 h-4 w-4" />
-              </Button>
-            </TableHead>
-            <TableHead className="text-primary">
-              <Button
-                variant="ghost"
-                onClick={() => sortBy("last_name")}
-                className="font-bold"
-              >
-                Full Name <ArrowUpDown className="ml-2 h-4 w-4" />
-              </Button>
-            </TableHead>
-            <TableHead className="text-primary font-bold">Age</TableHead>
-            <TableHead className="text-primary font-bold">Gender</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {patients.map((patient) => (
-            <TableRow
-              key={patient.id}
-              className="cursor-pointer text-xs lg:text-sm"
-            >
-              <TableCell>
-                <PatientAction />
-              </TableCell>
-              <TableCell className="text-center">{patient.id_number}</TableCell>
-              <TableCell className="text-xs lg:text-sm">{`${patient.last_name}, ${patient.first_name} ${patient.middle_name} ${patient.ext_name}`}</TableCell>
-              <TableCell className="text-xs lg:text-sm">
-                {patient.age}
-              </TableCell>
-              <TableCell>{patient.gender}</TableCell>
+      <div className="">
+        <Table className="border-t-2 border-primary mt-4">
+          <TableHeader className="text-sm">
+            <TableRow>
+              <TableHead className="w-[50px] text-primary">
+                <Button
+                  variant="ghost"
+                  onClick={() => sortBy("id_number")}
+                  className="font-bold text-xs lg:text-sm"
+                >
+                  ID Number <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+              </TableHead>
+              <TableHead className="text-primary">
+                <Button
+                  variant="ghost"
+                  onClick={() => sortBy("last_name")}
+                  className="font-bold text-xs lg:text-sm"
+                >
+                  Full Name <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+              </TableHead>
+              {/* Use hidden on small screens, visible on larger screens */}
+              <TableHead className="text-primary font-bold hidden lg:table-cell">
+                Age
+              </TableHead>
+              <TableHead className="text-primary font-bold hidden lg:table-cell">
+                Gender
+              </TableHead>
+              <TableHead className=""></TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody className="">
+            {patients.length > 0 ? (
+              patients.map((patient) => (
+                <TableRow
+                  key={patient.id}
+                  className="cursor-pointer text-xs lg:text-sm"
+                >
+                  <TableCell className="text-center">
+                    {patient.id_number}
+                  </TableCell>
+                  <TableCell className="text-xs lg:text-sm flex flex-col lg:flex-row lg:items-center lg:gap-2">
+                    <span className="font-bold lg:text-lg">
+                      {patient.last_name}
+                      {", "}
+                    </span>
+                    <span>{`${patient.first_name} ${patient.middle_name[0]}. ${patient.suffix || ""}`}</span>
+                  </TableCell>
+                  {/* Hide on small screens, visible only on large screens */}
+                  <TableCell className="text-xs lg:text-sm hidden lg:table-cell">
+                    {patient.age}
+                  </TableCell>
+                  <TableCell className="hidden lg:table-cell">
+                    {patient.gender}
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <PatientAction />
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              // Display this row when there are no records
+              <TableRow>
+                <TableCell
+                  colSpan={5}
+                  className="text-center py-4 text-gray-500"
+                >
+                  No patient records available
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
     </div>
   );
 };

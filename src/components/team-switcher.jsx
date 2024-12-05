@@ -12,6 +12,8 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
 import {
   SidebarMenu,
   SidebarMenuButton,
@@ -43,11 +45,19 @@ export function TeamSwitcher({ teams }) {
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">
-                  {activeTeam.name}
-                </span>
-                <span className="truncate text-xs">{activeTeam.plan}</span>
+              <div className="flex items-center gap-3 text-left text-sm leading-tight">
+                <Avatar className="border border-primary text-black w-7 h-7 ">
+                  <AvatarImage src="" />
+                  <AvatarFallback className="font-bold">
+                    {activeTeam.name?.[0] || "?"}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="flex flex-col">
+                  <span className="truncate font-semibold">
+                    {activeTeam.name}
+                  </span>
+                  <span className="truncate text-xs">{role}</span>
+                </div>
               </div>
               <ChevronsUpDown className="ml-auto" />
             </SidebarMenuButton>
@@ -67,7 +77,9 @@ export function TeamSwitcher({ teams }) {
                 onClick={() => setActiveTeam(team)}
                 className="gap-2 p-2"
               >
-                <div className="flex size-6 items-center justify-center rounded-sm border"></div>
+                <div className="flex size-6 items-center justify-center rounded-sm border">
+                  {team.name?.[0]}
+                </div>
                 {team.name}
                 {/* <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut> */}
               </DropdownMenuItem>

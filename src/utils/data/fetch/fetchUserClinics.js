@@ -46,3 +46,21 @@ export const getAllUsersClinics = async () => {
 
   return data;
 };
+
+export const getClinicDoctor = async () => {
+  const { data, error } = await centralSupabase.from("clinic_staffs").select(
+    `*, 
+      clinics(name),
+      users(
+        *,
+        addresses(region,province,city,barangay,address_line),
+        doctor_details(*)
+      )`
+  );
+
+  if (error) {
+    return { error: error.message };
+  }
+
+  return data;
+};

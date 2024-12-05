@@ -127,7 +127,11 @@ const RegFormComponent = () => {
               <Address register={register} errors={errors} control={control} />
               <div className="grid grid-flow-row gap-3 lg:grid-flow-col w-full pb-3 lg:p-0">
                 <Licenses register={register} errors={errors} />
-                <Specialty register={register} errors={errors} />
+                <Specialty
+                  register={register}
+                  errors={errors}
+                  control={control}
+                />
               </div>
               <div>
                 <OtherLicense register={register} errors={errors} />

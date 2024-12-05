@@ -2,8 +2,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useState } from "react";
 import { pharmacyRegSchema } from "../schema/pharmacyRegSchema";
 import { useForm } from "react-hook-form";
+import addPharmacyOwner from "@/utils/data/add/addPharmacyOwner";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
+import useFetchEmailApi from "@/SuperAdmin/hooks/useFetchEmailApi";
 
 const usePharmacyReg = () => {
+  const navigate = useNavigate();
+  const { sendPharmacyAppreciation } = useFetchEmailApi();
   const [dataSubmit, setDataSubmit] = useState({});
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -17,6 +23,8 @@ const usePharmacyReg = () => {
     handleSubmit,
     control,
     watch,
+    setError,
+    clearErrors,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(pharmacyRegSchema),
@@ -29,7 +37,21 @@ const usePharmacyReg = () => {
 
   const finalSubmit = async () => {
     setLoading(true);
-    console.log(dataSubmit);
+    const birthdate =
+      dataSubmit.month + "-" + dataSubmit.day + "-" + dataSubmit.year;
+    try {
+      const response = await addPharmacyOwner(dataSubmit, birthdate);
+
+      if (response.error) {
+        toast.error(response.error);
+      } else {
+        toast.success("Registered Successfully");
+        navigate("/register-pharmacy-success");
+        sendPharmacyAppreciation(dataSubmit.email);
+      }
+    } catch (err) {
+      toast.error(err);
+    }
     setLoading(false);
   };
 
@@ -45,12 +67,9 @@ const usePharmacyReg = () => {
     setTermsAccepted,
     isDialogOpen,
     setIsDialogOpen,
-    // isSuccessDialog,
-    // setIsSuccessDialog,
-    // isFailedDialog,
-    // setIsFailedDialog,
     loading,
-    // setLoading,
+    setError,
+    clearErrors,
   };
 };
 

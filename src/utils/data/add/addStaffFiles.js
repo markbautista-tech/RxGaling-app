@@ -6,7 +6,7 @@ const addStaffFiles = async (id, valid_id, gov_valid_id) => {
   const uploadFile = async (file, filePath) => {
     try {
       const { data: staffFiles, error } = await centralSupabase.storage
-        .from("Staff_Storage")
+        .from("Staffs_Storage")
         .upload(filePath, file, {
           cacheControl: "3600",
           upsert: false,

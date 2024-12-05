@@ -13,7 +13,14 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import NewBirthday from "@/main/Pages/Forms/components/NewBirthday";
 
-const ClinicOwnerForm = ({ register, errors, control, watch }) => {
+const ClinicOwnerForm = ({
+  register,
+  errors,
+  control,
+  watch,
+  setError,
+  clearErrors,
+}) => {
   return (
     <>
       <div className="no-scrollbar">
@@ -28,13 +35,15 @@ const ClinicOwnerForm = ({ register, errors, control, watch }) => {
               <NameComponent register={register} errors={errors} />
               <div className="grid grid-flow-row gap-3 lg:grid-flow-col w-full pb-3 lg:p-0">
                 <SelectGender errors={errors} control={control} />
-                <NumberEmail register={register} errors={errors} />
+                <NumberEmail
+                  register={register}
+                  errors={errors}
+                  setError={setError}
+                  clearErrors={clearErrors}
+                  watch={watch}
+                />
               </div>
-              <NewBirthday 
-                control={control}
-                watch={watch}
-                errors={errors}
-              />
+              <NewBirthday control={control} watch={watch} errors={errors} />
               <Address register={register} errors={errors} control={control} />
             </div>
           </div>

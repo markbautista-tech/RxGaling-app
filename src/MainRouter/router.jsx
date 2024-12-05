@@ -22,6 +22,9 @@ import UserSignUpForm from "@/main/Pages/Forms/UserSignUpForm";
 import Registered from "@/main/Pages/Forms/Registered";
 import PharmacyApp from "@/PharmacyApp";
 import PharmacyRegistration from "@/PharmacyApp/components/PharmacyRegistration";
+import LoadingUI from "@/main/components/loadingUI";
+import PharmacyAppreMessage from "@/SuperAdmin/components/PharmacyAppreMessage";
+import PharmacyReqForm from "@/SuperAdmin/components/PharmacyReqForm";
 
 const MainRouter = () => {
   return (
@@ -38,6 +41,11 @@ const MainRouter = () => {
         />
         <Route path="/clinic-registration" element={<ClinicForm />} />
         <Route path="/register-success" element={<AppreciationMessage />} />
+        <Route
+          path="/register-pharmacy-success"
+          element={<PharmacyAppreMessage />}
+        />
+
         <Route path="/clinic-app/*" element={<PageTemplate />} />
         {/* <Route path="/user-registration/*" element={<UserRegistration />} /> */}
         <Route path="/doctor-registration/:id" element={<RegistrationForm />} />
@@ -55,6 +63,12 @@ const MainRouter = () => {
           path="/pharmacy-registration/"
           element={<PharmacyRegistration />}
         />
+        <Route
+          path="/pharmacy-request-form/:id"
+          element={<PharmacyReqForm />}
+        />
+
+        <Route path="/loading" element={<LoadingUI />} />
       </Routes>
     </>
   );

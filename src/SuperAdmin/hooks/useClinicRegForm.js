@@ -30,6 +30,8 @@ const useClinicRegForm = () => {
     handleSubmit,
     watch,
     control,
+    setError,
+    clearErrors,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(clinicRegSchema),
@@ -96,6 +98,8 @@ const useClinicRegForm = () => {
     loading,
     setLoading,
     watch,
+    setError,
+    clearErrors,
   };
 };
 

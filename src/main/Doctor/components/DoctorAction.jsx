@@ -19,25 +19,10 @@ import {
   Edit2,
   MoreVertical,
 } from "lucide-react";
+import ShowDetails from "./ShowDetails";
+import Scheduler from "@/main/Pages/StaffManagement/components/Scheduler";
 
-const DoctorAction = () => {
-  const actions = [
-    {
-      icon: User,
-      label: "Show Profile",
-      onClick: () => console.log("Edit clicked"),
-    },
-    {
-      icon: Edit2,
-      label: "Edit Profile",
-      onClick: () => console.log("Archive clicked"),
-    },
-    {
-      icon: Archive,
-      label: "Archive",
-      onClick: () => console.log("Archive clicked"),
-    },
-  ];
+const DoctorAction = ({ doctor }) => {
   return (
     <>
       <Popover>
@@ -48,17 +33,8 @@ const DoctorAction = () => {
         </PopoverTrigger>
         <PopoverContent className="w-56 p-2" align="center">
           <div className="grid gap-2">
-            {/* {actions.map((action) => (
-              <Button
-                key={action.label}
-                variant="ghost"
-                className="flex w-full items-center justify-start gap-2 px-2 py-1.5 text-sm"
-                onClick={action.onClick}
-              >
-                <action.icon className="h-4 w-4" />
-                {action.label}
-              </Button>
-            ))} */}
+            <ShowDetails doctor={doctor} />
+            <Scheduler doctor={doctor} />
           </div>
         </PopoverContent>
       </Popover>

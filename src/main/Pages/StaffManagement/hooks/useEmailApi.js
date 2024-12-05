@@ -27,15 +27,16 @@ const useEmailApi = () => {
         const errorText = await response.text();
         console.error("Failed to send email you:", response.status, errorText);
 
-        return;
+        return {
+          error: `Failed to send email you:, ${response.status}, ${errorText}`,
+        };
       }
 
       // Check if response has content
       const contentType = response.headers.get("content-type");
       if (contentType && contentType.includes("application/json")) {
         const data = await response.json();
-        console.log("Email sent successfully:", data);
-        return data;
+        return { sucess: "Email sent successfully:" };
       } else {
         console.warn("Response is not JSON:", await response.text());
       }

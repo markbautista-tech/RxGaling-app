@@ -14,7 +14,6 @@ export const pharmacyRegSchema = z.object({
     .refine((val) => val >= 1700 && val <= new Date().getFullYear(), {
       message: `Year must be between 1700 and ${new Date().getFullYear()}`,
     }),
-  age: z.string().min(1, "Age is required."),
   email: z.string().email("Invalid email address").trim(),
   contact_num: z
     .string()

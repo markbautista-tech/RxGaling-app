@@ -18,6 +18,7 @@ import { fetchAuth, login } from "@/utils/data/login";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "@/context/UserContext";
+import LoadingUI from "@/main/components/loadingUI";
 
 // Define a Zod schema for validation
 const loginSchema = z.object({
@@ -65,7 +66,7 @@ export default function LoginForm() {
         toast.error(user?.error);
         return;
       } else {
-        if (response.clinic_id && response.role || userRole === "admin") {
+        if ((response.clinic_id && response.role) || userRole === "admin") {
           toast.success("Login Successfully!");
           setUser(response);
           setRole(userRole);
@@ -88,7 +89,7 @@ export default function LoginForm() {
     }
   };
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <LoadingUI />;
 
   return (
     <>

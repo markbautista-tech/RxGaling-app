@@ -70,6 +70,8 @@ const UserRegistration = () => {
     setIsDialogOpen,
     loading,
     watch,
+    setError,
+    clearErrors,
   } = usePatientReg();
 
   return (
@@ -103,11 +105,19 @@ const UserRegistration = () => {
                 </div> */}
                 <div className="lg:flex gap-3 lg:items-center">
                   <div className="flex-1 pb-3 lg:p-0">
-                    <NewBirthday
+                    {/* <NewBirthday
                       register={register}
                       errors={errors}
                       control={control}
                       watch={watch}
+                    /> */}
+                    <Birthday
+                      register={register}
+                      errors={errors}
+                      control={control}
+                      watch={watch}
+                      age={age}
+                      setAge={setAge}
                     />
                   </div>
                 </div>
@@ -118,6 +128,9 @@ const UserRegistration = () => {
                   register={register}
                   control={control}
                   errors={errors}
+                  watch={watch}
+                  setError={setError}
+                  clearErrors={clearErrors}
                 />
                 <div className="w-full">
                   <SelectGender

@@ -1,8 +1,5 @@
 import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { registrationSchema } from "../schema/registrationSchema";
 
 import { Label } from "@/components/ui/label";
 import {
@@ -12,11 +9,21 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-import useRegForm from "../hooks/useRegForm";
-import { Input } from "@/components/ui/input";
-import staffRegForm from "../hooks/staffRegForm";
 
-const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
 
 const NewBirthday = ({ control, errors, watch, birthdate }) => {
   const [month, setMonth] = useState(birthdate?.split("-")[1]);
@@ -85,21 +92,47 @@ const NewBirthday = ({ control, errors, watch, birthdate }) => {
                 value={field.value}
               >
                 <SelectTrigger id="month">
-                  <SelectValue placeholder={month ? months[month - 1] : "Select month"} />
+                  <SelectValue
+                    placeholder={month ? months[month - 1] : "Select month"}
+                  />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem selected={month === "01"} value="01">January</SelectItem>
-                  <SelectItem selected={month === "02"} value="02">February</SelectItem>
-                  <SelectItem selected={month === "03"} value="03">March</SelectItem>
-                  <SelectItem selected={month === "04"} value="04">April</SelectItem>
-                  <SelectItem selected={month === "05"} value="05">May</SelectItem>
-                  <SelectItem selected={month === "06"} value="06">June</SelectItem>
-                  <SelectItem selected={month === "07"} value="07">July</SelectItem>
-                  <SelectItem selected={month === "08"} value="08">August</SelectItem>
-                  <SelectItem selected={month === "09"} value="09">September</SelectItem>
-                  <SelectItem selected={month === "10"} value="10">October</SelectItem>
-                  <SelectItem selected={month === "11"} value="11">November</SelectItem>
-                  <SelectItem selected={month === "12"} value="12">December</SelectItem>
+                  <SelectItem selected={month === "01"} value="01">
+                    January
+                  </SelectItem>
+                  <SelectItem selected={month === "02"} value="02">
+                    February
+                  </SelectItem>
+                  <SelectItem selected={month === "03"} value="03">
+                    March
+                  </SelectItem>
+                  <SelectItem selected={month === "04"} value="04">
+                    April
+                  </SelectItem>
+                  <SelectItem selected={month === "05"} value="05">
+                    May
+                  </SelectItem>
+                  <SelectItem selected={month === "06"} value="06">
+                    June
+                  </SelectItem>
+                  <SelectItem selected={month === "07"} value="07">
+                    July
+                  </SelectItem>
+                  <SelectItem selected={month === "08"} value="08">
+                    August
+                  </SelectItem>
+                  <SelectItem selected={month === "09"} value="09">
+                    September
+                  </SelectItem>
+                  <SelectItem selected={month === "10"} value="10">
+                    October
+                  </SelectItem>
+                  <SelectItem selected={month === "11"} value="11">
+                    November
+                  </SelectItem>
+                  <SelectItem selected={month === "12"} value="12">
+                    December
+                  </SelectItem>
                 </SelectContent>
               </Select>
             )}

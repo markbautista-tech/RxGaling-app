@@ -17,20 +17,21 @@ export async function login(email, password) {
         error,
       } = await centralSupabase.from("users").select().eq("email", email);
 
-      if(!user_data){
-        if(data.user.user_metadata.role === "admin"){
+      if (!user_data) {
+        if (data.user.user_metadata.role === "admin") {
           return data;
         }
 
         throw new Error("User data not found.");
       }
 
-      const {
+      let {
         first_name,
         gender,
         id,
         last_name,
         last_visited_clinic_id,
+        last_visited_pharmacy_id,
         middle_name,
         mobile_number,
         suffix,
@@ -115,14 +116,14 @@ export async function fetchAuth() {
 
   // Ensure user_data is defined before destructuring
   if (!user_data) {
-    if(data.user.user_metadata.role === "admin"){
+    if (data.user.user_metadata.role === "admin") {
       return data;
     }
 
     throw new Error("User data not found.");
   }
 
-  const {
+  let {
     first_name,
     gender,
     id,

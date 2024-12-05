@@ -73,6 +73,7 @@ const addUserDetails = async (userData, userid) => {
         s2_number,
         prc_number,
         professional_extension,
+        specialization,
       })
       .select();
 

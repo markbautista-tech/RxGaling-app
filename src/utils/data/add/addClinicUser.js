@@ -6,12 +6,8 @@ const addClinicUser = async (email, password) => {
     const { data, error } = await centralSupabase.auth.signUp({
       email: email,
       password: password,
-      options: {
-        data: {
-          role: "clinic owner",
-        },
-      },
-      redirectTo: "http://localhost:3000/user-login",
+      options: {},
+      redirectTo: "http://localhost:3000/",
     });
 
     if (error) {

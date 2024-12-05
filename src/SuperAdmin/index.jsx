@@ -15,6 +15,7 @@ import { useUser } from "@/context/UserContext";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import AdminRouterContent from "./adminRouterContent";
+import LoadingUI from "@/main/components/loadingUI";
 
 const SuperAdmin = () => {
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ const SuperAdmin = () => {
     }
   }, [navigate, user, loading]);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <LoadingUI />;
 
   return (
     <>

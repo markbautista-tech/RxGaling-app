@@ -32,7 +32,7 @@ import { useNavigate } from "react-router-dom";
 import { useUser } from "@/context/UserContext";
 import { toast } from "sonner";
 
-export function NavUser({ user, email }) {
+export function NavUser({ user, email, lname, role }) {
   const navigate = useNavigate();
   const { isMobile } = useSidebar();
   const { setUser } = useUser();
@@ -61,10 +61,12 @@ export function NavUser({ user, email }) {
             >
               <Avatar className="h-8 w-8 rounded-lg">
                 <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                <AvatarFallback className="rounded-lg">
+                  {lname?.charAt(0)}
+                </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">{user.name}</span>
+                <span className="truncate font-semibold">{lname}</span>
                 <span className="truncate text-xs">{email}</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
@@ -80,21 +82,29 @@ export function NavUser({ user, email }) {
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
                   <AvatarImage src={user.avatar} alt={user.name} />
-                  <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                  <AvatarFallback className="rounded-lg">
+                    {lname?.charAt(0)}
+                  </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">{user.name}</span>
+                  <span className="truncate font-semibold">{lname}</span>
                   <span className="truncate text-xs">{email}</span>
                 </div>
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem onClick={() => navigate("/clinic-app/clinic-management")}>
-                <Hospital />
-                Manage Clinic
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => navigate("/clinic-app/profile-management")}>
+              {role === "Owner" && (
+                <DropdownMenuItem
+                  onClick={() => navigate("/clinic-app/clinic-management")}
+                >
+                  <Hospital />
+                  Manage Clinic
+                </DropdownMenuItem>
+              )}
+              <DropdownMenuItem
+                onClick={() => navigate("/clinic-app/profile-management")}
+              >
                 <UserRound />
                 Manage Profile
               </DropdownMenuItem>

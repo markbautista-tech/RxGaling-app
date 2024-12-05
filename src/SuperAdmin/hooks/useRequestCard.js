@@ -7,6 +7,7 @@ const useRequestCard = () => {
   const [request, setRequest] = useState(null);
   const [clinicOwner, setClinicOwner] = useState([]);
   const [clinic, setClinic] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   // Function to fetch clinic owners
   const getClinicOwner = async () => {
@@ -42,6 +43,7 @@ const useRequestCard = () => {
     }
   };
   const fetchRequest = async () => {
+    setLoading(true);
     const req = await getClinicRequest();
     const owner = await getClinicOwner();
     const clinicData = await getClinic();
@@ -49,6 +51,7 @@ const useRequestCard = () => {
     setClinicOwner(owner);
     setClinic(clinicData);
     setRequest(req);
+    setLoading(false);
   };
 
   // Function to count requests
@@ -97,7 +100,7 @@ const useRequestCard = () => {
     };
   }, []);
 
-  return { clinicOwner, clinic, countRequest, getClinicName };
+  return { clinicOwner, clinic, countRequest, getClinicName, loading };
 };
 
 export default useRequestCard;

@@ -31,7 +31,7 @@ const StaffTable = () => {
 
   // Exclude "Owner" from userClinics
   const filteredUserClinics = userClinics.filter(
-    (staff) => staff.role !== "Owner"
+    (staff) => staff.role !== "Owner" && staff.role !== "Doctor"
   );
 
   // Static array for filtering status
@@ -47,7 +47,7 @@ const StaffTable = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("All Status");
   const [selectedRole, setSelectedRole] = useState("All Roles");
-  const [sortOrder, setSortOrder] = useState({ field: "name", asc: true });
+  const [sortOrder, setSortOrder] = useState({ field: "last_name", asc: true });
 
   // Sorting logic
   const sortBy = (field) => {
@@ -59,7 +59,7 @@ const StaffTable = () => {
 
   const sortedData = [...filteredUserClinics]
     .filter((staff) =>
-      staff.users?.first_name?.toLowerCase().includes(searchTerm.toLowerCase())
+      staff.users?.last_name?.toLowerCase().includes(searchTerm.toLowerCase())
     )
     .filter(
       (staff) =>
@@ -80,7 +80,7 @@ const StaffTable = () => {
     <div className="mt-4">
       <div className="flex gap-3 mb-4">
         <Input
-          placeholder="Search staff"
+          placeholder="Search clinic staff..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
@@ -100,22 +100,6 @@ const StaffTable = () => {
             ))}
           </SelectContent>
         </Select>
-        <Select
-          onValueChange={(value) => setSelectedStatus(value)}
-          defaultValue="All Status"
-        >
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="All Status">All Status</SelectItem>
-            {statuses.map((status, index) => (
-              <SelectItem value={status} key={index}>
-                {status}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
       </div>
       <Table className="border-t-2">
         <TableHeader>
@@ -124,16 +108,18 @@ const StaffTable = () => {
             <TableHead>
               <Button
                 variant="ghost"
-                onClick={() => sortBy("first_name")}
-                className="font-bold flex items-center"
+                onClick={() => sortBy("last_name")}
+                className="font-bold flex items-center text-primary"
               >
                 Name
                 <ArrowUpDown className="ml-2 h-4 w-4" />
               </Button>
             </TableHead>
-            <TableHead className="text-primary">Clinic Role</TableHead>
-            <TableHead className="text-primary">Status</TableHead>
-            <TableHead className="text-primary">Action</TableHead>
+            <TableHead className="text-primary font-bold">
+              Clinic Role
+            </TableHead>
+            <TableHead className="text-primary font-bold">Schedule</TableHead>
+            <TableHead className="text-primary font-bold">Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -144,15 +130,19 @@ const StaffTable = () => {
                   <Avatar>
                     <AvatarImage src="" />
                     <AvatarFallback>
-                      {staff.users?.first_name?.[0] || "?"}
+                      {staff.users?.last_name?.[0] || "?"}
                     </AvatarFallback>
                   </Avatar>
                 </TableCell>
                 <TableCell className="font-bold">
-                  {staff.users?.first_name || "Unknown"}
+                  {`${staff.users?.last_name}, ${staff.users?.first_name} ${staff.users?.middle_name} ${staff.users?.last_name || ""}` ||
+                    "Unknown"}
                 </TableCell>
                 <TableCell className="">{staff.role}</TableCell>
-                <TableCell className="">{staff.status}</TableCell>
+                <TableCell className="flex flex-col">
+                  <span>{staff.working_days}</span>
+                  <span>{staff.working_hours}</span>
+                </TableCell>
                 <TableCell className="">
                   <StaffAction />
                 </TableCell>
@@ -161,7 +151,7 @@ const StaffTable = () => {
           ) : (
             <TableRow>
               <TableCell colSpan="5" className="text-center p-4">
-                No staff found.
+                No clinic staff found.
               </TableCell>
             </TableRow>
           )}

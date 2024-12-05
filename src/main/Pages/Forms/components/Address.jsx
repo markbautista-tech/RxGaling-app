@@ -28,7 +28,7 @@ const Address = ({ register, control, errors, existing_address }) => {
     region: existing_address?.region || "",
     province: existing_address?.province || "",
     municipality: existing_address?.city || "",
-    barangay: existing_address?.barangay || ""
+    barangay: existing_address?.barangay || "",
   });
 
   useEffect(() => {
@@ -37,15 +37,15 @@ const Address = ({ register, control, errors, existing_address }) => {
       .then((data) => setRegions(data))
       .catch((err) => console.log(err));
 
-    if(existing_address?.region){
+    if (existing_address?.region) {
       regionChange(existing_address.region, true);
     }
 
-    if(existing_address?.province){
+    if (existing_address?.province) {
       provinceChange(existing_address.province, true);
     }
 
-    if(existing_address?.city){
+    if (existing_address?.city) {
       muniChange(existing_address.city, true);
     }
   }, []);
@@ -53,13 +53,13 @@ const Address = ({ register, control, errors, existing_address }) => {
   const regionChange = (value, upon_load = false) => {
     address.region = value;
 
-    if(!upon_load){
+    if (!upon_load) {
       setAddress({
         ...address,
         province: "",
         municipality: "",
-        barangay: ""
-      })
+        barangay: "",
+      });
     }
 
     fetch(`https://psgc.cloud/api/regions/${value}/provinces`)
@@ -72,12 +72,12 @@ const Address = ({ register, control, errors, existing_address }) => {
   const provinceChange = (value, upon_load = false) => {
     address.province = value;
 
-    if(!upon_load){
+    if (!upon_load) {
       setAddress({
         ...address,
         municipality: "",
-        barangay: ""
-      })
+        barangay: "",
+      });
     }
 
     fetch(`https://psgc.cloud/api/provinces/${value}/cities-municipalities`)
@@ -88,11 +88,11 @@ const Address = ({ register, control, errors, existing_address }) => {
   const muniChange = (value, upon_load = false) => {
     address.municipality = value;
 
-    if(!upon_load){
+    if (!upon_load) {
       setAddress({
         ...address,
-        barangay: ""
-      })
+        barangay: "",
+      });
     }
 
     fetch(`https://psgc.cloud/api/cities-municipalities/${value}/barangays`)
@@ -118,7 +118,6 @@ const Address = ({ register, control, errors, existing_address }) => {
                       id="region"
                       value={address.region}
                       onValueChange={(value) => {
-                        console.log(value)
                         regionChange(value);
                         field.onChange(value);
                       }}
@@ -129,8 +128,7 @@ const Address = ({ register, control, errors, existing_address }) => {
                             address.region !== ""
                               ? regions.length
                                 ? regions.find(
-                                    (region) =>
-                                      region.code === address.region
+                                    (region) => region.code === address.region
                                   ).name
                                 : "Loading..."
                               : "Select Region"
@@ -167,7 +165,9 @@ const Address = ({ register, control, errors, existing_address }) => {
                 <Controller
                   name="province"
                   control={control}
-                  {...(address.province ? { defaultValue: address.province } : {})}
+                  {...(address.province
+                    ? { defaultValue: address.province }
+                    : {})}
                   render={({ field }) => (
                     <Select
                       id="province"
@@ -223,7 +223,9 @@ const Address = ({ register, control, errors, existing_address }) => {
                 <Controller
                   name="municipality"
                   control={control}
-                  {...(address.municipality ? { defaultValue: address.municipality } : {})}
+                  {...(address.municipality
+                    ? { defaultValue: address.municipality }
+                    : {})}
                   render={({ field }) => (
                     <Select
                       id="municipality"
@@ -239,8 +241,7 @@ const Address = ({ register, control, errors, existing_address }) => {
                             address.municipality !== ""
                               ? muni.length
                                 ? muni.find(
-                                    (muni) =>
-                                      muni.code === address.municipality
+                                    (muni) => muni.code === address.municipality
                                   ).name
                                 : "Loading..."
                               : "Select City/Municipality"
@@ -276,7 +277,9 @@ const Address = ({ register, control, errors, existing_address }) => {
                 <Controller
                   name="barangay"
                   control={control}
-                  {...(address.barangay ? { defaultValue: address.barangay } : {})}
+                  {...(address.barangay
+                    ? { defaultValue: address.barangay }
+                    : {})}
                   render={({ field }) => (
                     <Select
                       id="barangay"
@@ -284,13 +287,13 @@ const Address = ({ register, control, errors, existing_address }) => {
                       onValueChange={(value) => {
                         setAddress({
                           ...address,
-                          barangay: value
-                        })
+                          barangay: value,
+                        });
                         field.onChange(value);
                       }}
                     >
                       <SelectTrigger className="w-full">
-                        <SelectValue 
+                        <SelectValue
                           placeholder={
                             address.barangay !== ""
                               ? barangay.length

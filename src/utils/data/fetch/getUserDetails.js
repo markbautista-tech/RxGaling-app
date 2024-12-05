@@ -19,3 +19,19 @@ const getUserEmail = async (userId) => {
 };
 
 export default getUserEmail;
+
+export const getUserData = async () => {
+  try {
+    const { data: userData, error: userDataError } = await centralSupabase
+      .from("users")
+      .select();
+
+    if (userDataError) {
+      return { error: userDataError.message };
+    } else {
+      return userData;
+    }
+  } catch (err) {
+    return { err: err.message };
+  }
+};

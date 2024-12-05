@@ -1,5 +1,5 @@
 import { User } from "lucide-react";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   Sheet,
@@ -15,32 +15,141 @@ import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import useCompleteClinicDetails from "../hooks/useCompleteClinicDetails";
 
-const ViewDetails = ({ ownerId, status }) => {
-  const {
-    clinicStatus,
-    getOwnerID,
-    clinicLicense,
-    clinicDataName,
-    ownerFname,
-    ownerEname,
-    ownerLname,
-    ownerMname,
-    regionName,
-    provinceName,
-    cityMuniName,
-    barangayName,
-    ownerAddress,
-    clinicAddress,
-    clinicBarangay,
-    clinicCityMuni,
-    clinicProvince,
-    clinicRegion,
-  } = useClinicRequestData();
-  const { clinicDetails } = useCompleteClinicDetails();
+const getRegionName = async (regionId) => {
+  try {
+    const response = await fetch(`https://psgc.cloud/api/regions/${regionId}`);
+    const data = await response.json();
+    return data.name;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
+
+const getProvinceName = async (provinceId) => {
+  try {
+    const response = await fetch(
+      `https://psgc.cloud/api/provinces/${provinceId}`
+    );
+    const data = await response.json();
+    return data.name;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
+
+const getCityMuniName = async (cityMuniId) => {
+  try {
+    const response = await fetch(
+      `https://psgc.cloud/api/cities-municipalities/${cityMuniId}`
+    );
+    const data = await response.json();
+    return data.name;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
+
+const getBarangayName = async (barangayId) => {
+  try {
+    const response = await fetch(
+      `https://psgc.cloud/api/barangays/${barangayId}`
+    );
+    const data = await response.json();
+    return data.name;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
+
+const getCliRegionName = async (regionId) => {
+  try {
+    const response = await fetch(`https://psgc.cloud/api/regions/${regionId}`);
+    const data = await response.json();
+    return data.name;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
+
+const getCliProvinceName = async (provinceId) => {
+  try {
+    const response = await fetch(
+      `https://psgc.cloud/api/provinces/${provinceId}`
+    );
+    const data = await response.json();
+    return data.name;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
+
+const getCliCityMuniName = async (cityMuniId) => {
+  try {
+    const response = await fetch(
+      `https://psgc.cloud/api/cities-municipalities/${cityMuniId}`
+    );
+    const data = await response.json();
+    return data.name;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
+
+const getCliBarangayName = async (barangayId) => {
+  try {
+    const response = await fetch(
+      `https://psgc.cloud/api/barangays/${barangayId}`
+    );
+    const data = await response.json();
+    return data.name;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
+
+const ViewDetails = ({ clinic }) => {
+  const [region, setRegion] = useState(null);
+  const [province, setProvince] = useState(null);
+  const [cityMuni, setCityMuni] = useState(null);
+  const [barangay, setBarangay] = useState(null);
+
+  const [cliregion, setCliRegion] = useState(null);
+  const [cliprovince, setCliProvince] = useState(null);
+  const [clicityMuni, setCliCityMuni] = useState(null);
+  const [clibarangay, setCliBarangay] = useState(null);
 
   useEffect(() => {
-    getOwnerID(ownerId);
-  }, [ownerId]);
+    const fetchAddress = async () => {
+      const bar = await getBarangayName(clinic.users?.addresses?.barangay);
+      const cityMuni = await getCityMuniName(clinic.users?.addresses?.city);
+      const province = await getProvinceName(clinic.users?.addresses?.province);
+      const region = await getRegionName(clinic.users?.addresses?.region);
+
+      const clin_bar = await getBarangayName(clinic.addresses?.barangay);
+      const clin_cityMuni = await getCityMuniName(clinic.addresses?.city);
+      const clin_province = await getProvinceName(clinic.addresses?.province);
+      const clin_region = await getRegionName(clinic.addresses?.region);
+
+      setBarangay(bar);
+      setCityMuni(cityMuni);
+      setProvince(province);
+      setRegion(region);
+
+      setCliBarangay(clin_bar);
+      setCliCityMuni(clin_cityMuni);
+      setCliProvince(clin_province);
+      setCliRegion(clin_region);
+    };
+    fetchAddress();
+  }, []);
 
   return (
     <>
@@ -52,30 +161,32 @@ const ViewDetails = ({ ownerId, status }) => {
         <SheetContent>
           <SheetHeader>
             <SheetTitle>
-              <Avatar className="w-[100px] h-[100px]">
-                <AvatarImage src="https://syhqtiahcppwauhrhctz.supabase.co/storage/v1/object/public/Clinic_Storage/16/clinic_pic/16-clinic_pic.jpg" />
-                <AvatarFallback>CN</AvatarFallback>
+              <Avatar className="w-[100px] h-[100px] text-xl">
+                <AvatarImage src="" />
+                <AvatarFallback>{clinic.name[0]}</AvatarFallback>
               </Avatar>
             </SheetTitle>
             <SheetDescription></SheetDescription>
             <div>
               <div className="text-lg font-bold lg:text-2xl flex gap-2 items-center">
-                {clinicDataName}
+                <span>{clinic.name}</span>
                 <Badge
                   variant=""
                   className={`${
-                    status.toLowerCase() === "archived"
+                    clinic.status.toLowerCase() === "archived"
                       ? "bg-gray-500"
-                      : status.toLowerCase() === "deactivated"
+                      : clinic.status.toLowerCase() === "deactivated"
                         ? "bg-red-500"
-                        : "bg-green-500"
+                        : clinic.status.toLowerCase() === "declined"
+                          ? "bg-red-500"
+                          : "bg-green-500"
                   } text-white`}
                 >
-                  {status}
+                  {clinic.status}
                 </Badge>
               </div>
               <p className="text-sm text-gray-500">
-                License Number: <b>{clinicLicense}</b>
+                License Number: <b>{clinic.license_num}</b>
               </p>
               <div className="py-4">
                 <Separator orientation="horizontal" />
@@ -85,24 +196,13 @@ const ViewDetails = ({ ownerId, status }) => {
                 <div>
                   <p className="text-md text-gray-800">Name:</p>
                   <p className="text-md text-gray-500">
-                    Dr. {ownerFname} {ownerMname?.charAt(0)}
-                    {". "}
-                    {ownerLname} {ownerEname}
+                    {`Dr. ${clinic.users?.first_name} ${clinic.users?.middle_name} ${clinic.users?.last_name} ${clinic.users?.suffix === "N/A" ? "" : clinic.users?.suffix}` ||
+                      "Unknown"}
                   </p>
                 </div>
                 <div>
                   <p className="text-md text-gray-800">Address:</p>
-                  <p className="text-md text-gray-500">
-                    {ownerAddress}
-                    {", "}
-                    {barangayName}
-                    {", "}
-                    {cityMuniName}
-                    {", "}
-                    {provinceName}
-                    {", "}
-                    {regionName}
-                  </p>
+                  <p className="text-md text-gray-500">{`${clinic.users?.addresses?.address_line}, ${barangay}, ${cityMuni}, ${province}, ${region}`}</p>
                 </div>
               </div>
               <div className="py-4">
@@ -112,17 +212,7 @@ const ViewDetails = ({ ownerId, status }) => {
                 <p className="text-lg lg:text-lg font-bold">Clinic Details:</p>
                 <div>
                   <p className="text-md text-gray-800">Address:</p>
-                  <p className="text-md text-gray-500">
-                    {clinicAddress}
-                    {", "}
-                    {clinicBarangay}
-                    {", "}
-                    {clinicCityMuni}
-                    {", "}
-                    {clinicProvince}
-                    {", "}
-                    {clinicRegion}
-                  </p>
+                  <p className="text-md text-gray-500">{`${clinic.addresses?.address_line}, ${clibarangay}, ${clicityMuni}, ${cliprovince}, ${cliregion}`}</p>
                 </div>
               </div>
             </div>
