@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/app-sidebar";
+import { AppSidebar } from "@/components/app-sidebar-pharmacy";
 import PageHeader from "@/main/PageHeader";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "@/context/UserContext";

@@ -80,7 +80,7 @@ export default function LoginForm() {
         return;
       }
 
-      if (response.clinic_id || response.pharmacy_id || userRole === "admin") {
+      if (response.clinic_id || userRole === "admin") {
         setUser(response);
         setRole(userRole);
         setEmail(data.email);
@@ -91,8 +91,6 @@ export default function LoginForm() {
           navigate("/admin");
         } else if (response.clinic_id) {
           navigate("/clinic-app");
-        } else if (response.pharmacy_id) {
-          navigate("/pharmacy-app");
         } else {
           navigate("/");
         }

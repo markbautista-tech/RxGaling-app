@@ -140,7 +140,6 @@ export async function login(email, password) {
       suffix,
       email,
       clinic_id: last_visited_clinic_id,
-      pharmacy_id: last_visited_pharmacy_id,
       role: userRole,
     };
   } catch (error) {
@@ -154,11 +153,7 @@ export async function fetchAuth() {
     const { data: authData, error: authError } =
       await centralSupabase.auth.getUser();
 
-    if (authError) {
-      throw new Error(authError.message);
-    }
-
-    if (!authData?.user) {
+    if (authData.user === null) {
       throw new Error("No user is currently logged in.");
     }
 
@@ -297,8 +292,6 @@ export async function fetchAuth() {
     };
   } catch (error) {
     console.error(error);
-    throw new Error(
-      error.message || "An error occurred during authentication."
-    );
+    return { error: error.message };
   }
 }
