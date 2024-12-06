@@ -55,6 +55,7 @@ export default function PharmacyLoginForm() {
     try {
       await new Promise((resolve) => setTimeout(resolve, 500));
       const response = await pharmacyLogin(data.email, data.password);
+
       const loginError = response.message;
       const userRole = response.role || response.user.user_metadata.role;
 
@@ -75,8 +76,10 @@ export default function PharmacyLoginForm() {
 
           if (userRole === "admin") {
             navigate("/admin");
-          } else {
+          } else if (response.pharmacy_id) {
             navigate("/pharmacy-app");
+          } else {
+            navigate("/");
           }
         } else {
           navigate("/");
@@ -118,6 +121,7 @@ export default function PharmacyLoginForm() {
                   id="email"
                   type="email"
                   placeholder="you@example.com"
+                  value="vgov.markbautista15@gmail.com"
                   {...register("email")}
                   aria-invalid={errors.email ? "true" : "false"}
                 />
@@ -132,6 +136,7 @@ export default function PharmacyLoginForm() {
                 <Input
                   id="password"
                   type={showPassword ? "text" : "password"}
+                  value="@Rxgaling2024"
                   {...register("password")}
                   aria-invalid={errors.password ? "true" : "false"}
                 />
