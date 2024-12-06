@@ -56,7 +56,13 @@ const usePharmacyDetails = () => {
     };
   }, []);
 
-  return { pharmacyDetails, loading, unverifiedCount, requestData };
+  return {
+    pharmacyDetails,
+    loading,
+    unverifiedCount,
+    requestData,
+    setPharmacyDetails,
+  };
 };
 
 export default usePharmacyDetails;
