@@ -88,7 +88,7 @@ const NavPharmacy = () => {
                       </Link>
                     </SidebarMenuSubItem>
                     <SidebarMenuSubItem>
-                      <Link to="">
+                      <Link to="/pharmacy-app/medicine-inventory">
                         <SidebarMenuSubButton
                           asChild
                           className={`py-3 hover:bg-primary hover:text-white rounded-sm  ${activeLink === "/clinic-app/staff-management" ? "bg-primary text-white" : ""}`}

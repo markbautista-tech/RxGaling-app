@@ -164,8 +164,7 @@ export function AppSidebar({ ...props }) {
         )}
       </SidebarHeader>
       <SidebarContent>
-        {role !== "admin" && <NavPharmacy />}
-        {role === "admin" && <AdminDashboard items={data.adminDash} />}
+        {role !== "admin" ? <NavPharmacy /> : <AdminDashboard items={data.adminDash} />}
       </SidebarContent>
       <SidebarFooter>
         {/* {role === "admin" && <NavAdmin user={data.admin} email={email} />} */}
