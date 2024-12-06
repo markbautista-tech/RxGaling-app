@@ -19,6 +19,8 @@ export const UserProvider = ({ children }) => {
     setLoading(true);
     const auth = await fetchAuth();
 
+    console.log(auth);
+
     const name = `${auth.first_name} ${auth.middle_name} ${auth.last_name} ${auth.suffix}`;
     if (auth.error) {
       setUser(null);
