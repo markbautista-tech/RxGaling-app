@@ -6,6 +6,7 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import { useUser } from "@/context/UserContext";
 import { useNavigate } from "react-router-dom";
+import LoadingUI from "../components/loadingUI";
 
 const PageTemplate = () => {
   const navigate = useNavigate();
@@ -13,11 +14,11 @@ const PageTemplate = () => {
 
   useEffect(() => {
     if (!loading && !user) {
-      navigate("/user-login");
+      navigate("/");
     }
   }, [navigate, user, loading]);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <LoadingUI />;
 
   return (
     <>

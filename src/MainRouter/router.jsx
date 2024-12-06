@@ -25,13 +25,18 @@ import PharmacyRegistration from "@/PharmacyApp/components/PharmacyRegistration"
 import LoadingUI from "@/main/components/loadingUI";
 import PharmacyAppreMessage from "@/SuperAdmin/components/PharmacyAppreMessage";
 import PharmacyReqForm from "@/SuperAdmin/components/PharmacyReqForm";
+import LandingPage from "@/main/Pages/Landing/LandingPage";
+import PharmacyLoginForm from "@/main/Pages/Forms/PharmacyLoginForm";
 
 const MainRouter = () => {
   return (
     <>
       <Routes>
+        {/* <Route path="/*" element={<LandingPage />} /> */}
         <Route path="/*" element={<LoginForm />} />
         <Route path="/user-login" element={<LoginForm />} />
+        <Route path="/pharmacy-user-login" element={<PharmacyLoginForm />} />
+
         <Route path="/sign-up" element={<SignUpForm />} />
         <Route path="/user/sign-up" element={<UserSignUpForm />} />
         <Route path="/admin/*" element={<SuperAdmin />} />

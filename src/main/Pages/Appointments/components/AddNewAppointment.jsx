@@ -25,7 +25,7 @@ export function AddNewAppointment() {
           {/* <IoAddCircle className="w-8 h-8 cursor-pointer lg:w-10 lg:h-10" /> */}
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="max-w-full">
         <DialogHeader>
           <DialogTitle>New or Exisiting Patient?</DialogTitle>
           <DialogDescription>

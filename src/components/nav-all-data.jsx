@@ -117,16 +117,21 @@ const NavAllData = () => {
                         </SidebarMenuSubButton>
                       </Link>
                     </SidebarMenuSubItem>
-                    <SidebarMenuSubItem>
-                      <Link to="">
-                        <SidebarMenuSubButton
-                          asChild
-                          className={`py-3 hover:bg-primary hover:text-white rounded-sm `}
-                        >
-                          <span className="lg:text-[14px]">Pharmacy</span>
-                        </SidebarMenuSubButton>
-                      </Link>
-                    </SidebarMenuSubItem>
+                    {role === "Owner" && (
+                      <SidebarMenuSubItem>
+                        <Link to="/clinic-app/pharmacy-management">
+                          <SidebarMenuSubButton
+                            asChild
+                            className={`py-3 hover:bg-primary hover:text-white rounded-sm  ${activeLink === "/clinic-app/pharmacy-management" ? "bg-primary text-white" : ""}`}
+                            onClick={() =>
+                              handleMenuClick("/clinic-app/pharmacy-management")
+                            }
+                          >
+                            <span className="lg:text-[14px]">Pharmacy</span>
+                          </SidebarMenuSubButton>
+                        </Link>
+                      </SidebarMenuSubItem>
+                    )}
                   </SidebarMenuSub>
                 </CollapsibleContent>
               </SidebarMenuItem>
