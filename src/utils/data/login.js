@@ -3,295 +3,198 @@ import { centralSupabase } from "../supabaseClient";
 
 export async function login(email, password) {
   try {
-    const { data: authData, error: authError } =
-      await centralSupabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-    if (authError) {
-      throw new Error(authError.message);
-    }
-
-    let userRole;
-    const { data: users, error: userError } = await centralSupabase
-      .from("users")
-      .select()
-      .eq("email", email);
-
-    if (userError) {
-      throw new Error(userError.message);
-    }
-
-    const userData = users[0];
-    if (!userData) {
-      if (authData.user?.user_metadata?.role === "admin") {
-        return authData;
-      }
-      throw new Error("User data not found.");
-    }
-
-    let {
-      first_name,
-      gender,
-      id,
-      last_name,
-      last_visited_clinic_id,
-      last_visited_pharmacy_id,
-      middle_name,
-      mobile_number,
-      suffix,
-    } = userData;
-
-    if (last_visited_clinic_id === null && last_visited_pharmacy_id === null) {
-      // Fetch clinic staff role
-      const { data: clinicStaff, error: clinicStaffError } =
-        await centralSupabase.from("clinic_staffs").select().eq("user_id", id);
-
-      if (clinicStaffError) {
-        throw new Error(clinicStaffError.message);
-      }
-
-      if (clinicStaff?.length > 0) {
-        const { clinic_id, role } = clinicStaff[0];
-        last_visited_clinic_id = clinic_id;
-
-        const { error: updateError } = await centralSupabase
-          .from("users")
-          .update({ last_visited_clinic_id: clinic_id })
-          .eq("id", id);
-
-        if (updateError) {
-          throw new Error(updateError.message);
-        }
-
-        userRole = role;
-      } else {
-        // Fetch pharmacy staff role if no clinic role exists
-        const { data: pharmacyStaff, error: pharmacyStaffError } =
-          await centralSupabase
-            .from("pharmacy_staffs")
-            .select()
-            .eq("user_id", id);
-
-        if (pharmacyStaffError) {
-          throw new Error(pharmacyStaffError.message);
-        }
-
-        if (pharmacyStaff?.length > 0) {
-          const { pharmacy_id, role } = pharmacyStaff[0];
-          last_visited_pharmacy_id = pharmacy_id;
-
-          const { error: updateError } = await centralSupabase
-            .from("users")
-            .update({ last_visited_pharmacy_id: pharmacy_id })
-            .eq("id", id);
-
-          if (updateError) {
-            throw new Error(updateError.message);
-          }
-
-          userRole = role;
-        } else {
-          userRole = authData.user.user_metadata.role;
-        }
-      }
-      console.log(last_visited_clinic_id);
-    } else {
-      const { data: clinicStaff, error: clinicError } = await centralSupabase
-        .from("clinic_staffs")
-        .select()
-        .eq("user_id", id)
-        .eq("clinic_id", last_visited_clinic_id);
-
-      if (clinicError) {
-        throw new Error(clinicError.message);
-      }
-
-      if (clinicStaff?.length > 0) {
-        userRole = clinicStaff[0].role;
-      } else {
-        const { data: pharmacyStaff, error: pharmacyError } =
-          await centralSupabase
-            .from("pharmacy_staffs")
-            .select()
-            .eq("user_id", id)
-            .eq("pharmacy_id", last_visited_pharmacy_id);
-
-        if (pharmacyError) {
-          throw new Error(pharmacyError.message);
-        }
-
-        if (pharmacyStaff?.length > 0) {
-          userRole = pharmacyStaff[0].role;
-        } else {
-          userRole = authData.user.user_metadata.role;
-        }
-      }
-    }
-
-    return {
-      first_name,
-      gender,
-      id,
-      last_name,
-      middle_name,
-      mobile_number,
-      suffix,
+    const { data, error } = await centralSupabase.auth.signInWithPassword({
       email,
-      clinic_id: last_visited_clinic_id,
-      role: userRole,
-    };
+      password,
+    });
+
+    if (error) {
+      return error;
+    } else {
+      let user_role;
+      const {
+        data: [user_data],
+        error,
+      } = await centralSupabase.from("users").select().eq("email", email);
+
+      if (!user_data) {
+        if (data.user.user_metadata.role === "admin") {
+          return data;
+        }
+
+        throw new Error("User data not found.");
+      }
+
+      let {
+        first_name,
+        gender,
+        id,
+        last_name,
+        last_visited_clinic_id,
+        middle_name,
+        mobile_number,
+        suffix,
+      } = user_data;
+
+      if (!last_visited_clinic_id) {
+        const { data, error: clinic_staff_error } = await centralSupabase
+          .from("clinic_staffs")
+          .select()
+          .eq("user_id", id)
+          .limit(1); // Ensure only one item is fetched
+
+        if (clinic_staff_error) {
+          throw new Error(clinic_staff_error.message);
+        }
+
+        // Check if data exists and is not empty
+        if (data && data.length > 0) {
+          const { clinic_id, role } = data[0]; // Access the first item safely
+
+          if (clinic_id) {
+            const { error } = await centralSupabase
+              .from("users")
+              .update({ last_visited_clinic_id: clinic_id })
+              .eq("id", id);
+
+            if (error) {
+              throw new Error(error.message);
+            } else {
+              last_visited_clinic_id = clinic_id;
+              user_role = role;
+            }
+          }
+        } else {
+          throw new Error("No pharmacy staff data found for the given user.");
+        }
+      } else {
+        const { data, error } = await centralSupabase
+          .from("clinic_staffs")
+          .select()
+          .eq("user_id", id)
+          .eq("clinic_id", last_visited_clinic_id)
+          .limit(1);
+
+        if (error) {
+          throw new Error(error.message);
+        }
+
+        if (data && data.length > 0) {
+          user_role = data[0].role;
+        } else {
+          throw new Error(
+            "No pharmacy staff data found for the given user and pharmacy."
+          );
+        }
+      }
+
+      return {
+        first_name,
+        gender,
+        id,
+        last_name,
+        middle_name,
+        mobile_number,
+        suffix,
+        email,
+        clinic_id: last_visited_clinic_id,
+        role: user_role,
+      };
+    }
   } catch (error) {
-    console.error(error);
-    throw new Error(error.message || "An error occurred during login.");
+    throw new Error(error);
   }
 }
 
 export async function fetchAuth() {
-  try {
-    const { data: authData, error: authError } =
-      await centralSupabase.auth.getUser();
+  const { data, error } = await centralSupabase.auth.getUser();
 
-    if (authData.user === null) {
-      throw new Error("No user is currently logged in.");
-    }
-
-    const { data: users, error: userError } = await centralSupabase
-      .from("users")
-      .select()
-      .eq("email", authData.user.email);
-
-    if (userError) {
-      throw new Error(userError.message);
-    }
-
-    const userData = users[0];
-    if (!userData) {
-      if (authData.user.user_metadata.role === "admin") {
-        return authData;
-      }
-      throw new Error("User data not found.");
-    }
-
-    let {
-      first_name,
-      gender,
-      id,
-      last_name,
-      last_visited_clinic_id,
-      last_visited_pharmacy_id,
-      middle_name,
-      mobile_number,
-      suffix,
-    } = userData;
-
-    let userRole;
-
-    // Handle clinic staff logic
-    if (last_visited_clinic_id) {
-      const { data: clinicStaff, error: clinicError } = await centralSupabase
-        .from("clinic_staffs")
-        .select()
-        .eq("user_id", id)
-        .eq("clinic_id", last_visited_clinic_id || null);
-
-      if (clinicError) {
-        throw new Error(clinicError.message);
-      }
-
-      if (clinicStaff?.length > 0) {
-        userRole = clinicStaff[0].role;
-      }
-    }
-
-    // Handle pharmacy staff logic
-    if (last_visited_pharmacy_id) {
-      const { data: pharmacyStaff, error: pharmacyError } =
-        await centralSupabase
-          .from("pharmacy_staffs")
-          .select()
-          .eq("user_id", id)
-          .eq("pharmacy_id", last_visited_pharmacy_id || null);
-
-      if (pharmacyError) {
-        throw new Error(pharmacyError.message);
-      }
-
-      if (pharmacyStaff?.length > 0) {
-        userRole = pharmacyStaff[0].role;
-      }
-    }
-
-    // Fallback logic for missing last_visited_clinic_id or last_visited_pharmacy_id
-    if (!last_visited_clinic_id && !last_visited_pharmacy_id) {
-      // Try fetching clinic staff role
-      const { data: clinicStaff, error: clinicStaffError } =
-        await centralSupabase.from("clinic_staffs").select().eq("user_id", id);
-
-      if (clinicStaffError) {
-        throw new Error(clinicStaffError.message);
-      }
-
-      if (clinicStaff?.length > 0) {
-        const { clinic_id, role } = clinicStaff[0];
-        last_visited_clinic_id = clinic_id;
-
-        const { error: updateError } = await centralSupabase
-          .from("users")
-          .update({ last_visited_clinic_id: clinic_id || null }) // Avoid invalid bigint syntax
-          .eq("id", id);
-
-        if (updateError) {
-          throw new Error(updateError.message);
-        }
-
-        userRole = role;
-      } else {
-        // Try fetching pharmacy staff role
-        const { data: pharmacyStaff, error: pharmacyStaffError } =
-          await centralSupabase
-            .from("pharmacy_staffs")
-            .select()
-            .eq("user_id", id);
-
-        if (pharmacyStaffError) {
-          throw new Error(pharmacyStaffError.message);
-        }
-
-        if (pharmacyStaff?.length > 0) {
-          const { pharmacy_id, role } = pharmacyStaff[0];
-          last_visited_pharmacy_id = pharmacy_id;
-
-          const { error: updateError } = await centralSupabase
-            .from("users")
-            .update({ last_visited_pharmacy_id: pharmacy_id || null }) // Avoid invalid bigint syntax
-            .eq("id", id);
-
-          if (updateError) {
-            throw new Error(updateError.message);
-          }
-
-          userRole = role;
-        }
-      }
-    }
-
-    return {
-      first_name,
-      gender,
-      id,
-      last_name,
-      middle_name,
-      mobile_number,
-      suffix,
-      email: authData.user.email,
-      clinic_id: last_visited_clinic_id || null,
-      pharmacy_id: last_visited_pharmacy_id || null,
-      role: userRole,
-    };
-  } catch (error) {
-    console.error(error);
-    return { error: error.message };
+  // Add a check for null or undefined user
+  if (!data || !data.user) {
+    return new Error("No user is currently logged in.");
   }
+
+  let user_role;
+
+  const {
+    data: [user_data],
+    error: userError,
+  } = await centralSupabase.from("users").select().eq("email", data.user.email);
+
+  if (userError) {
+    throw new Error(userError.message);
+  }
+
+  // Ensure user_data is defined before destructuring
+  if (!user_data) {
+    if (data.user.user_metadata.role === "admin") {
+      return data;
+    }
+
+    throw new Error("User data not found.");
+  }
+
+  let {
+    first_name,
+    gender,
+    id,
+    last_name,
+    last_visited_clinic_id,
+    middle_name,
+    mobile_number,
+    suffix,
+  } = user_data;
+
+  if (!last_visited_clinic_id) {
+    const {
+      data: [clinic_staff_data],
+      error: clinic_staff_error,
+    } = await centralSupabase
+      .from("pharmacy_staffs")
+      .select()
+      .eq("user_id", id);
+    const { clinic_id, role } = clinic_staff_data;
+
+    if (clinic_id) {
+      const { error } = await centralSupabase
+        .from("users")
+        .update({ last_visited_clinic_id: clinic_id })
+        .eq("id", id);
+
+      if (error) {
+        throw new Error(error);
+      } else {
+        last_visited_clinic_id = clinic_id;
+        user_role = role;
+      }
+    }
+  } else {
+    const {
+      data: [clinic_staff_data],
+      error,
+    } = await centralSupabase
+      .from("clinic_staffs")
+      .select()
+      .eq("user_id", id)
+      .eq("clinic_id", last_visited_clinic_id);
+
+    if (error) {
+      throw new Error(error);
+    } else {
+      user_role = clinic_staff_data.role;
+    }
+  }
+
+  return {
+    first_name,
+    gender,
+    id,
+    last_name,
+    middle_name,
+    mobile_number,
+    suffix,
+    email: data.user.email,
+    clinic_id: last_visited_clinic_id,
+    role: user_role,
+  };
 }

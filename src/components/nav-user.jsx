@@ -42,7 +42,7 @@ export function NavUser({ user, email, lname, role }) {
       const result = await logout();
       if (result === "success") {
         setUser(null);
-        navigate("/user-login");
+        navigate("/");
         toast("Logged out!");
       }
     } catch (error) {

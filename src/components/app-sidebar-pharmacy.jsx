@@ -39,6 +39,7 @@ import { GiMedicines } from "react-icons/gi";
 import { NavReports } from "./nav-reports";
 import { useUserPharmacies } from "@/utils/data/fetch/fetchUserPharmacies";
 import NavAllData from "./nav-all-data";
+import NavPharmacy from "./nav-pharmacy";
 
 // This is sample data.
 const data = {
@@ -144,7 +145,10 @@ export function AppSidebar({ ...props }) {
   const { user, loading, setUser, role, email, ownerLname } = useUser();
   const [admin, setAdmin] = React.useState(role === "admin");
 
-  const { data: pharmacies, isLoading } = useUserPharmacies(user.id, user.clinic_id);
+  const { data: pharmacies, isLoading } = useUserPharmacies(
+    user.id,
+    user.clinic_id
+  );
 
   return (
     <Sidebar collapsible="icon" {...props}>
@@ -160,15 +164,8 @@ export function AppSidebar({ ...props }) {
         )}
       </SidebarHeader>
       <SidebarContent>
-        {role !== "admin" && <NavAllData />}
+        {role !== "admin" && <NavPharmacy />}
         {role === "admin" && <AdminDashboard items={data.adminDash} />}
-        {/* {role === "admin" && <AdminManage items={data.navAdmin} />}
-        {role !== "admin" && <NavNoDrop items={data.navNoDrop} />}
-
-        {role !== "admin" && role !== "Doctor" && (
-          <NavMain items={data.navMain} />
-        )}
-        {!admin && <NavReports items={data.navReports} />} */}
       </SidebarContent>
       <SidebarFooter>
         {/* {role === "admin" && <NavAdmin user={data.admin} email={email} />} */}

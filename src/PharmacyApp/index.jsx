@@ -5,6 +5,7 @@ import PageHeader from "@/main/PageHeader";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "@/context/UserContext";
 import LoadingUI from "@/main/components/loadingUI";
+import PharmacyContentRouter from "./ContentRouter/router";
 
 const PharmacyApp = () => {
   const navigate = useNavigate();
@@ -22,7 +23,12 @@ const PharmacyApp = () => {
       <SidebarProvider>
         <AppSidebar />
         <div className="w-full">
-          <PageHeader />
+          <div>
+            <PageHeader />
+          </div>
+          <div>
+            <PharmacyContentRouter />
+          </div>
         </div>
       </SidebarProvider>
     </>

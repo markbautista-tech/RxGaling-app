@@ -33,7 +33,7 @@ const MainRouter = () => {
     <>
       <Routes>
         {/* <Route path="/*" element={<LandingPage />} /> */}
-        <Route path="/*" element={<LoginForm />} />
+        <Route path="/*" element={<LandingPage />} />
         <Route path="/user-login" element={<LoginForm />} />
         <Route path="/pharmacy-user-login" element={<PharmacyLoginForm />} />
 

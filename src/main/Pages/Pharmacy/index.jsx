@@ -23,7 +23,7 @@ import { Separator } from "@/components/ui/separator";
 import SearchBar from "../components/Search";
 import ContentTitle from "../../PageContent/ContentTitle";
 import CreatePartnerPharmacy from "./create";
-import AddPartnerPharmacy from "./components/AddPartnerPharmacy";
+import AddPartnerPharmacy from "../../../PharmacyApp/Pages/AddPartnerPharmacy";
 // import CreateClinicDoctors from "./create";
 
 const Pharmacy = () => {
