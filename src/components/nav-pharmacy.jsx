@@ -41,9 +41,10 @@ const NavPharmacy = () => {
         <SidebarGroupContent>
           <SidebarMenu className="space-y-1">
             <SidebarMenuItem>
-              <Link to="">
+              <Link to="/pharmacy-app/dashboard">
                 <SidebarMenuButton
-                  className={`py-5 hover:bg-primary hover:text-white rounded-md ${activeLink === "/clinic-app/dashboard" ? "bg-primary text-white" : ""}`}
+                  className={`py-5 hover:bg-primary hover:text-white rounded-md ${activeLink === "/pharmacy-app/dashboard" ? "bg-primary text-white" : ""}`}
+                  onClick={() => handleMenuClick("/pharmacy-app/dashboard")}
                 >
                   <RiDashboardHorizontalLine />
                   <span className="lg:text-[16px]">Dashboard</span>
@@ -52,9 +53,10 @@ const NavPharmacy = () => {
             </SidebarMenuItem>
 
             <SidebarMenuItem>
-              <Link to="">
+              <Link to="/pharmacy-app/dispenser">
                 <SidebarMenuButton
-                  className={`py-5 hover:bg-primary hover:text-white rounded-md ${activeLink === "/clinic-app/appointments" ? "bg-primary text-white" : ""}`}
+                  className={`py-5 hover:bg-primary hover:text-white rounded-md ${activeLink === "/pharmacy-app/dispenser" ? "bg-primary text-white" : ""}`}
+                  onClick={() => handleMenuClick("/pharmacy-app/dispenser")}
                 >
                   <GiMedicines />
                   <span className="lg:text-[16px]">Medicine Dispenser</span>
@@ -78,20 +80,26 @@ const NavPharmacy = () => {
                 <CollapsibleContent>
                   <SidebarMenuSub>
                     <SidebarMenuSubItem>
-                      <Link to="">
+                      <Link to="/pharmacy-app/pharmacy-staff">
                         <SidebarMenuSubButton
                           asChild
-                          className={`py-3 hover:bg-primary hover:text-white rounded-sm  ${activeLink === "/clinic-app/staff-management" ? "bg-primary text-white" : ""}`}
+                          className={`py-3 hover:bg-primary hover:text-white rounded-sm  ${activeLink === "/pharmacy-app/pharmacy-staff" ? "bg-primary text-white" : ""}`}
+                          onClick={() =>
+                            handleMenuClick("/pharmacy-app/pharmacy-staff")
+                          }
                         >
                           <span className="lg:text-[14px]">Manage Staffs</span>
                         </SidebarMenuSubButton>
                       </Link>
                     </SidebarMenuSubItem>
                     <SidebarMenuSubItem>
-                      <Link to="">
+                      <Link to="/pharmacy-app/medicine-inventory">
                         <SidebarMenuSubButton
                           asChild
-                          className={`py-3 hover:bg-primary hover:text-white rounded-sm  ${activeLink === "/clinic-app/staff-management" ? "bg-primary text-white" : ""}`}
+                          className={`py-3 hover:bg-primary hover:text-white rounded-sm  ${activeLink === "/pharmacy-app/medicine-inventory" ? "bg-primary text-white" : ""}`}
+                          onClick={() =>
+                            handleMenuClick("/pharmacy-app/medicine-inventory")
+                          }
                         >
                           <span className="lg:text-[14px]">
                             Medicine Inventory
