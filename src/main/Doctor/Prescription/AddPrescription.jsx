@@ -1,96 +1,223 @@
-import React from "react";
-import PatientHeader from "../components/PatientHeader";
-import ContentTitle from "@/main/PageContent/ContentTitle";
-import { IoClose } from "react-icons/io5";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import SelectMedForm from "../components/SelectMedForm";
-import { Textarea } from "@/components/ui/textarea";
-import { TiPlus } from "react-icons/ti";
-import { TiMinus } from "react-icons/ti";
-import { SelectDate } from "../components/SelectDate";
+import React, { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+} from "@/components/ui/select";
+import SelectMedForm from "../components/SelectMedForm";
+import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { DayPicker } from "react-day-picker";
+import "react-day-picker/style.css";
 
-const AddPrescription = () => {
+const AddPrescription = ({ patient }) => {
+  const [formData, setFormData] = useState({
+    genericName: "",
+    brandName: "",
+    dosage: "",
+    quantity: "",
+    form: "",
+    sig: "",
+    startDate: null,
+    endDate: null,
+    remarks: "",
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSelectChange = (field, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  const handleDateChange = (field, date) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: date,
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Submitted Prescription:", formData);
+    alert("Prescription submitted successfully!");
+  };
+
+  const renderDatePicker = (label, field) => (
+    <div className="lg:flex items-center gap-5">
+      <Label>{label}:</Label>
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button
+            variant="outline"
+            className={`w-full lg:w-[280px] justify-start text-left font-normal ${
+              !formData[field] ? "text-muted-foreground" : ""
+            }`}
+          >
+            <CalendarIcon className="mr-2 h-4 w-4" />
+            {formData[field]
+              ? format(formData[field], "yyyy-MM-dd")
+              : "Pick a date"}
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-auto p-4">
+          <DayPicker
+            mode="single"
+            selected={formData[field]}
+            onSelect={(date) => handleDateChange(field, date)}
+            showOutsideDays
+          />
+        </PopoverContent>
+      </Popover>
+    </div>
+  );
+
   return (
-    <>
-      <div className="p-5">
-        <div className="w-full bg-white border-b shadow-md fixed top-0 left-0 px-8 lg:px-10">
-          <PatientHeader />
-        </div>
-        <div className="mt-40 ">
-          <div className="lg:pb-10 pb-5 lg:px-10 flex items-center justify-between">
-            <ContentTitle title={"Add Prescription"} />
-            <IoClose className="w-6 h-6 cursor-pointer" />
-          </div>
-          <div className="lg:px-[200px]">
-            <div className="border lg:max-w-[100%] h-fit rounded-md lg:p-10 p-5 shadow-lg">
-              <div className="pb-5">
-                <span className="font-semibold text-lg">ADD MEDICINE</span>
+    <Dialog>
+      <DialogTrigger className="w-full text-sm text-left p-2 rounded-md hover:bg-secondary">
+        Add Prescription
+      </DialogTrigger>
+      <DialogContent className="lg:w-[800px] bottom-10">
+        <DialogHeader className="text-left">
+          <DialogTitle>
+            <span>Add Prescription</span>
+          </DialogTitle>
+          <DialogDescription className="py-2 flex flex-col">
+            <span>{`${patient.patients?.last_name.toUpperCase()}, ${patient.patients?.first_name.toUpperCase()} ${
+              patient.patients?.middle_name.toUpperCase() || ""
+            } ${patient.patients?.suffix.toUpperCase() || ""}`}</span>
+            <span>{`${patient.patients?.age || ""} years old`}</span>
+          </DialogDescription>
+        </DialogHeader>
+        <form
+          onSubmit={handleSubmit}
+          className="overflow-y-auto no-scrollbar lg:px-3"
+        >
+          <div className="space-y-5 text-left">
+            <div>
+              <Label>GENERIC NAME:</Label>
+              <Input
+                type="text"
+                name="genericName"
+                value={formData.genericName}
+                onChange={handleInputChange}
+                placeholder="Generic Name"
+              />
+            </div>
+            <div>
+              <Label>BRAND NAME:</Label>
+              <Input
+                type="text"
+                name="brandName"
+                value={formData.brandName}
+                onChange={handleInputChange}
+                placeholder="Brand Name"
+              />
+            </div>
+            <div className="grid grid-flow-row lg:grid-flow-col gap-5">
+              <div>
+                <Label>DOSAGE:</Label>
+                <Input
+                  type="text"
+                  name="dosage"
+                  value={formData.dosage}
+                  onChange={handleInputChange}
+                  placeholder="ex. 500mg"
+                />
               </div>
-              <form className="space-y-3">
-                <div>
-                  <Label>GENERIC NAME:</Label>
-                  <Input type="text" placeholder="Generic Name" />
-                </div>
-                <div>
-                  <Label>BRAND NAME:</Label>
-                  <Input type="text" placeholder="Brand Name" />
-                </div>
-                <div className="grid grid-flow-row space-y-3 lg:gap-24 lg:grid-flow-col w-full pb-3 lg:p-0">
-                  <div>
-                    <Label>DOSAGE:</Label>
-                    <Input type="text" placeholder="ex. 500mg" />
-                  </div>
-                  <div>
-                    <Label>QUANTITY:</Label>
-                    <div className="flex items-center gap-3">
-                      <Input
-                        type="number"
-                        placeholder=""
-                        className="lg:w-[250px]"
-                      />
-                      {/* <TiPlus className="w-7 h-7 cursor-pointer" />
-                      <TiMinus className="w-7 h-7 cursor-pointer" /> */}
-                    </div>
-                  </div>
-                </div>
-                <div>
-                  <SelectMedForm />
-                </div>
-                <div>
-                  <Label>SIG:</Label>
-                  <Textarea placeholder="Specific Instruction" />
-                </div>
-                <div>
-                  <Label>DURATION:</Label>
-                  <div className="grid grid-flow-row gap-3 lg:grid-flow-col w-full pb-3 lg:p-0">
-                    <div className="lg:flex items-center gap-5">
-                      <Label>START:</Label>
-                      <SelectDate />
-                    </div>
-                    <div className="lg:flex items-center gap-5">
-                      <Label>END:</Label>
-                      <SelectDate />
-                    </div>
-                  </div>
-                </div>
-                <div>
-                  <Label>REMARKS:</Label>
-                  <Textarea placeholder="Remarks" />
-                </div>
-
-                <div className="lg:flex justify-end pt-8">
-                  <Button className="w-full lg:w-[300px] text-lg font-bold shadow-md">
-                    ADD MEDICATION
-                  </Button>
-                </div>
-              </form>
+              <div>
+                <Label>QUANTITY:</Label>
+                <Input
+                  type="number"
+                  name="quantity"
+                  value={formData.quantity}
+                  onChange={handleInputChange}
+                />
+              </div>
+            </div>
+            <div>
+              <Label>FORM:</Label>
+              <Select
+                onValueChange={(value) => handleSelectChange("form", value)}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select Form" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value="pill">Pill</SelectItem>
+                    <SelectItem value="tablet">Tablet</SelectItem>
+                    <SelectItem value="capsule">Capsule</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <SelectMedForm />
+            </div>
+            <div>
+              <Label>SIG:</Label>
+              <Textarea
+                name="sig"
+                value={formData.sig}
+                onChange={handleInputChange}
+                placeholder="Specific Instruction"
+              />
+            </div>
+            <div>
+              <Label>DURATION:</Label>
+              <div className="grid grid-flow-row gap-3 lg:grid-flow-col w-full pb-3 lg:p-0">
+                {renderDatePicker("START", "startDate")}
+                {renderDatePicker("END", "endDate")}
+              </div>
+            </div>
+            <div>
+              <Label>REMARKS:</Label>
+              <Textarea
+                name="remarks"
+                value={formData.remarks}
+                onChange={handleInputChange}
+                placeholder="Remarks"
+              />
             </div>
           </div>
-        </div>
-      </div>
-    </>
+          <DialogFooter className="mt-7">
+            <Button type="submit" className="w-full lg:w-[250px]">
+              Submit
+            </Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
   );
 };
 

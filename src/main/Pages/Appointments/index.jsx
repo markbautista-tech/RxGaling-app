@@ -46,6 +46,7 @@ import useAppointments from "./hooks/useAppointments";
 import usePickDate from "../hooks/usePickDate";
 import { SkeletonLoading } from "@/main/components/Skeleton";
 import { Button } from "@/components/ui/button";
+import AppointmentsAction from "./components/AppointmentsAction";
 
 const Appointments = () => {
   const { role } = useUser();
@@ -143,7 +144,7 @@ const Appointments = () => {
                 <TableHead>Duration</TableHead>
                 <TableHead>Doctor</TableHead>
                 <TableHead>Status</TableHead>
-                <TableHead>Actions</TableHead>
+                {role !== "Owner" && <TableHead>Actions</TableHead>}
               </TableRow>
             </TableHeader>
 
@@ -178,7 +179,11 @@ const Appointments = () => {
                     <TableCell>{appointment.status || "Unknown"}</TableCell>
 
                     {/* Actions */}
-                    <TableCell></TableCell>
+                    {role !== "Owner" && (
+                      <TableCell>
+                        <AppointmentsAction patient={appointment} />
+                      </TableCell>
+                    )}
                   </TableRow>
                 ))
               ) : (
