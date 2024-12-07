@@ -1,25 +1,23 @@
 import ContentTitle from "@/main/PageContent/ContentTitle";
 import React from "react";
 import { Separator } from "@/components/ui/separator";
+import MedicineTable from "../components/MedicineTable";
+import AddMedicine from "../components/AddMedicine";
 
 const Inventory = () => {
   return (
     <>
       <div className="py-2 lg:py-4 flex justify-between items-center no-scrollbar">
-        <ContentTitle title={"Medicine Inventory"} />
-        <div className="relative flex ">
-          <div className="flex items-center gap-2">
-            <div className="">
-              <div className="flex gap-3">
-                {/* <PatientRegistration /> */}
-              </div>
-            </div>
+        <div className="px-6 pt-4 lg:px-10 flex items-center justify-center">
+          <div className="">
+            <ContentTitle title={"Medicine Inventory"} />
           </div>
+          <AddMedicine />
         </div>
       </div>
       <Separator orientation="horizontal" className="w-full" />
-      <div>
-        {/* <PatientTable /> */}
+      <div className="w-full">
+        <MedicineTable />
       </div>
     </>
   );

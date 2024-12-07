@@ -64,3 +64,20 @@ export const getClinicDoctor = async () => {
 
   return data;
 };
+
+export const getPharmacyID = async (ownerid) => {
+  try {
+    const { data, error } = await centralSupabase
+      .from("pharmacy_staffs")
+      .select("pharmacy_id")
+      .eq("user_id", ownerid);
+
+    if (error) {
+      return { error: error.message };
+    }
+
+    return data;
+  } catch (err) {
+    return { error: err };
+  }
+};

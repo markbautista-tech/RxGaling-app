@@ -68,6 +68,7 @@ import useDoctorDetails from "@/main/Doctor/hooks/useDoctorDetails";
 import PickDate from "../../components/PickDate";
 import usePickDate from "../../hooks/usePickDate";
 import useAddAppointment from "../hooks/useAddAppointment";
+import AppointmentsDoctor from "@/main/Doctor/components/AppointmentsDoctor";
 
 const AddAppointments = ({ trigger }) => {
   const navigate = useNavigate();
@@ -264,6 +265,15 @@ const AddAppointments = ({ trigger }) => {
     setPatientID(patientAppointment);
     setDoctorID(selectedDoctorId);
     setAppointmentDate(selected);
+
+    const appointment = {
+      patient_id: patientAppointment[0],
+      doctor_id: selectedDoctorId,
+      appointment_date: selected,
+      status: "Scheduled",
+    };
+
+    console.log(appointment);
 
     setSelectedDoctorId(null);
     setPatientAppointment([]);
@@ -661,6 +671,12 @@ const AddAppointments = ({ trigger }) => {
                 <Button className="w-32" onClick={handleSubmit}>
                   Submit
                 </Button>
+              </div>
+              <div>
+                <AppointmentsDoctor
+                  doctorid={selectedDoctorId}
+                  date={selected}
+                />
               </div>
             </DialogHeader>
             <div>

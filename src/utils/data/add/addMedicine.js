@@ -1,21 +1,21 @@
 import { centralSupabase } from "@/utils/supabaseClient";
 import React from "react";
 
-const addAppointments = async (givendata) => {
+const addMedicine = async (meds) => {
   try {
     const { data, error } = await centralSupabase
-      .from("appointments")
-      .insert([])
+      .from("medicine_inventory")
+      .insert([meds])
       .select();
 
     if (error) {
       return { error: error.message };
     }
 
-    return { success: true };
-  } catch (err) {
-    return { error: err.message };
+    return data;
+  } catch (error) {
+    return { error: error.message };
   }
 };
 
-export default addAppointments;
+export default addMedicine;

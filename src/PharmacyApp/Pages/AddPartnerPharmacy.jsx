@@ -25,6 +25,7 @@ import { toast } from "sonner";
 import { useUser } from "@/context/UserContext";
 import addPharmacyClinic from "@/utils/data/add/addPharmacyClinic";
 import { selectPharmaClinic } from "@/utils/data/fetch/fetchPharmacyClinic";
+import verifyAddedPharma from "@/main/Pages/Pharmacy/hooks/verifyAddedPharma";
 
 const getRegionName = async (regionId) => {
   try {
@@ -94,6 +95,7 @@ const fetchAddressData = async (pharma) => {
 
 const AddPartnerPharmacy = () => {
   const { clinicId } = useUser();
+  const { filteredPharmacy, getPharmacyId } = verifyAddedPharma();
   const { pharmacyDetails, loading } = usePharmacyDetails();
   const [searchTerm, setSearchTerm] = useState("");
   const [sortConfig, setSortConfig] = useState({

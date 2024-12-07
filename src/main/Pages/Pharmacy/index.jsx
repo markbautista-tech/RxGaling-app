@@ -24,6 +24,7 @@ import SearchBar from "../components/Search";
 import ContentTitle from "../../PageContent/ContentTitle";
 import CreatePartnerPharmacy from "./create";
 import AddPartnerPharmacy from "../../../PharmacyApp/Pages/AddPartnerPharmacy";
+import PartnerPharmacyTable from "./components/PartnerPharmacyTable";
 // import CreateClinicDoctors from "./create";
 
 const Pharmacy = () => {
@@ -38,7 +39,9 @@ const Pharmacy = () => {
       <div>
         <Separator />
       </div>
-      <div></div>
+      <div>
+        <PartnerPharmacyTable />
+      </div>
     </>
   );
 };

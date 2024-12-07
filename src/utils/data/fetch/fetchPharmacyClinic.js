@@ -5,7 +5,7 @@ const fetchPharmacyClinic = async () => {
   try {
     const { data, error } = await centralSupabase
       .from("clinic_pharmacy")
-      .select();
+      .select(`*, pharmacy(*)`);
 
     if (error) {
       return { error: error.message };
@@ -23,14 +23,14 @@ export const selectPharmaClinic = async (pharmacyid) => {
   try {
     const { data, error } = await centralSupabase
       .from("clinic_pharmacy")
-      .select()
+      .select("*")
       .eq("pharmacy_id", pharmacyid);
 
     if (error) {
       return { error: error.message };
     }
 
-    return true;
+    return data;
   } catch (err) {
     return { error: err };
   }
