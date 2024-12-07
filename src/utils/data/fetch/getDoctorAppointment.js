@@ -5,15 +5,16 @@ const getDoctorAppointment = async (doctorId, date) => {
   try {
     const { data, error } = await centralSupabase
       .from("appointments")
-      .select(`*, users(*), patient(*)`)
+      .select(`*, users(*), patients(*)`)
       .eq("doctor_id, appointment_date", doctorId, date);
 
     if (error) {
-      return { error: error.message };
+      return { error: error.message };  
     }
 
     return data;
   } catch (error) {
+    console.log({error})
     return { error: error.message };
   }
 };

@@ -57,8 +57,8 @@ const AppointmentsDoctor = ({ doctorid, date }) => {
           {filteredAppointments?.length > 0 ? (
             filteredAppointments.map((appt, index) => (
               <TableRow key={index}>
-                <TableCell>{appt.id}</TableCell>
-                <TableCell>{`${appt.patient?.last_name}, ${appt.patient?.first_name} ${appt.patient?.middle_name}`}</TableCell>
+                <TableCell>{++index}</TableCell>
+                <TableCell>{`${appt.patients?.last_name}, ${appt.patients?.first_name} ${appt.patients?.middle_name}`}</TableCell>
                 <TableCell>{appt.appointment_date}</TableCell>
                 <TableCell>
                   {`${appt.start_time || ""}-${appt.end_time || ""}` || "--"}

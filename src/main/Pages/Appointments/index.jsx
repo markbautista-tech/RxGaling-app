@@ -49,8 +49,8 @@ import { Button } from "@/components/ui/button";
 import AppointmentsAction from "./components/AppointmentsAction";
 
 const Appointments = () => {
-  const { role } = useUser();
-  const { appointments, loading } = useAppointments();
+  const { user, role } = useUser();
+  const { appointments, loading } = useAppointments(role, user.id);
   const [searchTerm, setSearchTerm] = useState("");
   const [selected, setSelected] = useState(new Date());
   const [open, setOpen] = React.useState(false);
