@@ -66,18 +66,21 @@ const DoctorsAppointments = () => {
             {sortedData.length > 0 ? (
               sortedData.map((doctor, ids) => (
                 <div key={ids}>
-                  <div className="bg-gray-100 shadow-md py-4 px-3 rounded-md flex flex-col cursor-pointer hover:scale-105 transition-all">
-                    <span className="font-bold">
-                      {`Dr. ${doctor.users?.last_name}, ${doctor.users?.first_name} ${doctor.users?.middle_name?.[0]}. ${doctor.users?.doctor_details[0]?.professional_extension}.` ||
-                        "Unknown"}{" "}
-                    </span>
-                    <span>
-                      {doctor.users?.doctor_details[0]?.specialization ||
-                        "Not specified"}
-                    </span>
-                    <span className="text-xs lg:text-sm">
-                      {`${doctor.working_days} | ${doctor.working_hours}`}
-                    </span>
+                  <div className="bg-gray-100 shadow-md py-4 px-3 rounded-md flex flex-row justify-between items-center cursor-pointer hover:scale-105 transition-all">
+                    <div className="flex flex-col">
+                      <span className="font-bold">
+                        {`Dr. ${doctor.users?.last_name}, ${doctor.users?.first_name} ${doctor.users?.middle_name?.[0]}. ${doctor.users?.doctor_details[0]?.professional_extension}.` ||
+                          "Unknown"}{" "}
+                      </span>
+                      <span>
+                        {doctor.users?.doctor_details[0]?.specialization ||
+                          "Not specified"}
+                      </span>
+                      <span className="text-xs lg:text-sm text-wrap">
+                        {`${doctor.working_days} | ${doctor.working_hours}`}
+                      </span>
+                    </div>
+                    <span className="lg:text-lg text-sm font-bold text-gray-500"></span>
                   </div>
                 </div>
               ))

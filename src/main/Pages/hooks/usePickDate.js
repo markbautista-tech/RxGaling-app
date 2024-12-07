@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from "react";
 
 const usePickDate = () => {
-  const [initialDate, setInitialDate] = useState(null);
-
-  const dateObject = new Date(initialDate);
-  const formattedDate = dateObject.toISOString().slice(0, 10);
+  const [selected, setSelected] = useState(new Date());
 
   return {
-    initialDate,
-    setInitialDate,
-    formattedDate,
+    selected,
+    setSelected,
   };
 };
 

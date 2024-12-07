@@ -37,7 +37,7 @@ const useGetPartnerPharmacy = () => {
 
     // Cleanup subscription on unmount
     return () => {
-      centralSupabase.removeChannel(channels);
+      centralSupabase.removeAllChannels();
     };
   }, []);
 

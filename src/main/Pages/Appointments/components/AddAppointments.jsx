@@ -69,6 +69,8 @@ import PickDate from "../../components/PickDate";
 import usePickDate from "../../hooks/usePickDate";
 import useAddAppointment from "../hooks/useAddAppointment";
 import AppointmentsDoctor from "@/main/Doctor/components/AppointmentsDoctor";
+import addAppointments from "@/utils/data/add/addAppointments";
+import { toast } from "sonner";
 
 const AddAppointments = ({ trigger }) => {
   const navigate = useNavigate();
@@ -261,7 +263,7 @@ const AddAppointments = ({ trigger }) => {
     setOpen(false);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setPatientID(patientAppointment);
     setDoctorID(selectedDoctorId);
     setAppointmentDate(selected);
@@ -274,6 +276,14 @@ const AddAppointments = ({ trigger }) => {
     };
 
     console.log(appointment);
+
+    const response = await addAppointments(appointment);
+
+    if (response.error) {
+      toast.error(response.error);
+    } else {
+      toast.success("Appointment Scheduled Successfully");
+    }
 
     setSelectedDoctorId(null);
     setPatientAppointment([]);

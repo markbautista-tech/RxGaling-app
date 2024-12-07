@@ -5,7 +5,7 @@ const addAppointments = async (givendata) => {
   try {
     const { data, error } = await centralSupabase
       .from("appointments")
-      .insert([])
+      .insert([givendata])
       .select();
 
     if (error) {

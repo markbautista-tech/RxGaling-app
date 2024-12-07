@@ -5,7 +5,7 @@ const getAppointments = async () => {
   try {
     const { data, error } = await centralSupabase
       .from("appointments")
-      .select("*");
+      .select(`*, patients(*), users(*)`);
 
     if (error) {
       return { error: error.message };
