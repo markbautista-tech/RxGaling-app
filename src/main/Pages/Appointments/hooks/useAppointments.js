@@ -1,9 +1,9 @@
-import getAppointments from "@/utils/data/fetch/getAppointments";
+import { getAppointments, getAppointmentByDoctor } from "@/utils/data/fetch/getAppointments";
 import { centralSupabase } from "@/utils/supabaseClient";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 
-const useAppointments = () => {
+const useAppointments = (role, user_id) => {
   const [appointments, setAppointments] = useState([]);
   const [date, setDate] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -11,7 +11,7 @@ const useAppointments = () => {
   const fetchAppointments = async () => {
     setLoading(true);
     try {
-      const appt = await getAppointments();
+      const appt = (role == "Doctor") ? await getAppointmentByDoctor(user_id) : await getAppointments();
       setAppointments(appt);
       setLoading(false);
     } catch (error) {
