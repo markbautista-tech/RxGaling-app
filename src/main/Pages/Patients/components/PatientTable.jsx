@@ -18,8 +18,10 @@ import PatientAction from "./PatientAction";
 import usePatientData from "../hooks/usePatientData";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { useUser } from "@/context/UserContext";
 
 const PatientTable = () => {
+  const { role } = useUser();
   const { patientData } = usePatientData();
   const [patients, setPatients] = useState(patientData);
   const [sortConfig, setSortConfig] = useState({
@@ -114,7 +116,7 @@ const PatientTable = () => {
               <TableHead className="text-primary font-bold hidden lg:table-cell">
                 Gender
               </TableHead>
-              <TableHead className=""></TableHead>
+              {role !== "Owner" && <TableHead className=""></TableHead>}
             </TableRow>
           </TableHeader>
           <TableBody className="">
@@ -127,7 +129,7 @@ const PatientTable = () => {
                   <TableCell className="text-center">
                     {patient.id_number}
                   </TableCell>
-                  <TableCell className="text-xs lg:text-sm flex flex-col lg:flex-row lg:items-center lg:gap-2">
+                  <TableCell className="text-xs lg:text-sm flex lg:flex-row lg:items-center lg:gap-2 text-wrap">
                     <span className="font-bold lg:text-lg">
                       {patient.last_name}
                       {", "}
@@ -141,9 +143,11 @@ const PatientTable = () => {
                   <TableCell className="hidden lg:table-cell">
                     {patient.gender}
                   </TableCell>
-                  <TableCell className="text-center">
-                    <PatientAction />
-                  </TableCell>
+                  {role !== "Owner" && (
+                    <TableCell className="text-center">
+                      <PatientAction />
+                    </TableCell>
+                  )}
                 </TableRow>
               ))
             ) : (

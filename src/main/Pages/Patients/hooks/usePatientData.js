@@ -27,7 +27,7 @@ const usePatientData = () => {
       .subscribe();
 
     return () => {
-      centralSupabase.removeChannel(channel);
+      centralSupabase.removeAllChannels();
     };
   }, []);
 
