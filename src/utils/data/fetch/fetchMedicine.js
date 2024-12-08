@@ -19,3 +19,19 @@ const fetchMedicine = async (phId) => {
 };
 
 export default fetchMedicine;
+
+export const fetchAllMedicine = async () => {
+  try {
+    const { data, error } = await centralSupabase
+      .from("medicine_inventory")
+      .select();
+
+    if (error) {
+      return { error: error.message };
+    }
+
+    return data;
+  } catch (error) {
+    return { error: error.message };
+  }
+};

@@ -12,6 +12,8 @@ import {
 } from "@/components/ui/dialog";
 import React, { useState } from "react";
 import { toast } from "sonner";
+import addVitalSigns from "@/utils/data/add/addVitalSigns";
+import { updateStart } from "@/utils/data/update/updateAppoitnmentTime";
 
 const AddVitals = ({ patient }) => {
   const [formData, setFormData] = useState({
@@ -26,10 +28,11 @@ const AddVitals = ({ patient }) => {
     bmi: "",
     bmiInterpretation: "",
   });
+  const [vLoading, setVLoading] = useState(false);
 
   const calculateBMI = (weight, height) => {
     if (weight && height) {
-      const bmi = (weight / (height / 100) ** 2).toFixed(2); // Height in cm to meters
+      const bmi = (weight / (height / 100) ** 2).toFixed(2);
       let interpretation = "";
 
       if (bmi < 18.5) interpretation = "Underweight";
@@ -61,20 +64,57 @@ const AddVitals = ({ patient }) => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Submitted Data:", formData, patient.patient_id);
+    setVLoading(true);
 
-    toast.success("Vitals submitted successfully!");
+    const vitals_data = {
+      appointment_id: patient.id,
+      patient_id: patient.patient_id,
+      doctor_id: patient.doctor_id,
+      clinic_id: patient.clinic_id,
+      sbp: formData.sbp,
+      dbp: formData.dbp,
+      cr: formData.cr,
+      rr: formData.rr,
+      temperature: formData.temperature,
+      o2_stat: formData.o2Stat,
+      weight: formData.weight,
+      height: formData.height,
+      bmi: formData.bmi,
+      bmi_interpretation: formData.bmiInterpretation,
+    };
+
+    const response = await addVitalSigns(vitals_data);
+
+    if (response.error) {
+      toast.error(response.error);
+    } else {
+      toast.success("Vitals submitted successfully!");
+      setVLoading(false);
+
+      setFormData({
+        sbp: "",
+        dbp: "",
+        cr: "",
+        rr: "",
+        temperature: "",
+        o2Stat: "",
+        weight: "",
+        height: "",
+        bmi: "",
+        bmiInterpretation: "",
+      });
+    }
   };
 
   return (
     <Dialog>
-      <DialogTrigger className="w-full text-sm text-left p-2 rounded-md hover:bg-secondary">
+      <DialogTrigger className="w-auto text-sm text-left p-2 rounded-md hover:bg-secondary">
         Add Vitals
       </DialogTrigger>
       <DialogContent className="lg:w-[800px]">
-        <DialogHeader>
+        <DialogHeader className="text-left">
           <DialogTitle>Add Vital Signs</DialogTitle>
           <DialogDescription className="py-2 flex flex-col">
             <span>{`${patient.patients?.last_name.toUpperCase()}, ${patient.patients?.first_name.toUpperCase()} ${patient.patients?.middle_name.toUpperCase()} ${patient.patients?.suffix.toUpperCase() || ""}`}</span>
@@ -181,7 +221,7 @@ const AddVitals = ({ patient }) => {
             </div>
             <DialogFooter className="mt-7">
               <Button type="submit" className="w-full lg:w-[250px]">
-                Submit
+                {vLoading ? "Submitting..." : "Submit"}
               </Button>
             </DialogFooter>
           </form>

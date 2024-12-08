@@ -20,16 +20,17 @@ import {
 } from "@/components/ui/popover";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/style.css";
+import { Check, ChevronsUpDown } from "lucide-react";
 
+import { cn } from "@/lib/utils";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
 import { TbCalendarMonth, TbMenu2, TbX } from "react-icons/tb";
 
 import { Separator } from "@/components/ui/separator";
@@ -47,13 +48,17 @@ import usePickDate from "../hooks/usePickDate";
 import { SkeletonLoading } from "@/main/components/Skeleton";
 import { Button } from "@/components/ui/button";
 import AppointmentsAction from "./components/AppointmentsAction";
+import useDoctorDetails from "@/main/Doctor/hooks/useDoctorDetails";
 
 const Appointments = () => {
   const { user, role } = useUser();
+  const { doctorDetails: rawDoctorDetails } = useDoctorDetails();
   const { appointments, loading } = useAppointments(role, user.id);
   const [searchTerm, setSearchTerm] = useState("");
   const [selected, setSelected] = useState(new Date());
   const [open, setOpen] = React.useState(false);
+  const [doctorOpen, setDoctorOpen] = useState(false);
+  const [doctorValue, setDoctorValue] = useState("");
 
   const handleDateSelect = (selectedDate) => {
     setSelected(selectedDate);
@@ -65,16 +70,21 @@ const Appointments = () => {
     setOpen(false);
   };
 
+  const doctorDetails = Array.isArray(rawDoctorDetails)
+    ? rawDoctorDetails.filter((doctor) => doctor.role === "Doctor")
+    : [];
+
   const filteredAppointments = appointments.filter((appointment) => {
     const matchesSearch = appointment.patients?.last_name
-      .toLowerCase()
+      ?.toLowerCase()
       .includes(searchTerm.toLowerCase());
     const matchesDate =
       selected &&
       new Date(appointment.appointment_date).toDateString() ===
         selected.toDateString();
+    const matchesDoctor = !doctorValue || appointment.doctor_id === doctorValue;
 
-    return matchesSearch && matchesDate;
+    return matchesSearch && matchesDate && matchesDoctor;
   });
 
   return (
@@ -131,7 +141,89 @@ const Appointments = () => {
                 </PopoverContent>
               </Popover>
             </div>
-            {role !== "Doctor" && <DoctorsAppointments />}
+
+            {/* {role !== "Doctor" && <DoctorsAppointments />} */}
+            {role !== "Doctor" && (
+              <div>
+                <Popover open={doctorOpen} onOpenChange={setDoctorOpen}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      aria-expanded={doctorOpen}
+                      className="justify-between w-[280px]"
+                    >
+                      {doctorValue
+                        ? (() => {
+                            const selectedDoctor = doctorDetails.find(
+                              (doctor) => doctor.users?.id === doctorValue
+                            );
+                            if (selectedDoctor) {
+                              const lastName =
+                                selectedDoctor.users?.last_name || "Unknown";
+                              const firstNameInitial = selectedDoctor.users
+                                ?.first_name
+                                ? selectedDoctor.users.first_name
+                                    .charAt(0)
+                                    .toUpperCase() + "."
+                                : "";
+                              return `${lastName}, ${firstNameInitial}`;
+                            }
+                            return "Unknown Doctor";
+                          })()
+                        : "Select Doctor..."}
+                      <ChevronsUpDown className="opacity-50" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-[300px] p-0">
+                    <Command>
+                      <CommandInput placeholder="Search Doctor..." />
+                      <CommandList>
+                        <CommandEmpty>No doctor found.</CommandEmpty>
+                        <CommandGroup>
+                          {Array.isArray(doctorDetails) &&
+                            doctorDetails.map((doctor) => (
+                              <CommandItem
+                                key={doctor.id}
+                                value={doctor.users?.id}
+                                onSelect={() => {
+                                  setDoctorValue((currentValue) =>
+                                    currentValue === doctor.users?.id
+                                      ? ""
+                                      : doctor.users?.id
+                                  ); // Toggle doctor selection
+                                  setDoctorOpen(false); // Close dropdown
+                                }}
+                              >
+                                {/* Display Last Name, First Name Initial */}
+                                {(() => {
+                                  const lastName =
+                                    doctor.users?.last_name || "Unknown";
+                                  const firstNameInitial = doctor.users
+                                    ?.first_name
+                                    ? doctor.users.first_name
+                                        .charAt(0)
+                                        .toUpperCase() + "."
+                                    : "";
+                                  return `${lastName}, ${firstNameInitial}`;
+                                })()}
+                                <Check
+                                  className={cn(
+                                    "ml-auto",
+                                    doctorValue === doctor.users?.id
+                                      ? "opacity-100"
+                                      : "opacity-0"
+                                  )}
+                                />
+                              </CommandItem>
+                            ))}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+              </div>
+            )}
           </div>
         </div>
         <div className="bg-white border border-gray-300 h-full flex rounded-lg shadow-lg mb-10 overflow-auto">
@@ -139,6 +231,7 @@ const Appointments = () => {
             {/* Table Header */}
             <TableHeader>
               <TableRow>
+                <TableHead>Number</TableHead>
                 <TableHead>Patient Name</TableHead>
                 <TableHead>Date</TableHead>
                 <TableHead>Duration</TableHead>
@@ -156,6 +249,7 @@ const Appointments = () => {
                 filteredAppointments.map((appointment, index) => (
                   <TableRow key={index}>
                     {/* Patient Name */}
+                    <TableCell className="text-center">{++index}</TableCell>
                     <TableCell>
                       {`${appointment.patients?.last_name || ""}, ${
                         appointment.patients?.first_name || ""

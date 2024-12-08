@@ -20,7 +20,6 @@ import {
   SelectGroup,
   SelectItem,
 } from "@/components/ui/select";
-import SelectMedForm from "../components/SelectMedForm";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import {
@@ -30,8 +29,52 @@ import {
 } from "@/components/ui/popover";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/style.css";
+import useMedicines from "../hooks/useMedicines";
+import { toast } from "sonner";
+import useGetPrescriptions from "../hooks/useGetPrescriptions";
+import addPrescription from "@/utils/data/add/addPrescription";
+import { updateEndTime } from "@/utils/data/update/updateAppoitnmentTime";
+
+const forms = [
+  "Capsule",
+  "Cream",
+  "Gel",
+  "Injection",
+  "Ointment",
+  "Patch",
+  "Pill",
+  "Solution",
+  "Suspension",
+  "Syrup",
+  "Tablet",
+];
+
+const generateUniqueCode = (prescriptions) => {
+  const currentYear = new Date().getFullYear();
+
+  const generateCode = () => {
+    const randomPart1 = Math.floor(1000 + Math.random() * 9000); // Random 4-digit number
+    const randomPart2 = Math.floor(1000 + Math.random() * 9000); // Random 4-digit number
+    return `${currentYear}-${randomPart1}-${randomPart2}`;
+  };
+
+  let newCode;
+  let isUnique = false;
+
+  while (!isUnique) {
+    newCode = generateCode();
+    isUnique = !prescriptions.some(
+      (prescription) => prescription.code === newCode
+    );
+  }
+
+  return newCode;
+};
 
 const AddPrescription = ({ patient }) => {
+  const { prescriptions: rawPrescriptions } = useGetPrescriptions();
+  const { medicines: rawMedicines, medLoading } = useMedicines();
+
   const [formData, setFormData] = useState({
     genericName: "",
     brandName: "",
@@ -43,6 +86,14 @@ const AddPrescription = ({ patient }) => {
     endDate: null,
     remarks: "",
   });
+  const [searchQuery, setSearchQuery] = useState("");
+  const medicines = Array.isArray(rawMedicines) ? rawMedicines : [];
+  const prescriptions = Array.isArray(rawPrescriptions) ? rawMedicines : [];
+  const newPrescriptionCode = generateUniqueCode(prescriptions);
+
+  const filteredMedicines = medicines.filter((med) =>
+    med.generic_name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -66,10 +117,56 @@ const AddPrescription = ({ patient }) => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Submitted Prescription:", formData);
-    alert("Prescription submitted successfully!");
+    const medication = {
+      code: newPrescriptionCode,
+      appointment_id: patient.id,
+      patient_id: patient.patient_id,
+      doctor_id: patient.doctor_id,
+      clinic_id: patient.clinic_id,
+      generic_name: formData.genericName,
+      brand_name: formData.brandName,
+      dosage: formData.dosage,
+      quantity: formData.quantity,
+      form: formData.form,
+      sig: formData.sig,
+      start_day: formData.startDate ? formData.startDate : null,
+      end_day: formData.endDate ? formData.endDate : null,
+    };
+
+    console.log("Submitted Prescription:", medication);
+
+    const response = await addPrescription(medication);
+
+    if (response.error) {
+      toast.error(response.error);
+    } else {
+      await updateEndTime(patient.id);
+      toast.success("Prescription submitted successfully!");
+    }
+
+    setFormData({
+      genericName: "",
+      brandName: "",
+      dosage: "",
+      quantity: "",
+      form: "",
+      sig: "",
+      startDate: null,
+      endDate: null,
+      remarks: "",
+    });
+  };
+
+  const handleMedicineSelect = (med) => {
+    setFormData((prev) => ({
+      ...prev,
+      genericName: med.generic_name,
+      brandName: med.brand_name,
+      dosage: med.dosage,
+      form: med.form,
+    }));
   };
 
   const renderDatePicker = (label, field) => (
@@ -103,10 +200,10 @@ const AddPrescription = ({ patient }) => {
 
   return (
     <Dialog>
-      <DialogTrigger className="w-full text-sm text-left p-2 rounded-md hover:bg-secondary">
+      <DialogTrigger className="text-sm text-left p-2 rounded-md hover:bg-secondary">
         Add Prescription
       </DialogTrigger>
-      <DialogContent className="lg:w-[800px] bottom-10">
+      <DialogContent className="lg:w-[800px] bottom-10 overflow-y-auto max-h-[80vh]">
         <DialogHeader className="text-left">
           <DialogTitle>
             <span>Add Prescription</span>
@@ -117,6 +214,54 @@ const AddPrescription = ({ patient }) => {
             } ${patient.patients?.suffix.toUpperCase() || ""}`}</span>
             <span>{`${patient.patients?.age || ""} years old`}</span>
           </DialogDescription>
+          <div className="flex justify-end">
+            <Popover>
+              <PopoverTrigger className="text-xs lg:text-sm">
+                Search Medicines
+              </PopoverTrigger>
+              <PopoverContent
+                className="w-[400px] p-3 overflow-y-auto no-scrollbar max-h-[80vh]"
+                align="end"
+              >
+                <Input
+                  placeholder="Search medicine..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+                <div className="flex flex-col space-y-2 mt-3">
+                  {filteredMedicines.length > 0 ? (
+                    filteredMedicines.map((med, index) => (
+                      <div
+                        key={index}
+                        className="shadow-md rounded-md hover:bg-secondary py-3 px-2 flex flex-col cursor-pointer border"
+                        onClick={() => handleMedicineSelect(med)}
+                      >
+                        <div className="flex justify-between">
+                          <span className="text-">{med.generic_name}</span>
+                          <span className="text-sm">{med.form}</span>
+                        </div>
+                        <div className="flex items-center justify-between gap-3">
+                          <div className="flex gap-3">
+                            <span className="text-xs text-gray-500">
+                              {med.brand_name}
+                            </span>
+                            <span className="text-xs text-gray-500">
+                              {med.dosage}
+                            </span>
+                          </div>
+                          <span className="text-xs text-gray-500">
+                            {`# ${med.quantity}`}
+                          </span>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <p>No medicines found.</p>
+                  )}
+                </div>
+              </PopoverContent>
+            </Popover>
+          </div>
         </DialogHeader>
         <form
           onSubmit={handleSubmit}
@@ -174,15 +319,14 @@ const AddPrescription = ({ patient }) => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectItem value="pill">Pill</SelectItem>
-                    <SelectItem value="tablet">Tablet</SelectItem>
-                    <SelectItem value="capsule">Capsule</SelectItem>
+                    {forms.map((form, id) => (
+                      <SelectItem key={id} value={form}>
+                        {form}
+                      </SelectItem>
+                    ))}
                   </SelectGroup>
                 </SelectContent>
               </Select>
-            </div>
-            <div>
-              <SelectMedForm />
             </div>
             <div>
               <Label>SIG:</Label>

@@ -1,35 +1,33 @@
 import { centralSupabase } from "@/utils/supabaseClient";
 import React from "react";
 
-export const getAppointments = async () => {
+const fetchPrescription = async () => {
   try {
     const { data, error } = await centralSupabase
-      .from("appointments")
+      .from("prescription")
       .select(`*, patients(*), users(*), clinics(*)`);
 
     if (error) {
       return { error: error.message };
     }
-
-    return data;
-  } catch (err) {
-    return { error: err };
+  } catch (error) {
+    return { error: error };
   }
 };
 
-export const getAppointmentByDoctor = async (doctorId) => {
+export default fetchPrescription;
+
+export const fetchPrescriptionWithId = async (id) => {
   try {
     const { data, error } = await centralSupabase
-      .from("appointments")
+      .from("prescription")
       .select(`*, patients(*), users(*), clinics(*)`)
-      .eq("doctor_id", doctorId);
+      .eq("patient_id", id);
 
     if (error) {
       return { error: error.message };
     }
-
-    return data || [];
-  } catch (err) {
-    return { error: err };
+  } catch (error) {
+    return { error: error };
   }
 };

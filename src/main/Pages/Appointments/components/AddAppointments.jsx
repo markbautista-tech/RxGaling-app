@@ -71,9 +71,11 @@ import useAddAppointment from "../hooks/useAddAppointment";
 import AppointmentsDoctor from "@/main/Doctor/components/AppointmentsDoctor";
 import addAppointments from "@/utils/data/add/addAppointments";
 import { toast } from "sonner";
+import { useUser } from "@/context/UserContext";
 
 const AddAppointments = ({ trigger }) => {
   const navigate = useNavigate();
+  const { clinicId } = useUser();
 
   const { patientData } = usePatientData();
   const { doctorDetails: rawDoctorDetails } = useDoctorDetails();
@@ -271,6 +273,7 @@ const AddAppointments = ({ trigger }) => {
     const appointment = {
       patient_id: patientAppointment[0],
       doctor_id: selectedDoctorId,
+      clinic_id: clinicId,
       appointment_date: selected,
       status: "Scheduled",
     };
@@ -705,7 +708,7 @@ const AddAppointments = ({ trigger }) => {
           <span className="hidden lg:block">{trigger}</span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-full lg:max-w-[1000px] max-h-auto p-3 lg:p-5 rounded-md bottom-10">
+      <DialogContent className="w-[900px] max-h-auto p-3 lg:p-5 rounded-md bottom-10">
         {renderStepContent()}
         <DialogFooter></DialogFooter>
       </DialogContent>

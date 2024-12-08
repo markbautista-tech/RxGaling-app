@@ -145,7 +145,7 @@ const PatientTable = () => {
                   </TableCell>
                   {role !== "Owner" && (
                     <TableCell className="text-center">
-                      <PatientAction />
+                      <PatientAction patient={patient} />
                     </TableCell>
                   )}
                 </TableRow>

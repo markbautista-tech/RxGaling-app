@@ -1,4 +1,7 @@
-import { getAppointments, getAppointmentByDoctor } from "@/utils/data/fetch/getAppointments";
+import {
+  getAppointments,
+  getAppointmentByDoctor,
+} from "@/utils/data/fetch/getAppointments";
 import { centralSupabase } from "@/utils/supabaseClient";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -11,7 +14,10 @@ const useAppointments = (role, user_id) => {
   const fetchAppointments = async () => {
     setLoading(true);
     try {
-      const appt = (role == "Doctor") ? await getAppointmentByDoctor(user_id) : await getAppointments();
+      const appt =
+        role === "Doctor"
+          ? await getAppointmentByDoctor(user_id)
+          : await getAppointments();
       setAppointments(appt);
       setLoading(false);
     } catch (error) {
@@ -36,7 +42,7 @@ const useAppointments = (role, user_id) => {
       .subscribe();
 
     return () => {
-      centralSupabase.removeAllChannels();
+      channels.unsubscribe();
     };
   }, []);
 

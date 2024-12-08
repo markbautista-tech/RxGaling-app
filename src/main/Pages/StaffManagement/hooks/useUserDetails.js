@@ -37,7 +37,7 @@ const useUserDetails = () => {
 
     // Cleanup function to unsubscribe on unmount
     return () => {
-      centralSupabase.removeChannel(channel);
+      channel.unsubscribe();
     };
   }, []);
 

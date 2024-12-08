@@ -25,8 +25,13 @@ import AddSOAPNote from "@/main/Doctor/Prescription/AddSOAPNote";
 import AddPrescription from "@/main/Doctor/Prescription/AddPrescription";
 import { Separator } from "@/components/ui/separator";
 import ViewRecords from "./ViewRecords";
+import { useUser } from "@/context/UserContext";
+import AddMedicalCertidicate from "@/main/Doctor/Prescription/AddMedicalCertificate";
+import ManageBilling from "@/main/Doctor/Prescription/ManageBilling";
+import ManageRecords from "./ManageRecords";
 
 const AppointmentsAction = ({ patient }) => {
+  const { role } = useUser();
   const status = [
     "Cancel Appointment",
     "Skipped Appointment",
@@ -37,13 +42,20 @@ const AppointmentsAction = ({ patient }) => {
     <>
       <Popover>
         <PopoverTrigger>
-          <SlOptions />
+          <SlOptions className="w-4 h-4" />
         </PopoverTrigger>
         <PopoverContent className="w-52 p-2 space-y-1">
-          <AddVitals patient={patient} />
-          <AddSOAPNote patient={patient} />
-          <AddPrescription patient={patient} />
-          <ViewRecords patient={patient} />
+          {(role === "Clinic Nurse" ||
+            role === "Clinic Assistant" ||
+            role === "Clinic Secretary") && <AddVitals patient={patient} />}
+
+          {/* {role === "Doctor" && <AddSOAPNote patient={patient} />}
+          {role === "Doctor" && <AddPrescription patient={patient} />} */}
+          {role === "Doctor" && <ManageRecords patient={patient} />}
+
+          {/* <AddMedicalCertidicate patient={patient} /> */}
+          {/* <ViewRecords patient={patient} /> */}
+          <ManageBilling patient={patient} />
           <Separator />
           {status.map((stat, id) => (
             <div

@@ -12,8 +12,22 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { toast } from "sonner";
+import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { DayPicker } from "react-day-picker";
+import "react-day-picker/style.css";
+import { Check, ChevronsUpDown } from "lucide-react";
+import addSOAPNote from "@/utils/data/add/addSOAPNote";
 
 const AddSOAPNote = ({ patient }) => {
+  const [selected, setSelected] = useState(null);
+  const [open, setOpen] = React.useState(false);
   const [soapNote, setSoapNote] = useState({
     chiefComplaint: "",
     historyOfPresentIllness: "",
@@ -21,6 +35,17 @@ const AddSOAPNote = ({ patient }) => {
     diagnosis: "",
     plan: "",
   });
+  const [loading, setLoading] = useState(false);
+
+  const handleDateSelect = (selectedDate) => {
+    setSelected(selectedDate);
+    setOpen(false);
+  };
+
+  const handleToday = () => {
+    setSelected(new Date());
+    setOpen(false);
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -30,16 +55,48 @@ const AddSOAPNote = ({ patient }) => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Submitted SOAP Note:", soapNote);
-    // Add your API call or submission logic here
-    alert("SOAP Note submitted successfully!");
+    setLoading(true);
+
+    const soapNoteData = {
+      appointment_id: patient.id,
+      patient_id: patient.patient_id,
+      doctor_id: patient.doctor_id,
+      clinic_id: patient.clinic_id,
+      chief_complaint: soapNote.chiefComplaint,
+      history_of_illness: soapNote.historyOfPresentIllness,
+      obj_remarks: soapNote.objectiveRemarks,
+      diagnosis: soapNote.diagnosis,
+      plan: soapNote.plan,
+      follow_up_checkup: selected,
+    };
+
+    const response = await addSOAPNote(soapNoteData);
+
+    if (response.error) {
+      toast.error(response.error);
+    } else {
+      toast.success("SOAP Note submitted successfully!");
+    }
+
+    console.log(soapNoteData);
+
+    setSoapNote({
+      chiefComplaint: "",
+      historyOfPresentIllness: "",
+      objectiveRemarks: "",
+      diagnosis: "",
+      plan: "",
+    });
+    setSelected("");
+
+    setLoading(false);
   };
 
   return (
     <Dialog>
-      <DialogTrigger className="w-full text-sm text-left p-2 rounded-md hover:bg-secondary">
+      <DialogTrigger className="text-sm text-left p-2 rounded-md hover:bg-secondary">
         Add SOAP Note
       </DialogTrigger>
       <DialogContent className="lg:w-[800px] bottom-10">
@@ -110,10 +167,43 @@ const AddSOAPNote = ({ patient }) => {
                   />
                 </div>
               </div>
+              <div className="flex flex-col lg:flex-row gap-4 lg:items-center">
+                <Label>Schedule Follow Up Checkup:</Label>
+                <Popover open={open} onOpenChange={setOpen}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      className={`w-full lg:w-[280px] justify-start text-left font-normal ${
+                        !selected ? "text-muted-foreground" : ""
+                      }`}
+                    >
+                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      {selected ? (
+                        format(selected, "yyyy-MM-dd")
+                      ) : (
+                        <span>Pick a date</span>
+                      )}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-4">
+                    <DayPicker
+                      mode="single"
+                      selected={selected}
+                      onSelect={handleDateSelect}
+                      showOutsideDays
+                    />
+                    <div className="text-right mt-2">
+                      <Button variant="outline" onClick={handleToday}>
+                        Today
+                      </Button>
+                    </div>
+                  </PopoverContent>
+                </Popover>
+              </div>
             </div>
             <DialogFooter className="mt-7">
               <Button type="submit" className="w-full lg:w-[250px]">
-                Submit
+                {loading ? "Submitting..." : "Submit Soap Note"}
               </Button>
             </DialogFooter>
           </form>
