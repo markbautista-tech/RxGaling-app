@@ -2,11 +2,11 @@ import { fetchAuth } from "@/utils/data/login";
 import { fetchPharmacyAuth } from "@/utils/data/pharmacyLogin";
 import { createContext, useContext, useEffect, useState } from "react";
 
-const UserContext = createContext();
+const UserPharmacyContext = createContext();
 
-export const usePharmacyUser = () => useContext(UserContext);
+export const usePharmacyUser = () => useContext(UserPharmacyContext);
 
-export const UserProvider = ({ children }) => {
+export const UserPharmacyProvider = ({ children }) => {
   const [pharmacyUser, setPharmacyUser] = useState(null);
   const [pharmacyLoading, setPharmacyLoading] = useState(true);
   const [pharmacyRole, setPharmacyRole] = useState(null);
@@ -17,9 +17,9 @@ export const UserProvider = ({ children }) => {
   const [pharmacyOwnerLname, setPharmacyOwnerLname] = useState(null);
 
   const getPharmacyAuth = async () => {
-    setLoading(true);
+    setPharmacyLoading(true);
     const auth = await fetchPharmacyAuth();
-    console.log(auth);
+    // console.log(auth);
 
     const name = `${auth.first_name} ${auth.middle_name} ${auth.last_name} ${auth.suffix}`;
     if (auth.error) {
@@ -30,7 +30,7 @@ export const UserProvider = ({ children }) => {
       setPharmacyEmail(auth.email);
       setPharmacyOwnerId(auth.id);
       setPharmacyOwnerName(name);
-      setPharmacyId(auth.clinic_id);
+      setPharmacyId(auth.pharmacy_id);
       setPharmacyOwnerLname(auth.last_name);
     }
     setPharmacyLoading(false);
@@ -54,5 +54,5 @@ export const UserProvider = ({ children }) => {
     pharmacyOwnerLname,
   };
 
-  return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
+  return <UserPharmacyContext.Provider value={value}>{children}</UserPharmacyContext.Provider>;
 };
