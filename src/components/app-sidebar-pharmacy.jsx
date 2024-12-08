@@ -18,7 +18,7 @@ import {
 
 import { NavMain } from "@/components/nav-main";
 import { NavProjects } from "@/components/nav-projects";
-import { NavUser } from "@/components/nav-user";
+import { NavUser } from "@/components/nav-user-pharmacy";
 import { TeamSwitcher } from "@/components/team-switcher";
 import {
   Sidebar,
@@ -31,7 +31,7 @@ import { RiDashboardHorizontalLine } from "react-icons/ri";
 import { TbCalendarClock, TbSettings } from "react-icons/tb";
 import { RiUserHeartLine } from "react-icons/ri";
 import { NavNoDrop } from "./nav-nodrop";
-import { useUser } from "@/context/UserContext";
+import { usePharmacyUser } from "@/context/UserPharmacyContext";
 import { AdminManage } from "./nav-adminManagement";
 import { AdminDashboard } from "./admin-dashboard";
 import { NavAdmin } from "./nav-admin";
@@ -142,12 +142,12 @@ const data = {
 };
 
 export function AppSidebar({ ...props }) {
-  const { user, loading, setUser, role, email, ownerLname } = useUser();
-  const [admin, setAdmin] = React.useState(role === "admin");
+  const { pharmacyUser, pharmacyLoading, setPharmacyUser, pharmacyRole, pharmacyEmail, ownerLname } = usePharmacyUser();
+  const [admin, setAdmin] = React.useState(pharmacyRole === "admin");
 
   const { data: pharmacies, isLoading } = useUserPharmacies(
-    user.id,
-    user.clinic_id
+    pharmacyUser.id,
+    pharmacyUser.clinic_id
   );
 
   return (
@@ -160,20 +160,20 @@ export function AppSidebar({ ...props }) {
             <TeamSwitcher teams={pharmacies} />
           )
         ) : (
-          <NavAdmin user={data.admin} email={email} />
+          <NavAdmin pharmacyUser={data.admin} pharmacyEmail={pharmacyEmail} />
         )}
       </SidebarHeader>
       <SidebarContent>
-        {role !== "admin" ? <NavPharmacy /> : <AdminDashboard items={data.adminDash} />}
+        {pharmacyRole !== "admin" ? <NavPharmacy /> : <AdminDashboard items={data.adminDash} />}
       </SidebarContent>
       <SidebarFooter>
         {/* {role === "admin" && <NavAdmin user={data.admin} email={email} />} */}
         {!admin && (
           <NavUser
-            user={data.user}
-            email={email}
+            user={pharmacyUser}
+            email={pharmacyEmail}
             lname={ownerLname}
-            role={role}
+            role={pharmacyRole}
           />
         )}
       </SidebarFooter>

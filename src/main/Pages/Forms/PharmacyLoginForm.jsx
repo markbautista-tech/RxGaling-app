@@ -17,6 +17,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { fetchAuth, login } from "@/utils/data/login";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import { usePharmacyUser } from "@/context/UserPharmacyContext";
 import { useUser } from "@/context/UserContext";
 import LoadingUI from "@/main/components/loadingUI";
 import { pharmacyLogin } from "@/utils/data/pharmacyLogin";
@@ -29,17 +30,29 @@ const loginSchema = z.object({
 
 export default function PharmacyLoginForm() {
   const navigate = useNavigate();
-  const { user, loading, setUser, role, setRole, setEmail } = useUser();
+  const { 
+    pharmacyUser,
+    setPharmacyUser,
+    pharmacyLoading,
+    pharmacyRole,
+    setPharmacyRole,
+    pharmacyEmail,
+    setPharmacyEmail,
+    pharmacyOwnerId,
+    pharmacyOwnerName,
+    pharmacyId,
+    pharmacyOwnerLname 
+  } = usePharmacyUser();
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
-    if (user) {
-      if (role === "admin") {
+    if (pharmacyUser) {
+      if (pharmacyRole === "admin") {
         navigate("/admin");
       }
     }
-  }, [navigate, user, role]);
+  }, [navigate, pharmacyUser, pharmacyRole]);
 
   const {
     register,
@@ -64,15 +77,15 @@ export default function PharmacyLoginForm() {
         return;
       }
 
-      if (user?.error) {
-        toast.error(user?.error);
+      if (pharmacyUser?.error) {
+        toast.error(pharmacyUser?.error);
         return;
       } else {
         if ((response.pharmacy_id && response.role) || userRole === "admin") {
           toast.success("Login Successfully!");
-          setUser(response);
-          setRole(userRole);
-          setEmail(data.email);
+          setPharmacyUser(response);
+          setPharmacyRole(userRole);
+          setPharmacyEmail(data.email);
 
           if (userRole === "admin") {
             navigate("/admin");
@@ -93,7 +106,7 @@ export default function PharmacyLoginForm() {
     }
   };
 
-  if (loading) return <LoadingUI />;
+  if (pharmacyLoading) return <LoadingUI />;
 
   return (
     <>

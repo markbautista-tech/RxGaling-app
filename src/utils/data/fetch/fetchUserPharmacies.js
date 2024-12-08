@@ -33,9 +33,9 @@ export const useUserPharmacies = (user_id) => {
 
 export default useUserPharmacies;
 
-export const getAllUsersClinics = async () => {
+export const getAllUsersPharmacies = async () => {
   const { data, error } = await centralSupabase
-    .from("clinic_staffs")
+    .from("pharmacy_staffs")
     .select(
       "*, users(first_name, middle_name, last_name, suffix, birthdate, mobile_number, email)"
     );

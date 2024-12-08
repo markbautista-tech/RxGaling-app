@@ -13,6 +13,7 @@ import { Toaster, toast } from "sonner";
 import { UserProvider } from "./context/UserContext";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "./components/app-sidebar";
+import { UserPharmacyProvider } from "@/context/UserPharmacyContext";
 
 const queryClient = new QueryClient();
 
@@ -22,7 +23,9 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <Toaster position="top-right" richColors />
         <UserProvider>
-          <MainRouter />
+          <UserPharmacyProvider>
+            <MainRouter />
+          </UserPharmacyProvider>
         </UserProvider>
       </QueryClientProvider>
     </>

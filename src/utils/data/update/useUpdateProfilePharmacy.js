@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { useUser } from "@/context/UserContext";
+import { usePharmacyUser } from "@/context/UserPharmacyContext";
 import { centralSupabase } from "@/utils/supabaseClient";
 
 import { z } from "zod";
@@ -27,9 +27,9 @@ export const Profilemgmtschema = z.object({
   user_id: z.string()
 });
 
-const useUpdateProfile = (userDetails) => {
+const useUpdateProfilePharmacy = (userDetails) => {
   const navigate = useNavigate();
-  const { user, setUser } = useUser();
+  const { pharmacyUser, setPharmacyUser } = usePharmacyUser();
   const [loading, setLoading] = useState(false);
 
   const {
@@ -44,6 +44,9 @@ const useUpdateProfile = (userDetails) => {
 
   const onSubmit = async (data) => {
     setLoading(true);
+
+  console.log(data)
+
 
     try {
       const formattedBirthdate = `${data.year}-${data.month}-${data.day}`;
@@ -61,7 +64,7 @@ const useUpdateProfile = (userDetails) => {
       const { data: updatedProfile, error } = await centralSupabase
         .from('users')
         .update(user_payload)
-        .eq('id', user.id)
+        .eq('id', pharmacyUser.id)
         .select()
         .single();
 
@@ -89,8 +92,8 @@ const useUpdateProfile = (userDetails) => {
       }
 
       toast.success("Profile updated successfully");
-      setUser(prev => ({ ...prev, ...updatedAddress, ...updatedProfile }));
-      navigate("/clinic-app");
+      setPharmacyUser(prev => ({ ...prev, ...updatedAddress, ...updatedProfile }));
+      navigate("/pharmacy-app");
     } catch (error) {
       console.error("Error updating profile:", error);
       toast.error(error.message || "Failed to update profile");
@@ -110,4 +113,4 @@ const useUpdateProfile = (userDetails) => {
   };
 };
 
-export default useUpdateProfile;
+export default useUpdateProfilePharmacy;
