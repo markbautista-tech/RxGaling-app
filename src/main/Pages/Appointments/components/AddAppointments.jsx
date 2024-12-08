@@ -71,6 +71,11 @@ import useAddAppointment from "../hooks/useAddAppointment";
 import AppointmentsDoctor from "@/main/Doctor/components/AppointmentsDoctor";
 import addAppointments from "@/utils/data/add/addAppointments";
 import { toast } from "sonner";
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 const AddAppointments = ({ trigger }) => {
   const navigate = useNavigate();
@@ -252,7 +257,7 @@ const AddAppointments = ({ trigger }) => {
   const [selected, setSelected] = useState(new Date());
 
   const handleDateSelect = (selectedDate) => {
-    setSelected(selectedDate);
+    setSelected(dayjs(selectedDate).format('YYYY-MM-DD'));
     setOpen(false);
   };
 
