@@ -81,3 +81,11 @@ export const getPharmacyID = async (ownerid) => {
     return { error: err };
   }
 };
+
+export const getClinicPharmacy = async () => {
+  const { data, error } = await centralSupabase
+    .from("clinic_pharmacy")
+    .select();
+
+  return data;
+};

@@ -26,7 +26,7 @@ const PharmacyApp = () => {
           <div>
             <PageHeader />
           </div>
-          <div>
+          <div className="px-5 lg:px-10">
             <PharmacyContentRouter />
           </div>
         </div>

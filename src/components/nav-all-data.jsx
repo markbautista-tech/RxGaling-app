@@ -75,67 +75,74 @@ const NavAllData = () => {
                 </SidebarMenuButton>
               </Link>
             </SidebarMenuItem>
-
-            <Collapsible
-              asChild
-              defaultOpen={true}
-              className="group/collapsible"
-            >
-              <SidebarMenuItem>
-                <CollapsibleTrigger asChild>
-                  <SidebarMenuButton>
-                    <TbSettings />
-                    <span className="lg:text-[16px]">Management</span>
-                    <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
-                  </SidebarMenuButton>
-                </CollapsibleTrigger>
-                <CollapsibleContent>
-                  <SidebarMenuSub>
-                    <SidebarMenuSubItem>
-                      <Link to="/clinic-app/doctor-management">
-                        <SidebarMenuSubButton
-                          asChild
-                          className={`py-3 hover:bg-primary hover:text-white rounded-sm ${activeLink === "/clinic-app/doctor-management" ? "bg-primary text-white" : ""}`}
-                          onClick={() =>
-                            handleMenuClick("/clinic-app/doctor-management")
-                          }
-                        >
-                          <span className="lg:text-[14px]">Manage Doctors</span>
-                        </SidebarMenuSubButton>
-                      </Link>
-                    </SidebarMenuSubItem>
-                    <SidebarMenuSubItem>
-                      <Link to="/clinic-app/staff-management">
-                        <SidebarMenuSubButton
-                          asChild
-                          className={`py-3 hover:bg-primary hover:text-white rounded-sm  ${activeLink === "/clinic-app/staff-management" ? "bg-primary text-white" : ""}`}
-                          onClick={() =>
-                            handleMenuClick("/clinic-app/staff-management")
-                          }
-                        >
-                          <span className="lg:text-[14px]">Manage Staffs</span>
-                        </SidebarMenuSubButton>
-                      </Link>
-                    </SidebarMenuSubItem>
-                    {role === "Owner" && (
+            {role !== "Doctor" && (
+              <Collapsible
+                asChild
+                defaultOpen={true}
+                className="group/collapsible"
+              >
+                <SidebarMenuItem>
+                  <CollapsibleTrigger asChild>
+                    <SidebarMenuButton>
+                      <TbSettings />
+                      <span className="lg:text-[16px]">Management</span>
+                      <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                    </SidebarMenuButton>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent>
+                    <SidebarMenuSub>
                       <SidebarMenuSubItem>
-                        <Link to="/clinic-app/pharmacy-management">
+                        <Link to="/clinic-app/doctor-management">
                           <SidebarMenuSubButton
                             asChild
-                            className={`py-3 hover:bg-primary hover:text-white rounded-sm  ${activeLink === "/clinic-app/pharmacy-management" ? "bg-primary text-white" : ""}`}
+                            className={`py-3 hover:bg-primary hover:text-white rounded-sm ${activeLink === "/clinic-app/doctor-management" ? "bg-primary text-white" : ""}`}
                             onClick={() =>
-                              handleMenuClick("/clinic-app/pharmacy-management")
+                              handleMenuClick("/clinic-app/doctor-management")
                             }
                           >
-                            <span className="lg:text-[14px]">Pharmacy</span>
+                            <span className="lg:text-[14px]">
+                              Manage Doctors
+                            </span>
                           </SidebarMenuSubButton>
                         </Link>
                       </SidebarMenuSubItem>
-                    )}
-                  </SidebarMenuSub>
-                </CollapsibleContent>
-              </SidebarMenuItem>
-            </Collapsible>
+                      <SidebarMenuSubItem>
+                        <Link to="/clinic-app/staff-management">
+                          <SidebarMenuSubButton
+                            asChild
+                            className={`py-3 hover:bg-primary hover:text-white rounded-sm  ${activeLink === "/clinic-app/staff-management" ? "bg-primary text-white" : ""}`}
+                            onClick={() =>
+                              handleMenuClick("/clinic-app/staff-management")
+                            }
+                          >
+                            <span className="lg:text-[14px]">
+                              Manage Staffs
+                            </span>
+                          </SidebarMenuSubButton>
+                        </Link>
+                      </SidebarMenuSubItem>
+                      {role === "Owner" && (
+                        <SidebarMenuSubItem>
+                          <Link to="/clinic-app/pharmacy-management">
+                            <SidebarMenuSubButton
+                              asChild
+                              className={`py-3 hover:bg-primary hover:text-white rounded-sm  ${activeLink === "/clinic-app/pharmacy-management" ? "bg-primary text-white" : ""}`}
+                              onClick={() =>
+                                handleMenuClick(
+                                  "/clinic-app/pharmacy-management"
+                                )
+                              }
+                            >
+                              <span className="lg:text-[14px]">Pharmacy</span>
+                            </SidebarMenuSubButton>
+                          </Link>
+                        </SidebarMenuSubItem>
+                      )}
+                    </SidebarMenuSub>
+                  </CollapsibleContent>
+                </SidebarMenuItem>
+              </Collapsible>
+            )}
           </SidebarMenu>
         </SidebarGroupContent>
       </SidebarGroup>

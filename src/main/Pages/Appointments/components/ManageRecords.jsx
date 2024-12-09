@@ -18,10 +18,20 @@ import AddPrescription from "@/main/Doctor/Prescription/AddPrescription";
 import AddMedicalCertidicate from "@/main/Doctor/Prescription/AddMedicalCertificate";
 import getVitalSigns from "@/utils/data/fetch/getVitalSigns";
 import useSOAPNotes from "../hooks/useSOAPNotes";
+import VitalRecordCard from "./VitalRecordCard";
+import SOAPCard from "./SOAPCard";
+import { SkeletonNoCircle } from "@/main/components/SkeletonNoCircle";
+import useGetPrescriptions from "@/main/Doctor/hooks/useGetPrescriptions";
+import PrescriptionCard from "./PrescriptionCard";
+import { fetchPrescriptionWithId } from "@/utils/data/fetch/fetchPrescription";
+import fetchMedicalCertificate from "@/utils/data/fetch/fetchMedicalCertificate";
+import MedicalCard from "./MedicalCard";
 
 const ManageRecords = ({ patient }) => {
   const { soapLoading, soapNotes } = useSOAPNotes(patient.patient_id);
+  const [prescription, setPrescription] = useState([]);
   const [vitalSigns, setVitalSigns] = useState([]);
+  const [medCerts, setMedCerts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState("vitals");
@@ -30,7 +40,12 @@ const ManageRecords = ({ patient }) => {
     setLoading(true);
     const fetchVitals = async () => {
       const vsigns = await getVitalSigns(patient.patient_id);
+      const pres = await fetchPrescriptionWithId(patient.patient_id);
+      const medical = await fetchMedicalCertificate(patient.patient_id);
+
       setVitalSigns(vsigns);
+      setPrescription(pres);
+      setMedCerts(medical);
     };
     fetchVitals();
     setLoading(false);
@@ -39,6 +54,7 @@ const ManageRecords = ({ patient }) => {
   const handleNavigation = (page) => {
     setCurrentPage(page);
   };
+
   return (
     <>
       <div>
@@ -46,7 +62,7 @@ const ManageRecords = ({ patient }) => {
           <DialogTrigger className="w-full text-sm text-left p-2 rounded-md hover:bg-secondary">
             Manage Records
           </DialogTrigger>
-          <DialogContent className="bottom-0 p-5">
+          <DialogContent className="bottom-0 lg:p-5">
             <DialogHeader className="sticky">
               <DialogTitle className="text-lg flex flex-col gap-2">
                 <span>Manage Medical Records</span>
@@ -97,7 +113,7 @@ const ManageRecords = ({ patient }) => {
                     </div>
                     <AddVitals patient={patient} />
                   </div>
-                  <div className="grid grid-flow-col">
+                  <div className="">
                     {loading ? (
                       <SkeletonNoCircle />
                     ) : vitalSigns.length > 0 ? (
@@ -122,7 +138,17 @@ const ManageRecords = ({ patient }) => {
                     </div>
                     <AddSOAPNote patient={patient} />
                   </div>
-                  <div className="grid grid-flow-col"></div>
+                  <div className="">
+                    {soapLoading ? (
+                      <SkeletonNoCircle />
+                    ) : soapNotes.length > 0 ? (
+                      soapNotes.map((soaps, ids) => (
+                        <SOAPCard key={ids} patient={patient} soaps={soaps} />
+                      ))
+                    ) : (
+                      <p className="italic">No vital signs record</p>
+                    )}
+                  </div>
                 </div>
               )}
               {currentPage === "pres" && (
@@ -133,6 +159,21 @@ const ManageRecords = ({ patient }) => {
                     </div>
                     <AddPrescription patient={patient} />
                   </div>
+                  <div>
+                    {loading ? (
+                      <SkeletonNoCircle />
+                    ) : prescription?.length > 0 ? (
+                      prescription.map((prescription, ids) => (
+                        <PrescriptionCard
+                          key={ids}
+                          patient={patient}
+                          prescription={prescription}
+                        />
+                      ))
+                    ) : (
+                      <p className="italic">No prescriptions record</p>
+                    )}
+                  </div>
                 </div>
               )}
               {currentPage === "medcert" && (
@@ -142,6 +183,21 @@ const ManageRecords = ({ patient }) => {
                       <span className="font-bold">Medical Certificates</span>
                     </div>
                     <AddMedicalCertidicate patient={patient} />
+                  </div>
+                  <div>
+                    {loading ? (
+                      <SkeletonNoCircle />
+                    ) : medCerts?.length > 0 ? (
+                      medCerts.map((medCerts, ids) => (
+                        <MedicalCard
+                          key={ids}
+                          patient={patient}
+                          medCerts={medCerts}
+                        />
+                      ))
+                    ) : (
+                      <p className="italic">No prescriptions record</p>
+                    )}
                   </div>
                 </div>
               )}

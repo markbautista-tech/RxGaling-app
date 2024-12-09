@@ -64,3 +64,9 @@ export const getClinicDoctor = async () => {
 
   return data;
 };
+
+export const fetchDoctorNumber = async () => {
+  const { data, error } = await centralSupabase.from("doctor_details").select();
+
+  return data;
+};

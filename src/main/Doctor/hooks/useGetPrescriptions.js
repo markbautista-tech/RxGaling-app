@@ -1,4 +1,6 @@
-import fetchPrescription from "@/utils/data/fetch/fetchPrescription";
+import fetchPrescription, {
+  fetchPrescriptionWithId,
+} from "@/utils/data/fetch/fetchPrescription";
 import { centralSupabase } from "@/utils/supabaseClient";
 import React, { useEffect } from "react";
 
@@ -17,7 +19,7 @@ const useGetPrescriptions = (id) => {
 
   const fetchPresId = async () => {
     setPresLoading(true);
-    const prescribe = await fetchPrescription(id);
+    const prescribe = await fetchPrescriptionWithId(id);
 
     setPrescriptionWithId(prescribe);
     setPresLoading(false);

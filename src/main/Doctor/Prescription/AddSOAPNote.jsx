@@ -60,7 +60,6 @@ const AddSOAPNote = ({ patient }) => {
     setLoading(true);
 
     const soapNoteData = {
-      appointment_id: patient.id,
       patient_id: patient.patient_id,
       doctor_id: patient.doctor_id,
       clinic_id: patient.clinic_id,

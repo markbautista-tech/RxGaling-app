@@ -32,7 +32,6 @@ const AddMedicalCertidicate = ({ patient }) => {
     const certificateData = {
       patient_id: patient.patient_id,
       doctor_id: patient.doctor_id,
-      appointment_id: patient.id,
       name: `${patient.patients?.last_name.toUpperCase()}, ${patient.patients?.first_name.toUpperCase()} ${patient.patients?.middle_name.toUpperCase()}`,
       age: patient.patients?.age || "",
       consulted_on: date,
