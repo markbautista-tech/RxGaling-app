@@ -7,7 +7,7 @@ dns.setDefaultResultOrder("verbatim");
 
 export default defineConfig({
   base: "/",
-  plugins: [react(), vike()],
+  plugins: [react()],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
