@@ -27,6 +27,7 @@ import PharmacyAppreMessage from "@/SuperAdmin/components/PharmacyAppreMessage";
 import PharmacyReqForm from "@/SuperAdmin/components/PharmacyReqForm";
 import LandingPage from "@/main/Pages/Landing/LandingPage";
 import PharmacyLoginForm from "@/main/Pages/Forms/PharmacyLoginForm";
+import App from "@/PDF/TestPage";
 
 const MainRouter = () => {
   return (
@@ -73,7 +74,7 @@ const MainRouter = () => {
           element={<PharmacyReqForm />}
         />
 
-        <Route path="/loading" element={<LoadingUI />} />
+        <Route path="/loading" element={<App />} />
       </Routes>
     </>
   );

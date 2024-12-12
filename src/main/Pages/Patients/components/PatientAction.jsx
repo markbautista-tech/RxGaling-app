@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import AddAppointmentsAction from "./AddAppointmentsAction";
 import ViewRecords from "../../Appointments/components/ViewRecords";
+import { Link } from "react-router-dom";
 
 const PatientAction = ({ patient }) => {
   return (
@@ -30,7 +31,16 @@ const PatientAction = ({ patient }) => {
       </PopoverTrigger>
       <PopoverContent className="w-56 p-2" align="center">
         <div className="grid gap-2">
-          <ViewRecords patient={patient} />
+          {/* <ViewRecords patient={patient} /> */}
+          <Link to={`/clinic-app/patient/records/${patient.id}`}>
+            <Button
+              variant="ghost"
+              text-left
+              className="w-full text-sm justify-start p-2 rounded-md hover:bg-secondary"
+            >
+              Manage Records
+            </Button>
+          </Link>
         </div>
       </PopoverContent>
     </Popover>

@@ -77,8 +77,10 @@ const MedicineTable = () => {
                 </Button>
               </TableHead>
               <TableHead>Brand Name</TableHead>
+              <TableHead>Dosage</TableHead>
               <TableHead>Quantity</TableHead>
               <TableHead>Selling Price</TableHead>
+              <TableHead>Exp. Date</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -91,8 +93,10 @@ const MedicineTable = () => {
                     {medicine.generic_name}
                   </TableCell>
                   <TableCell>{medicine.brand_name}</TableCell>
+                  <TableCell>{medicine.dosage}</TableCell>
                   <TableCell>{medicine.quantity}</TableCell>
                   <TableCell>{medicine.selling_price}</TableCell>
+                  <TableCell>{medicine.expiry_date}</TableCell>
                 </TableRow>
               ))
             ) : (

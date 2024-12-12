@@ -7,4 +7,14 @@ export const centralSupabase = createClient(supabaseUrl, supabaseKey, {
     Accept: "application/json",
     "Content-Type": "application/json",
   },
+  auth: {
+    autoRefreshToken: true, // Ensure tokens are refreshed properly
+    persistSession: true, // Keep sessions persistent
+    detectSessionInUrl: true,
+  },
+  realtime: {
+    params: {
+      eventsPerSecond: 10, // Limit the number of events to prevent spamming
+    },
+  },
 });

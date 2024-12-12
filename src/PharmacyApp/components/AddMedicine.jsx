@@ -10,6 +10,15 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import useFetchMedicines from "../hooks/useFetchMedicines";
@@ -21,7 +30,9 @@ const AddMedicine = () => {
   const [formData, setFormData] = useState({
     genericName: "",
     brandName: "",
+    dosage: "",
     quantity: "",
+    expiry_date: "",
     sellingPrice: "",
     transferCost: "",
   });
@@ -70,6 +81,27 @@ const AddMedicine = () => {
     });
   };
 
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  const days = Array.from({ length: 31 }, (_, i) => i + 1); // [1, 2, ..., 31]
+  const years = Array.from(
+    { length: 101 },
+    (_, i) => new Date().getFullYear() - i
+  ); // Last 100 years
+
   return (
     <Dialog>
       <DialogTrigger>
@@ -99,6 +131,16 @@ const AddMedicine = () => {
               </div>
               <div>
                 <Label>Brand Name</Label>
+                <Input
+                  name="brandName"
+                  value={formData.brandName}
+                  onChange={handleChange}
+                  placeholder="Brand Name"
+                  required
+                />
+              </div>
+              <div>
+                <Label>Dosage</Label>
                 <Input
                   name="brandName"
                   value={formData.brandName}
@@ -142,6 +184,59 @@ const AddMedicine = () => {
                   />
                 </div>
               </div>
+            </div>
+            <Label>Expiration Date</Label>
+            <div className="flex gap-4">
+              {/* Month Select */}
+              <Select>
+                <SelectTrigger className="w-[120px]">
+                  <SelectValue placeholder="Month" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Month</SelectLabel>
+                    {months.map((month, index) => (
+                      <SelectItem key={index} value={month}>
+                        {month}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+
+              {/* Day Select */}
+              <Select>
+                <SelectTrigger className="w-[80px]">
+                  <SelectValue placeholder="Day" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Day</SelectLabel>
+                    {days.map((day) => (
+                      <SelectItem key={day} value={day.toString()}>
+                        {day}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+
+              {/* Year Select */}
+              <Select>
+                <SelectTrigger className="w-[100px]">
+                  <SelectValue placeholder="Year" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Year</SelectLabel>
+                    {years.map((year) => (
+                      <SelectItem key={year} value={year.toString()}>
+                        {year}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
             </div>
           </div>
           <DialogFooter>

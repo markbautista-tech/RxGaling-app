@@ -20,26 +20,23 @@ import {
 import { Separator } from "@/components/ui/separator";
 import getVitalSigns from "@/utils/data/fetch/getVitalSigns";
 
-const VitalRecordCard = ({ patient, vitalSigns }) => {
+const VitalRecordCard = ({ vitalSigns }) => {
   return (
     <>
       <Dialog>
-        <DialogTrigger className="w-full text-sm text-left py-3 px-5 rounded-lg hover:bg-secondary shadow-md flex border justify-between">
+        <DialogTrigger className="w-full text-sm text-left  py-3 px-5 rounded-lg bg-white shadow-md flex border justify-between">
           <div className="flex flex-col">
             <span className="font-bold text-lg">Vital Signs</span>
-            <span className="text-[16px]">
-              {patient.clinics?.name.toUpperCase()}
-            </span>
           </div>
           <span>
-            {new Date(patient.created_at).toLocaleDateString("en-US", {
+            {new Date(vitalSigns.created_at).toLocaleDateString("en-US", {
               year: "numeric",
               month: "long",
               day: "numeric",
             })}
           </span>
         </DialogTrigger>
-        <DialogContent className="w-[600px] items-start">
+        <DialogContent className="lg:w-[600px] items-start pb-20 lg:pb-6">
           <DialogHeader>
             <DialogTitle>Vital Signs</DialogTitle>
             <DialogDescription className="py-2 flex flex-col"></DialogDescription>

@@ -25,7 +25,7 @@ import "react-day-picker/style.css";
 import { Check, ChevronsUpDown } from "lucide-react";
 import addSOAPNote from "@/utils/data/add/addSOAPNote";
 
-const AddSOAPNote = ({ patient }) => {
+const AddSOAPNote = ({ patientid, userid, clinicid }) => {
   const [selected, setSelected] = useState(null);
   const [open, setOpen] = React.useState(false);
   const [soapNote, setSoapNote] = useState({
@@ -60,9 +60,9 @@ const AddSOAPNote = ({ patient }) => {
     setLoading(true);
 
     const soapNoteData = {
-      patient_id: patient.patient_id,
-      doctor_id: patient.doctor_id,
-      clinic_id: patient.clinic_id,
+      patient_id: patientid,
+      doctor_id: userid,
+      clinic_id: clinicid,
       chief_complaint: soapNote.chiefComplaint,
       history_of_illness: soapNote.historyOfPresentIllness,
       obj_remarks: soapNote.objectiveRemarks,
@@ -95,16 +95,13 @@ const AddSOAPNote = ({ patient }) => {
 
   return (
     <Dialog>
-      <DialogTrigger className="text-sm text-left p-2 rounded-md hover:bg-secondary">
+      <DialogTrigger className="text-sm text-left p-2 rounded-md hover:bg-secondary border border-primary">
         Add SOAP Note
       </DialogTrigger>
       <DialogContent className="lg:w-[800px] bottom-10">
         <DialogHeader>
           <DialogTitle>SOAP Note</DialogTitle>
-          <DialogDescription className="py-2 flex flex-col">
-            <span>{`${patient.patients?.last_name.toUpperCase()}, ${patient.patients?.first_name.toUpperCase()} ${patient.patients?.middle_name.toUpperCase()} ${patient.patients?.suffix.toUpperCase() || ""}`}</span>
-            <span>{`${patient.patients?.age || ""} years old`}</span>
-          </DialogDescription>
+          <DialogDescription className="py-2 flex flex-col"></DialogDescription>
         </DialogHeader>
         <div className="overflow-y-auto no-scrollbar lg:px-3">
           <form onSubmit={handleSubmit}>

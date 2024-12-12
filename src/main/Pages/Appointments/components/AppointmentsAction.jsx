@@ -29,6 +29,7 @@ import { useUser } from "@/context/UserContext";
 import AddMedicalCertidicate from "@/main/Doctor/Prescription/AddMedicalCertificate";
 import ManageBilling from "@/main/Doctor/Prescription/ManageBilling";
 import ManageRecords from "./ManageRecords";
+import { Link } from "react-router-dom";
 
 const AppointmentsAction = ({ patient }) => {
   const { role } = useUser();
@@ -40,21 +41,54 @@ const AppointmentsAction = ({ patient }) => {
   ];
   return (
     <>
-      <Popover>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost">
+            <SlOptions className="w-4 h-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="w-48">
+          <DropdownMenuGroup>
+            <Link to={`/clinic-app/patient/records/${patient.patient_id}`}>
+              <DropdownMenuItem>
+                <span>Manage Records</span>
+              </DropdownMenuItem>
+            </Link>
+            <Link to={`/clinic-app/patient/billing/${patient.patient_id}`}>
+              <DropdownMenuItem>
+                <span>Manage Billing</span>
+              </DropdownMenuItem>
+            </Link>
+          </DropdownMenuGroup>
+          <DropdownMenuSeparator />
+          <DropdownMenuGroup>
+            <DropdownMenuItem>
+              <span>Cancel Appointment</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <span>Skipped Appointment</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <span>In Progress</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <span>Completed</span>
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      {/* <Popover>
         <PopoverTrigger>
           <SlOptions className="w-4 h-4" />
         </PopoverTrigger>
         <PopoverContent className="w-52 p-2 space-y-1">
-          {(role === "Clinic Nurse" ||
-            role === "Clinic Assistant" ||
-            role === "Clinic Secretary") && <AddVitals patient={patient} />}
-
-          {/* {role === "Doctor" && <AddSOAPNote patient={patient} />}
-          {role === "Doctor" && <AddPrescription patient={patient} />} */}
+          <div className="w-full">
+            <span className="w-full text-sm text-left p-2 rounded-md hover:bg-secondary">
+              Manage Records
+            </span>
+          </div>
           {role === "Doctor" && <ManageRecords patient={patient} />}
-
-          {/* <AddMedicalCertidicate patient={patient} /> */}
-          {/* <ViewRecords patient={patient} /> */}
           <ManageBilling patient={patient} />
           <Separator />
           {status.map((stat, id) => (
@@ -66,7 +100,7 @@ const AppointmentsAction = ({ patient }) => {
             </div>
           ))}
         </PopoverContent>
-      </Popover>
+      </Popover> */}
     </>
   );
 };

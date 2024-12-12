@@ -31,7 +31,7 @@ const useMedicines = () => {
       .subscribe();
 
     return () => {
-      channel.unsubscribe();
+      centralSupabase.removeAllChannels();
     };
   }, []);
 

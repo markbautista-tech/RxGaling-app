@@ -83,6 +83,7 @@ const StaffTable = () => {
           placeholder="Search clinic staff..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
+          className="text-xs lg:text-sm"
         />
         <Select
           onValueChange={(value) => setSelectedRole(value)}
@@ -109,17 +110,21 @@ const StaffTable = () => {
               <Button
                 variant="ghost"
                 onClick={() => sortBy("last_name")}
-                className="font-bold flex items-center text-primary"
+                className="font-bold flex items-center text-primary text-xs lg:text-sm"
               >
                 Name
                 <ArrowUpDown className="ml-2 h-4 w-4" />
               </Button>
             </TableHead>
-            <TableHead className="text-primary font-bold">
+            <TableHead className="text-primary font-bold text-xs lg:text-sm">
               Clinic Role
             </TableHead>
-            <TableHead className="text-primary font-bold">Schedule</TableHead>
-            <TableHead className="text-primary font-bold">Action</TableHead>
+            <TableHead className="text-primary font-bold text-xs lg:text-sm">
+              Schedule
+            </TableHead>
+            <TableHead className="text-primary font-bold text-xs lg:text-sm">
+              Action
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -134,12 +139,14 @@ const StaffTable = () => {
                     </AvatarFallback>
                   </Avatar>
                 </TableCell>
-                <TableCell className="font-bold">
+                <TableCell className="font-bold text-xs lg:text-sm">
                   {`${staff.users?.last_name}, ${staff.users?.first_name} ${staff.users?.middle_name} ${staff.users?.last_name || ""}` ||
                     "Unknown"}
                 </TableCell>
-                <TableCell className="">{staff.role}</TableCell>
-                <TableCell className="flex flex-col">
+                <TableCell className="text-xs lg:text-sm">
+                  {staff.role}
+                </TableCell>
+                <TableCell className="flex flex-col text-xs lg:text-sm">
                   <span>{staff.working_days}</span>
                   <span>{staff.working_hours}</span>
                 </TableCell>

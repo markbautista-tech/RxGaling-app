@@ -2,19 +2,17 @@ import { useState, useEffect } from "react";
 import getDoctorAppointment from "@/utils/data/fetch/getDoctorAppointment";
 import { centralSupabase } from "@/utils/supabaseClient";
 
-const useDoctorAppointment = () => {
-  const [appointment, setAppointment] = useState(null); // Initialize as null or empty array
-  const [loading, setLoading] = useState(false);
-  const [doctorID, setDoctorID] = useState(null); // Initialize as null to indicate no selection
-  const [date, setDate] = useState(null); // Initialize as null for no default date
+const useDoctorAppointment = (doctorid, date) => {
+  const [appointment, setAppointment] = useState([]); // Initialize as null or empty array
+  const [loading, setLoading] = useState(false); // Initialize as null to indicate no selection // Initialize as null for no default date
 
   const fetchAppointment = async () => {
-    if (!doctorID || !date) return; // Ensure doctorID and date are set
+    if (!doctorid || !date) return; // Ensure doctorID and date are set
 
     setLoading(true);
 
     try {
-      const appointmentData = await getDoctorAppointment(doctorID, date);
+      const appointmentData = await getDoctorAppointment(doctorid, date);
       setAppointment(appointmentData);
     } catch (err) {
       console.error("Error fetching appointments:", err);
@@ -40,15 +38,14 @@ const useDoctorAppointment = () => {
       .subscribe();
 
     return () => {
-      channels.unsubscribe();
+      centralSupabase.removeAllChannels();
     };
-  }, [doctorID, date]);
+  }, [doctorid, date]);
 
   return {
     appointment,
     loading,
-    setDoctorID,
-    setDate,
+    setLoading,
   };
 };
 

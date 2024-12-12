@@ -14,3 +14,20 @@ const getPatientDetails = async () => {
 };
 
 export default getPatientDetails;
+
+export const getPatientById = async (id) => {
+  try {
+    const { data: patientdata, error: patienterror } = await centralSupabase
+      .from("patients")
+      .select("*")
+      .eq("id", id);
+
+    if (patienterror) {
+      return { error: patienterror.message };
+    }
+
+    return patientdata;
+  } catch (error) {
+    return { error: error.message };
+  }
+};

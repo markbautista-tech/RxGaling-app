@@ -4,10 +4,13 @@ import React, { useEffect, useState } from "react";
 
 const usePatientData = () => {
   const [patientData, setPatientData] = useState([]);
+  const [patientLoading, setPatientLoading] = useState(false);
 
   const fetchPatientData = async () => {
+    setPatientLoading(true);
     const patient_data = await getPatientDetails();
     setPatientData(patient_data);
+    setPatientLoading(false);
   };
 
   useEffect(() => {
@@ -33,6 +36,7 @@ const usePatientData = () => {
 
   return {
     patientData,
+    patientLoading,
   };
 };
 

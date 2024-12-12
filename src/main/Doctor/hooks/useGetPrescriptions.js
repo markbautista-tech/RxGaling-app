@@ -42,7 +42,7 @@ const useGetPrescriptions = (id) => {
       .subscribe();
 
     return () => {
-      channels.unsubscribe();
+      centralSupabase.removeAllChannels();
     };
   }, []);
 

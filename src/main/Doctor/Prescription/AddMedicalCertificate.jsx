@@ -15,7 +15,7 @@ import { toast } from "sonner";
 import addSOAPNote from "@/utils/data/add/addSOAPNote"; // You can replace this with your actual function to handle the data.
 import addMedicalCertificate from "@/utils/data/add/addMedicalCertificate";
 
-const AddMedicalCertidicate = ({ patient }) => {
+const AddMedicalCertidicate = ({ patient, clinicid, userid }) => {
   const [date, setDate] = useState("");
   const [clinicalImpression, setClinicalImpression] = useState("");
   const [daysNeeded, setDaysNeeded] = useState(0);
@@ -30,10 +30,11 @@ const AddMedicalCertidicate = ({ patient }) => {
 
     // Collect form data
     const certificateData = {
-      patient_id: patient.patient_id,
-      doctor_id: patient.doctor_id,
-      name: `${patient.patients?.last_name.toUpperCase()}, ${patient.patients?.first_name.toUpperCase()} ${patient.patients?.middle_name.toUpperCase()}`,
-      age: patient.patients?.age || "",
+      patient_id: patient[0].id,
+      doctor_id: userid,
+      clinic_id: clinicid,
+      name: `${patient[0]?.last_name.toUpperCase()}, ${patient[0]?.first_name.toUpperCase()} ${patient[0]?.middle_name.toUpperCase()}`,
+      age: patient[0]?.age || "",
       consulted_on: date,
       clinical_impression: clinicalImpression,
       days_needed: daysNeeded,
@@ -52,8 +53,6 @@ const AddMedicalCertidicate = ({ patient }) => {
     setClinicalImpression("");
     setDaysNeeded(0);
     setRecommendations("");
-
-    console.log(certificateData);
   };
 
   return (
@@ -75,12 +74,12 @@ const AddMedicalCertidicate = ({ patient }) => {
                 <p>
                   This is to certify that{" "}
                   <b>
-                    {patient.patients?.last_name.toUpperCase()},{" "}
-                    {patient.patients?.first_name.toUpperCase()}{" "}
-                    {patient.patients?.middle_name.toUpperCase()}
-                    {", "} {patient.patients?.suffix.toUpperCase() || ""}{" "}
+                    {patient[0]?.last_name.toUpperCase()},{" "}
+                    {patient[0].first_name.toUpperCase()}{" "}
+                    {patient[0]?.middle_name.toUpperCase()}
+                    {", "} {patient[0]?.suffix.toUpperCase() || ""}{" "}
                   </b>
-                  {patient.patients?.age || ""} years old, consulted on
+                  {patient[0]?.age || ""} years old, consulted on
                 </p>
                 <input
                   type="date"

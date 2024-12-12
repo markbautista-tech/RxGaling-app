@@ -1,13 +1,11 @@
 import { centralSupabase } from "@/utils/supabaseClient";
 import React from "react";
 
-const getDoctorAppointment = async (doctorId, date) => {
+const getDoctorDetails = async () => {
   try {
     const { data, error } = await centralSupabase
-      .from("appointments")
-      .select(`*, users(*), patients(*)`)
-      .eq("doctor_id", doctorId)
-      .eq("appointment_date", date);
+      .from("doctor_details")
+      .select(`*, users(*)`);
 
     if (error) {
       return { error: error.message };
@@ -15,9 +13,8 @@ const getDoctorAppointment = async (doctorId, date) => {
 
     return data;
   } catch (error) {
-    console.log({ error });
     return { error: error.message };
   }
 };
 
-export default getDoctorAppointment;
+export default getDoctorDetails;

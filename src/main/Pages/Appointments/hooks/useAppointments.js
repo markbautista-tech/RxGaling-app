@@ -42,7 +42,7 @@ const useAppointments = (role, user_id) => {
       .subscribe();
 
     return () => {
-      channels.unsubscribe();
+      centralSupabase.removeAllChannels();
     };
   }, []);
 

@@ -49,6 +49,7 @@ import { SkeletonLoading } from "@/main/components/Skeleton";
 import { Button } from "@/components/ui/button";
 import AppointmentsAction from "./components/AppointmentsAction";
 import useDoctorDetails from "@/main/Doctor/hooks/useDoctorDetails";
+import { Link } from "react-router-dom";
 
 const Appointments = () => {
   const { user, role } = useUser();
@@ -94,21 +95,25 @@ const Appointments = () => {
         <div className="py-2 lg:py-4 flex justify-between items-center">
           <ContentTitle title="Appointments" />
           {role !== "Owner" && role !== "Clinic Administrator" && (
-            <AddAppointments trigger="Add Appointments" />
+            // <AddAppointments trigger="Add Appointments" />
+            <Link to="/clinic-app/add-appointments/">
+              <Button>
+                <CalendarIcon />
+                <span className="hidden lg:block">Add New Appointment</span>
+              </Button>
+            </Link>
           )}
         </div>
-        {/* Separator */}
         <div className="py-1 lg:py-3">
           <Separator orientation="horizontal" className="w-full" />
         </div>
-        {/* Search and Filters */}
-        <div className="py-1 lg:py-4 w-full flex gap-3 flex-col lg:flex-row">
-          <Input
-            placeholder="Search for appointments..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          <div className="flex items-center gap-2">
+        <div className="flex flex-col lg:flex-row lg:gap-3">
+          <div className="py-1 lg:py-4 w-full flex gap-3 lg:flex-row">
+            <Input
+              placeholder="Search for appointments..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
             <div>
               <Popover open={open} onOpenChange={setOpen}>
                 <PopoverTrigger asChild>
@@ -141,7 +146,8 @@ const Appointments = () => {
                 </PopoverContent>
               </Popover>
             </div>
-
+          </div>
+          <div className="flex flex-col lg:flex-row lg:items-center py-2">
             {/* {role !== "Doctor" && <DoctorsAppointments />} */}
             {role !== "Doctor" && (
               <div>
@@ -151,7 +157,7 @@ const Appointments = () => {
                       variant="outline"
                       role="combobox"
                       aria-expanded={doctorOpen}
-                      className="justify-between w-[280px]"
+                      className="justify-between w-full"
                     >
                       {doctorValue
                         ? (() => {
@@ -226,15 +232,15 @@ const Appointments = () => {
             )}
           </div>
         </div>
+
         <div className="bg-white border border-gray-300 h-full flex rounded-lg shadow-lg mb-10 overflow-auto">
           <Table>
             {/* Table Header */}
             <TableHeader>
               <TableRow>
-                <TableHead>Number</TableHead>
-                <TableHead>Patient Name</TableHead>
-                <TableHead>Date</TableHead>
-                <TableHead>Duration</TableHead>
+                <TableHead className="w-[30px]">No.</TableHead>
+                <TableHead className="w-[300px]">Patient Name</TableHead>
+                <TableHead className="hidden lg:table-cell">Duration</TableHead>
                 <TableHead>Doctor</TableHead>
                 <TableHead>Status</TableHead>
                 {role !== "Owner" && <TableHead>Actions</TableHead>}
@@ -256,13 +262,8 @@ const Appointments = () => {
                       } ${appointment.patients?.middle_name || ""}`}
                     </TableCell>
 
-                    {/* Appointment Date */}
-                    <TableCell>
-                      {appointment.appointment_date || "--"}
-                    </TableCell>
-
                     {/* Appointment Duration */}
-                    <TableCell>
+                    <TableCell className="hidden lg:table-cell">
                       {`${appointment.start_time || "--"} - ${appointment.end_time || "--"}`}
                     </TableCell>
 
@@ -270,7 +271,9 @@ const Appointments = () => {
                     <TableCell>{`Dr. ${appointment.users?.last_name || "--"}`}</TableCell>
 
                     {/* Appointment Status */}
-                    <TableCell>{appointment.status || "Unknown"}</TableCell>
+                    <TableCell className="truncate">
+                      {appointment.status || "Unknown"}
+                    </TableCell>
 
                     {/* Actions */}
                     {role !== "Owner" && (

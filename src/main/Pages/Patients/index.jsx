@@ -10,8 +10,10 @@ import { TbMenu2, TbX } from "react-icons/tb";
 
 import PatientRegistration from "../Forms/PatientRegistration";
 import PatientTable from "./components/PatientTable";
+import { useUser } from "@/context/UserContext";
 
 const PatientsManangement = () => {
+  const { role } = useUser();
   const [showMenu, setShowMenu] = useState(false);
 
   const toggleMenu = () => {
@@ -26,9 +28,11 @@ const PatientsManangement = () => {
         <div className="relative flex ">
           <div className="flex items-center gap-2">
             <div className="">
-              <div className="flex gap-3">
-                <PatientRegistration />
-              </div>
+              {role !== "Owner" && (
+                <div className="flex gap-3">
+                  <PatientRegistration />
+                </div>
+              )}
             </div>
             {/* <div className="relative">
               {showMenu ? (

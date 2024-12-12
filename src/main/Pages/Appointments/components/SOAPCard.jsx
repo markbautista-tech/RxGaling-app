@@ -22,19 +22,50 @@ import {
 } from "@/components/ui/popover";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/style.css";
+import { pdf } from "@react-pdf/renderer";
+import SOAPNotes from "@/PDF/SOAPNotes";
 
-const SOAPCard = ({ patient, soaps }) => {
+const SOAPCard = ({ soaps, patient }) => {
+  const dateCreated = new Date(soaps.created_at).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
+  const patientName = `${patient[0].last_name}, ${patient[0].first_name} ${patient[0].middle_name[0]} ${patient[0].suffix}`;
+
+  const data = {
+    date: dateCreated,
+    name: patientName,
+    complaint: soaps.chief_complaint || "",
+    history: soaps.history_of_illness || "",
+    objRemarks: soaps.obj_remarks || "",
+    diagnosis: soaps.diagnosis || "",
+    plan: soaps.plan || "",
+    follow_date: soaps.follow_up_checkup || "",
+    gender: patient[0].gender,
+    age: patient[0].age,
+  };
+
+  const handleOpenInNewTab = () => {
+    const pdfDoc = <SOAPNotes data={data} />;
+    pdf(pdfDoc)
+      .toBlob()
+      .then((pdfBlob) => {
+        const url = URL.createObjectURL(pdfBlob);
+        window.open(url, "_blank"); // Opens in a new tab
+      })
+      .catch((err) => console.error("Error generating PDF:", err));
+  };
+
   return (
     <Dialog>
-      <DialogTrigger className="w-full text-sm text-left py-3 px-5 rounded-lg hover:bg-secondary shadow-md flex border justify-between">
+      <DialogTrigger className="w-full bg-white text-sm text-left py-3 px-5 rounded-lg hover:bg-secondary shadow-md flex border justify-between">
         <div className="flex flex-col">
           <span className="font-bold text-lg">SOAP Note</span>
-          <span className="text-[16px]">
-            {patient.clinics?.name.toUpperCase()}
-          </span>
         </div>
         <span>
-          {new Date(patient.created_at).toLocaleDateString("en-US", {
+          {new Date(soaps.created_at).toLocaleDateString("en-US", {
             year: "numeric",
             month: "long",
             day: "numeric",
@@ -44,10 +75,7 @@ const SOAPCard = ({ patient, soaps }) => {
       <DialogContent className="lg:w-[800px] bottom-10">
         <DialogHeader>
           <DialogTitle>SOAP Note</DialogTitle>
-          <DialogDescription className="py-2 flex flex-col">
-            <span>{`${patient.patients?.last_name.toUpperCase()}, ${patient.patients?.first_name.toUpperCase()} ${patient.patients?.middle_name.toUpperCase()} ${patient.patients?.suffix.toUpperCase() || ""}`}</span>
-            <span>{`${patient.patients?.age || ""} years old`}</span>
-          </DialogDescription>
+          <DialogDescription className="py-2 flex flex-col"></DialogDescription>
         </DialogHeader>
         <div className="overflow-y-auto no-scrollbar lg:px-3">
           <form>
@@ -112,6 +140,11 @@ const SOAPCard = ({ patient, soaps }) => {
               <div className="flex flex-col lg:flex-row gap-4 lg:items-center">
                 <Label>Schedule Follow Up Checkup:</Label>
                 <Input value={soaps.follow_up_checkup || ""} readOnly />
+              </div>
+              <div className="flex justify-end mt-5">
+                <Button onClick={() => handleOpenInNewTab()}>
+                  View and Print
+                </Button>
               </div>
             </div>
           </form>

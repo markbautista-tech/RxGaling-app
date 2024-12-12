@@ -20,6 +20,9 @@ import Pharmacy from "../Pages/Pharmacy";
 import DoctorPage from "../Doctor";
 import StaffManagement from "../Pages/StaffManagement";
 import AddNewClinic from "../Pages/AddNewClinic";
+import { AddNewAppointment } from "../Pages/Appointments/components/AddNewAppointment";
+import MedicalRecordsPage from "../Doctor/components/MedicalRecordsPage";
+import ManageBilling from "../Doctor/Prescription/ManageBilling";
 
 const ContentRouter = () => {
   return (
@@ -28,9 +31,13 @@ const ContentRouter = () => {
       <Route path="/dashboard/*" exact element={<Dashboard />} />
 
       <Route path="/appointments/*" element={<Appointments />} />
+      <Route path="/add-appointments/*" element={<AddNewAppointment />} />
+
       <Route path="/patients/*" element={<PatientsManangement />} />
       <Route path="/clinic-staff/*" element={<ClinicStaff />} />
       <Route path="/doctor-management/*" element={<ClinicDoctors />} />
+      <Route path="/patient/records/:id" element={<MedicalRecordsPage />} />
+      <Route path="/patient/billing/:id" element={<ManageBilling />} />
       <Route path="/clinic-pharmacy/*" element={<Pharmacy />} />
       <Route path="/staff-management/" element={<StaffManagement />} />
       <Route path="/profile-management/*" element={<ProfileManagement />} />

@@ -71,7 +71,7 @@ const generateUniqueCode = (prescriptions) => {
   return newCode;
 };
 
-const AddPrescription = ({ patient }) => {
+const AddPrescription = ({ patientid, userid, clinicid }) => {
   const { prescriptions: rawPrescriptions } = useGetPrescriptions();
   const { medicines: rawMedicines, medLoading } = useMedicines();
 
@@ -121,9 +121,9 @@ const AddPrescription = ({ patient }) => {
     e.preventDefault();
     const medication = {
       code: newPrescriptionCode,
-      patient_id: patient.patient_id,
-      doctor_id: patient.doctor_id,
-      clinic_id: patient.clinic_id,
+      patient_id: patientid,
+      doctor_id: userid,
+      clinic_id: clinicid,
       generic_name: formData.genericName,
       brand_name: formData.brandName,
       dosage: formData.dosage,
@@ -141,7 +141,6 @@ const AddPrescription = ({ patient }) => {
     if (response.error) {
       toast.error(response.error);
     } else {
-      await updateEndTime(patient.id);
       toast.success("Prescription submitted successfully!");
     }
 
@@ -199,7 +198,7 @@ const AddPrescription = ({ patient }) => {
 
   return (
     <Dialog>
-      <DialogTrigger className="text-sm text-left p-2 rounded-md hover:bg-secondary">
+      <DialogTrigger className="text-sm text-left p-2 rounded-md hover:bg-secondary border-primary">
         Add Prescription
       </DialogTrigger>
       <DialogContent className="lg:w-[800px] bottom-10 overflow-y-auto max-h-[80vh]">
@@ -207,19 +206,14 @@ const AddPrescription = ({ patient }) => {
           <DialogTitle>
             <span>Add Prescription</span>
           </DialogTitle>
-          <DialogDescription className="py-2 flex flex-col">
-            <span>{`${patient.patients?.last_name.toUpperCase()}, ${patient.patients?.first_name.toUpperCase()} ${
-              patient.patients?.middle_name.toUpperCase() || ""
-            } ${patient.patients?.suffix.toUpperCase() || ""}`}</span>
-            <span>{`${patient.patients?.age || ""} years old`}</span>
-          </DialogDescription>
+          <DialogDescription className="py-2 flex flex-col"></DialogDescription>
           <div className="flex justify-end">
             <Popover>
               <PopoverTrigger className="text-xs lg:text-sm">
                 Search Medicines
               </PopoverTrigger>
               <PopoverContent
-                className="w-[400px] p-3 overflow-y-auto no-scrollbar max-h-[80vh]"
+                className="lg:w-[400px] p-3 overflow-y-auto no-scrollbar max-h-[50vh]"
                 align="end"
               >
                 <Input
@@ -227,7 +221,7 @@ const AddPrescription = ({ patient }) => {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
-                <div className="flex flex-col space-y-2 mt-3">
+                <div className="flex flex-col space-y-2 mt-3 ">
                   {filteredMedicines.length > 0 ? (
                     filteredMedicines.map((med, index) => (
                       <div
@@ -355,7 +349,7 @@ const AddPrescription = ({ patient }) => {
           </div>
           <DialogFooter className="mt-7">
             <Button type="submit" className="w-full lg:w-[250px]">
-              Submit
+              Add
             </Button>
           </DialogFooter>
         </form>

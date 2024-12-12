@@ -46,10 +46,6 @@ export default function LoginForm() {
         navigate("/admin");
       } else if (clinicId) {
         navigate("/clinic-app");
-      } else if (pharmacyId) {
-        navigate("/pharmacy-app");
-      } else {
-        toast.error("You are not assigned to a clinic or pharmacy.");
       }
     }
   }, [navigate, user, role, clinicId, pharmacyId]);

@@ -110,10 +110,10 @@ export function NavUser({ user, email, lname, role }) {
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
+            {/* <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
               <LogOut />
               Log out
-            </DropdownMenuItem>
+            </DropdownMenuItem> */}
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>

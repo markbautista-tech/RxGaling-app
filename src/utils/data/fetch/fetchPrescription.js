@@ -10,6 +10,8 @@ const fetchPrescription = async () => {
     if (error) {
       return { error: error.message };
     }
+
+    return data;
   } catch (error) {
     return { error: error };
   }

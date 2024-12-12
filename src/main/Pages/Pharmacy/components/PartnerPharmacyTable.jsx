@@ -71,19 +71,20 @@ const PartnerPharmacyTable = () => {
           <TableHeader>
             <TableRow>
               <TableHead className=""></TableHead>
-              <TableHead className="lg:table-cell">
+              <TableHead className="lg:table-cell text-xs lg:text-sm">
                 <Button
                   variant="ghost"
                   onClick={() => handleSort("name")}
-                  className="font-bold"
+                  className="font-bold text-xs lg:text-sm"
                 >
-                  Pharmacy Name <ArrowUpDown className="ml-2 h-4 w-4" />
+                  Pharmacy Name{" "}
+                  <ArrowUpDown className="ml-2 h-4 w-4 text-xs lg:text-sm" />
                 </Button>
               </TableHead>
-              <TableHead className="hidden lg:table-cell">
+              <TableHead className="hidden lg:table-cell text-xs lg:text-sm">
                 Partnered When
               </TableHead>
-              <TableHead className="">Actions</TableHead>
+              <TableHead className="text-xs lg:text-sm">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -100,10 +101,10 @@ const PartnerPharmacyTable = () => {
                       </AvatarFallback>
                     </Avatar>
                   </TableCell>
-                  <TableCell className="lg:table-cell">
+                  <TableCell className="lg:table-cell text-xs lg:text-sm">
                     {partner.pharmacy?.name}
                   </TableCell>
-                  <TableCell className="hidden lg:table-cell">
+                  <TableCell className="hidden lg:table-cell text-xs lg:text-sm">
                     {new Date(partner.created_at).toLocaleDateString("en-US", {
                       year: "numeric",
                       month: "long",

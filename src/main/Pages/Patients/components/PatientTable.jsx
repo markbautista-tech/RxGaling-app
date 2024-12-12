@@ -9,6 +9,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ArrowUpDown } from "lucide-react";
@@ -20,6 +29,8 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { useUser } from "@/context/UserContext";
 
+const ITEMS_PER_PAGE = 10;
+
 const PatientTable = () => {
   const { role } = useUser();
   const { patientData } = usePatientData();
@@ -29,6 +40,12 @@ const PatientTable = () => {
     direction: "ascending",
   });
   const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const totalPages = Math.ceil(patients.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const currentData = patients.slice(startIndex, endIndex);
 
   useEffect(() => {
     const sortedPatients = [...patientData].sort((a, b) => {
@@ -120,8 +137,8 @@ const PatientTable = () => {
             </TableRow>
           </TableHeader>
           <TableBody className="">
-            {patients.length > 0 ? (
-              patients.map((patient) => (
+            {currentData.length > 0 ? (
+              currentData.map((patient) => (
                 <TableRow
                   key={patient.id}
                   className="cursor-pointer text-xs lg:text-sm"
@@ -163,6 +180,96 @@ const PatientTable = () => {
             )}
           </TableBody>
         </Table>
+
+        <Pagination>
+          <PaginationContent className="flex items-center space-x-2">
+            {/* Previous Button */}
+            <PaginationItem>
+              <PaginationPrevious
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setCurrentPage((page) => Math.max(page - 1, 1));
+                }}
+                aria-disabled={currentPage === 1}
+                className={`px-3 py-1 border rounded-md ${
+                  currentPage === 1
+                    ? "text-gray-400 cursor-not-allowed"
+                    : "text-purple-600"
+                }`}
+              >
+                Previous
+              </PaginationPrevious>
+            </PaginationItem>
+
+            {/* Page Numbers with Hidden Previous Number */}
+            {Array.from({ length: totalPages }).map((_, index) => {
+              const pageNumber = index + 1;
+
+              // Display logic for ellipses and page numbers
+              const isFirstPage = pageNumber === 1;
+              const isLastPage = pageNumber === totalPages;
+              const isCurrentPage = pageNumber === currentPage;
+              const isNextPage = pageNumber === currentPage + 1;
+
+              // Hide the "previous" page
+              if (pageNumber === currentPage - 1) {
+                return null;
+              }
+
+              if (
+                !isFirstPage &&
+                !isLastPage &&
+                !isCurrentPage &&
+                !isNextPage
+              ) {
+                return (
+                  <PaginationItem key={pageNumber} className="hidden sm:block">
+                    <span className="px-3 py-1 text-gray-500">...</span>
+                  </PaginationItem>
+                );
+              }
+
+              return (
+                <PaginationItem key={pageNumber}>
+                  <PaginationLink
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setCurrentPage(pageNumber);
+                    }}
+                    className={`px-3 py-1 border rounded-md ${
+                      isCurrentPage
+                        ? "bg-purple-600 text-white"
+                        : "text-purple-600 hover:bg-purple-100"
+                    }`}
+                  >
+                    {pageNumber}
+                  </PaginationLink>
+                </PaginationItem>
+              );
+            })}
+
+            {/* Next Button */}
+            <PaginationItem>
+              <PaginationNext
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setCurrentPage((page) => Math.min(page + 1, totalPages));
+                }}
+                aria-disabled={currentPage === totalPages}
+                className={`px-3 py-1 border rounded-md ${
+                  currentPage === totalPages
+                    ? "text-gray-400 cursor-not-allowed"
+                    : "text-purple-600"
+                }`}
+              >
+                Next
+              </PaginationNext>
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
       </div>
     </div>
   );
